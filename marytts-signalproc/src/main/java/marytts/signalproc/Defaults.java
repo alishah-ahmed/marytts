@@ -51,6 +51,10 @@ public class Defaults
         if (shift == -1) shift = getWindowSize()/2;
         return shift;
     }
-
+    
+    public static String getDefaultEnglishLocale()
+    {
+    	return "en-US";
+    }
 }
 

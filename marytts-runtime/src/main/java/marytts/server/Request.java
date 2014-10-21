@@ -48,6 +48,7 @@ import marytts.datatypes.MaryXML;
 import marytts.modules.MaryModule;
 import marytts.modules.ModuleRegistry;
 import marytts.modules.synthesis.Voice;
+import marytts.signalproc.Defaults;
 import marytts.util.MaryCache;
 import marytts.util.MaryRuntimeUtils;
 import marytts.util.MaryUtils;
@@ -504,7 +505,10 @@ public class Request {
         if (neededModules == null) {
             // The modules we have cannot be combined such that
             // the outputType can be generated from the inputData type.
-            String message = "No known way of generating output from input -- " + "no processing path through modules.";
+        	String inputType = oneInputData.getType().toString();
+        	String outputType = oneOutputType.toString();
+        	String tempLocale = locale.toString();
+            String message = "input type: " + inputType + "\noutput type: " + outputType + "\nlocale: " + tempLocale + "\nNo known way of generating output from input -- " + "no processing path through modules.";
             throw new UnsupportedOperationException(message);
         }
         usedModules.addAll(neededModules);
@@ -808,6 +812,11 @@ public class Request {
                 if (docEl != null) {
                     String langCode = docEl.getAttribute("xml:lang");
                     if (!langCode.equals("")) {
+                    	//check if locale is "en", set it to "en-US"
+                    	if (langCode.equals("en"))
+                    	{
+                    		langCode = Defaults.getDefaultEnglishLocale();
+                    	}
                         locale = MaryUtils.string2locale(langCode);
                     }
                 }
@@ -863,7 +872,5 @@ public class Request {
         }
         timer.cancel();
     }
-
-
 }
 
