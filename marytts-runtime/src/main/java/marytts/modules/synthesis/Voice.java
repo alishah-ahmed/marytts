@@ -55,6 +55,7 @@ import marytts.exceptions.NoSuchPropertyException;
 import marytts.exceptions.SynthesisException;
 import marytts.features.FeatureProcessorManager;
 import marytts.features.FeatureRegistry;
+import marytts.htsengine.HMMVoice;
 import marytts.modules.MaryModule;
 import marytts.modules.ModuleRegistry;
 import marytts.modules.acoustic.BoundaryModel;
@@ -66,6 +67,7 @@ import marytts.modules.acoustic.SoPModel;
 import marytts.modules.phonemiser.Allophone;
 import marytts.modules.phonemiser.AllophoneSet;
 import marytts.server.MaryProperties;
+import marytts.unitselection.UnitSelectionVoice;
 import marytts.unitselection.data.FeatureFileReader;
 import marytts.unitselection.interpolation.InterpolatingSynthesizer;
 import marytts.unitselection.interpolation.InterpolatingVoice;
@@ -465,6 +467,7 @@ public class Voice
     
 
     public boolean hasName(String aName) { return voiceName.equals(aName); }
+    public boolean hasNameIgnoreCase(String aName) { return voiceName.equalsIgnoreCase(aName); }
     /** Return the name of this voice. If the voice has several possible names,
      * the first one is returned. */
     public String getName() { return voiceName; }
@@ -673,8 +676,97 @@ public class Voice
      * Get the list of all available voices. The iterator of the collection returned
      * will return the voices in decreasing order of their "wantToBeDefault" value.
      */
-    public static Collection<Voice> getAvailableVoices() { return Collections.unmodifiableSet(allVoices); }
-
+    public static Collection<Voice> getAvailableVoices() 
+    { 
+    	return Collections.unmodifiableSet(allVoices);
+    }
+    
+    public static List<Voice> getFilteredVoice(String queryVariable, String queryValue, Collection<Voice> initialList)
+    {
+    	List<Voice> filteredList = new ArrayList<Voice>();
+    	
+    	switch (queryVariable.toLowerCase())
+		{
+		case "locale":
+			Locale queryLocale = MaryUtils.string2locale(queryValue); 
+			for (Voice currentVoice : initialList)
+			{
+                if (MaryUtils.subsumes(queryLocale, currentVoice.getLocale())) 
+                {
+                	filteredList.add(currentVoice);
+                }
+            }
+			break;
+		
+		case "name":
+			for (Voice currentVoice : initialList)
+			{
+                if (currentVoice.hasNameIgnoreCase(queryValue))
+                {
+                    filteredList.add(currentVoice);
+                }
+            }
+			break;
+			
+		case "gender":
+			for (Voice currentVoice : initialList)
+			{
+                if (currentVoice.gender().name.equalsIgnoreCase(queryValue))
+                {
+                    filteredList.add(currentVoice);
+                }
+            }
+			break;
+			
+		case "type":
+			for (Voice currentVoice : initialList)
+			{
+				boolean isQualified = false;
+				if (queryValue.toLowerCase().contains("unit") && currentVoice instanceof UnitSelectionVoice)
+				{
+					isQualified = true;
+				}
+				else if (queryValue.toLowerCase().contains("hmm") && currentVoice instanceof HMMVoice)
+                {
+					isQualified = true;
+                }
+				
+				if (isQualified)
+				{
+					filteredList.add(currentVoice);
+				}
+            }
+			break;
+			
+		default:
+			break;
+		}
+    	
+    	return filteredList;
+    }
+    
+    public static Collection<Voice> getAvailableVoices(final Map<String, String> queryParameters) 
+    {
+    	List<Voice> filteredVoices = new ArrayList<Voice>(); 
+    	
+    	int index = 0;
+    	for (String key : queryParameters.keySet())
+    	{
+    		if (index == 0)
+    		{
+    			filteredVoices = getFilteredVoice(key, queryParameters.get(key), allVoices);
+    		}
+    		else
+    		{
+    			filteredVoices = getFilteredVoice(key, queryParameters.get(key), filteredVoices);
+    		}
+    		
+    		index++;
+    	}
+    	
+    	return filteredVoices;
+    }
+    
     /**
      * Get the list of all available voices for a given locale. The iterator of the collection returned
      * will return the voices in decreasing order of their "wantToBeDefault" value.
@@ -859,7 +951,6 @@ public class Voice
         return lexicon;
     }
 
-
     public static class Gender
     {
         String name;
@@ -867,6 +958,4 @@ public class Voice
         public String toString() { return name; }
         public boolean equals(Gender other) { return other.toString().equals(name); }
     }
-
 }
-

@@ -344,10 +344,6 @@ public class MaryRuntimeUtils {
     	return AllophoneSet.getAllophoneSet(alloStream, propertyValue);
     }
     
-    
-    
-    
-    
     public static String getMaryVersion()
     {
         String output = "Mary TTS server " + Version.specificationVersion() + " (impl. " + Version.implementationVersion() + ")";
@@ -384,69 +380,6 @@ public class MaryRuntimeUtils {
     	}
     	return out.toString();
     }
-
-    public static String getVoices()
-    {
-    	JsonArray outputJson = new JsonArray();
-    	
-//        String output = "";
-        Collection<Voice> voices = Voice.getAvailableVoices();
-        for (Iterator<Voice> it = voices.iterator(); it.hasNext();) 
-        {
-        	JsonObject currentVoice = new JsonObject();
-            Voice v = (Voice) it.next();
-            if (v instanceof InterpolatingVoice) {
-                // do not list interpolating voice
-            } else if (v instanceof UnitSelectionVoice)
-            {
-//                output += v.getName() + " " 
-//                + v.getLocale() + " " 
-//                + v.gender().toString() + " " 
-//                + "unitselection" + " "
-//                +((UnitSelectionVoice)v).getDomain()
-//                + System.getProperty("line.separator");
-                
-                currentVoice.addProperty("name", v.getName());
-                currentVoice.addProperty("locale", v.getLocale().toString());
-                currentVoice.addProperty("gender", v.gender().toString());
-                currentVoice.addProperty("type", "unitselection");
-                currentVoice.addProperty("domain", ((UnitSelectionVoice)v).getDomain());
-            }
-            else if (v instanceof HMMVoice)
-            {
-//                output += v.getName() + " " 
-//                + v.getLocale()+ " " 
-//                + v.gender().toString()+ " "
-//                + "hmm"
-//                + System.getProperty("line.separator");
-
-                currentVoice.addProperty("name", v.getName());
-                currentVoice.addProperty("locale", v.getLocale().toString());
-                currentVoice.addProperty("gender", v.gender().toString());
-                currentVoice.addProperty("type", "hmm");
-            }
-            else
-            {
-//                output += v.getName() + " " 
-//                + v.getLocale()+ " " 
-//                + v.gender().toString() + " "
-//                + "other"
-//                + System.getProperty("line.separator");
-                
-                currentVoice.addProperty("name", v.getName());
-                currentVoice.addProperty("locale", v.getLocale().toString());
-                currentVoice.addProperty("gender", v.gender().toString());
-                currentVoice.addProperty("type", "other");
-            }
-            
-            outputJson.add(currentVoice);
-        }
-        
-//        System.out.println(outputJson.toString());
-        
-//        return output;
-        return outputJson.toString();
-    }
     
     public static String getVoices(Map<String, String> queryParameters)
     {
@@ -459,8 +392,7 @@ public class MaryRuntimeUtils {
     	}
     	else
     	{
-//    		voices = (List<Voice>) Voice.getAvailableVoices(queryParameters);
-    		voices = (List<Voice>) Voice.getAvailableVoices();
+    		voices = (List<Voice>) Voice.getAvailableVoices(queryParameters);
     	}
     	
     	outputString = formJSONFromVoices(voices);
@@ -647,5 +579,5 @@ public class MaryRuntimeUtils {
     		return "";
     	}
     	return effect.isHMMEffect() ? "yes" : "no";
-    }    
+    }   
 }

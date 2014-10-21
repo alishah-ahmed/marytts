@@ -112,9 +112,6 @@ public class MaryHttpClient extends MaryClient
     {
         super(serverAddress, profile, quiet);
     }
-
-    
-    
     
     ///////////////////////////////////////////////////////////////////////
     //////////////////////// Information requests /////////////////////////
@@ -356,23 +353,7 @@ public class MaryHttpClient extends MaryClient
         return data.keyValuePairs.get(key);
     }
 
-  */  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  */
     
     ///////////////////////////////////////////////////////////////////////
     //////////////////////// Actual synthesis requests ////////////////////
@@ -613,9 +594,4 @@ public class MaryHttpClient extends MaryClient
             }
         }
     }
-
-
-    
-
 }
-
