@@ -44,7 +44,8 @@ public class FileRequestHandler extends BaseHttpRequestHandler
         "favicon.ico",
         "index.html",
         "documentation.html",
-        "mary.js"
+        "mary.js",
+        "vkbeautify.js"
         }));
     
     public FileRequestHandler()
@@ -109,8 +110,5 @@ public class FileRequestHandler extends BaseHttpRequestHandler
         } else {
             MaryHttpServerUtils.errorFileNotFound(response, resourceFilename);
         }
-    }
-    
-    
+    }   
 }
-
