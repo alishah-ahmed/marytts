@@ -36,6 +36,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.nio.entity.NStringEntity;
 
+import com.google.gson.JsonArray;
+
 /**
  * Processor class for information http requests to Mary server
  * 
@@ -260,10 +262,14 @@ public class InfoRequestHandler extends BaseHttpRequestHandler
             if (mgr != null)
 //                if (request.equals("features-discrete")) {
             	if (isFeatureDiscreteRequest) {
-                    String discreteFeatureNames = mgr.listByteValuedFeatureProcessorNames() + mgr.listShortValuedFeatureProcessorNames(); 
-                    return discreteFeatureNames;
+//                    String discreteFeatureNames = mgr.listByteValuedFeatureProcessorNames() + mgr.listShortValuedFeatureProcessorNames(); 
+                    JsonArray discreteFeaturesJsonArray = mgr.getJsonArrayByteValuedFeatureProcessors();
+                    discreteFeaturesJsonArray.addAll(mgr.getJsonArrayShortValuedFeatureProcessors());
+            		return discreteFeaturesJsonArray.toString();
+//            		return discreteFeatureNames;
                 }
-                return mgr.listFeatureProcessorNames();
+//                return mgr.listFeatureProcessorNames();
+            return mgr.getJsonArrayStringFeatureProcessors();
         }
         MaryHttpServerUtils.errorMissingQueryParameter(response, "'voice' or 'locale'");
         return null;

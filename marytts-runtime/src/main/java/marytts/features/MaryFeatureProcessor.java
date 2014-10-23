@@ -39,5 +39,6 @@ package marytts.features;
 public interface MaryFeatureProcessor {
 
     public String getName();
+
 }
 

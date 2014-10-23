@@ -19,11 +19,14 @@
  */
 package marytts.features;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import org.apache.commons.lang.StringUtils;
 
 import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.acoustic.Model;
@@ -33,8 +36,15 @@ import marytts.server.MaryProperties;
 import marytts.util.MaryRuntimeUtils;
 import marytts.util.MaryUtils;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 public class FeatureProcessorManager 
 {
+	static final String FEATURE_TYPE_BYTE = "byte";
+	static final String FEATURE_TYPE_SHORT = "short";
+	static final String FEATURE_TYPE_CONTINUOUS = "continuous";
+	
     protected Map<String,MaryFeatureProcessor> processors;
 
     protected Map<String, String[]> phonefeatures2values;
@@ -233,7 +243,101 @@ public class FeatureProcessorManager
             sb.append(" ");
         }
         sb.append(conts);
+        
         return sb.toString();
+    }
+    
+    /**
+     * Provide a jsonArray list of the features names, types, and possible values for all the 
+     * feature processors known to this feature processor manager.
+     * The jsonArray is unsorted except that byte-valued feature processors come first,
+     * followed by short-valued feature processors, followed by continuous feature
+     * processors.
+     * @return
+     */
+    public String getJsonArrayStringFeatureProcessors()
+    {
+    	JsonArray featuresJson = new JsonArray();
+    	
+        String bytes = listByteValuedFeatureProcessorNames();
+        String shorts = listShortValuedFeatureProcessorNames();
+        String conts = listContinuousFeatureProcessorNames();
+        
+        if (!StringUtils.isBlank(bytes))
+        {
+	        String[] byteFeaturesArray = bytes.split(" ");
+	        if (byteFeaturesArray != null && byteFeaturesArray.length > 0)
+	        {
+	        	featuresJson.addAll(getFeaturesJSONArray(byteFeaturesArray, FEATURE_TYPE_BYTE));
+	        }
+        }
+        
+        if (!StringUtils.isBlank(shorts))
+        {
+	        String[] shortFeaturesArray = shorts.split(" ");
+	        if (shortFeaturesArray != null && shortFeaturesArray.length > 0)
+	        {
+	        	featuresJson.addAll(getFeaturesJSONArray(shortFeaturesArray, FEATURE_TYPE_SHORT));
+	        }
+        }
+        
+        if (!StringUtils.isBlank(conts))
+        {
+	        String[] continuousFeaturesArray = conts.split(" ");
+	        if (continuousFeaturesArray != null && continuousFeaturesArray.length > 0)
+	        {
+	        	featuresJson.addAll(getFeaturesJSONArray(continuousFeaturesArray, FEATURE_TYPE_CONTINUOUS));
+	        }
+        }
+        
+        return featuresJson.toString();
+    }
+    
+    public JsonArray getFeaturesJSONArray(String[] featuresArray, String type)
+    {
+    	JsonArray featuresJSONArray = new JsonArray();
+    	
+    	for (String featureName : featuresArray)
+    	{
+    		JsonObject currentFeature = new JsonObject();
+        	currentFeature.addProperty("name", featureName);
+        	currentFeature.addProperty("type", type);
+    		
+	    	switch (type)
+	    	{
+	    	case FEATURE_TYPE_BYTE:
+	    		String[] byteFeatureValues = ((ByteValuedFeatureProcessor) getFeatureProcessor(featureName)).getValues();
+	    		if (byteFeatureValues != null && byteFeatureValues.length > 0)
+	    		{
+	    			currentFeature.addProperty("values", Arrays.toString(byteFeatureValues));
+	    		}
+	    		else
+	    		{
+	    			currentFeature.addProperty("values", "");
+	    		}
+	    		break;
+	    	case FEATURE_TYPE_SHORT:
+	    		String[] shortFeatureValues = ((ShortValuedFeatureProcessor) getFeatureProcessor(featureName)).getValues();
+	    		if (shortFeatureValues != null && shortFeatureValues.length > 0)
+	    		{
+	    			currentFeature.addProperty("values", Arrays.toString(shortFeatureValues));
+	    		}
+	    		else
+	    		{
+	    			currentFeature.addProperty("values", "");
+	    		}
+	    		break;
+	    	case FEATURE_TYPE_CONTINUOUS:
+	    		currentFeature.addProperty("values", "");
+	    		break;
+	    	default:
+	    		break;
+	    	}
+	    	
+	    	featuresJSONArray.add(currentFeature);
+    	}
+    	
+    	return featuresJSONArray;
     }
     
     public String listByteValuedFeatureProcessorNames()
@@ -248,6 +352,35 @@ public class FeatureProcessorManager
         }
         return sb.toString();
     }
+    
+    public JsonArray getJsonArrayByteValuedFeatureProcessors()
+    {
+    	JsonArray byteValuedFeatureProcesses = new JsonArray();
+    	
+    	for (String featureName : processors.keySet())
+    	{
+    		if (processors.get(featureName) instanceof ByteValuedFeatureProcessor)
+    		{
+    			JsonObject currentFeature = new JsonObject();
+    			currentFeature.addProperty("name", featureName);
+    			currentFeature.addProperty("type", FEATURE_TYPE_BYTE);
+    			
+    			String[] byteFeatureValues = ((ByteValuedFeatureProcessor) getFeatureProcessor(featureName)).getValues();
+	    		if (byteFeatureValues != null && byteFeatureValues.length > 0)
+	    		{
+	    			currentFeature.addProperty("values", Arrays.toString(byteFeatureValues));
+	    		}
+	    		else
+	    		{
+	    			currentFeature.addProperty("values", "");
+	    		}
+	    		
+	    		byteValuedFeatureProcesses.add(currentFeature);
+    		}
+    	}
+    	
+    	return byteValuedFeatureProcesses;
+    }
 
     public String listShortValuedFeatureProcessorNames()
     {
@@ -261,6 +394,35 @@ public class FeatureProcessorManager
         }
         return sb.toString();
     }
+    
+    public JsonArray getJsonArrayShortValuedFeatureProcessors()
+    {
+    	JsonArray shortValuedFeatureProcesses = new JsonArray();
+    	
+    	for (String featureName : processors.keySet())
+    	{
+    		if (processors.get(featureName) instanceof ShortValuedFeatureProcessor)
+    		{
+    			JsonObject currentFeature = new JsonObject();
+    			currentFeature.addProperty("name", featureName);
+    			currentFeature.addProperty("type", FEATURE_TYPE_SHORT);
+    			
+    			String[] shortFeatureValues = ((ShortValuedFeatureProcessor) getFeatureProcessor(featureName)).getValues();
+	    		if (shortFeatureValues != null && shortFeatureValues.length > 0)
+	    		{
+	    			currentFeature.addProperty("values", Arrays.toString(shortFeatureValues));
+	    		}
+	    		else
+	    		{
+	    			currentFeature.addProperty("values", "");
+	    		}
+	    		
+	    		shortValuedFeatureProcesses.add(currentFeature);
+    		}
+    	}
+    	
+    	return shortValuedFeatureProcesses;
+    }
 
     public String listContinuousFeatureProcessorNames()
     {
@@ -273,6 +435,25 @@ public class FeatureProcessorManager
             }
         }
         return sb.toString();
+    }
+    
+    public JsonArray getJsonArrayContinuousValuedFeatureProcessors()
+    {
+    	JsonArray continuousValuedFeatureProcesses = new JsonArray();
+    	
+    	for (String featureName : processors.keySet())
+    	{
+    		if (processors.get(featureName) instanceof ContinuousFeatureProcessor)
+    		{
+    			JsonObject currentFeature = new JsonObject();
+    			currentFeature.addProperty("name", featureName);
+    			currentFeature.addProperty("type", FEATURE_TYPE_CONTINUOUS);
+	    		currentFeature.addProperty("values", "");
+	    		continuousValuedFeatureProcesses.add(currentFeature);
+    		}
+    	}
+    	
+    	return continuousValuedFeatureProcesses;
     }
 
     
