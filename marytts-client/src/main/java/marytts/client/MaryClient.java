@@ -364,7 +364,7 @@ public abstract class MaryClient
      */
     public Vector<MaryClient.Voice> getVoices() throws IOException
     {
-        if (data.allVoices == null || data.allVoices.isEmpty())
+        if (data.allVoices == null)
             fillVoices();
         
         assert data.allVoices != null && data.allVoices.size() > 0;
