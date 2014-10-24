@@ -116,6 +116,15 @@ public class RemoteMaryInterface implements MaryInterface {
 	}
 
 	private String getDefaultVoice(Locale loc) {
+		if (availableVoices == null || availableVoices.isEmpty())
+		{
+			try {
+				availableVoices = client.getVoices();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		for (Voice v : availableVoices) {
 			if (v.getLocale().equals(loc)) {
 				return v.name();
@@ -131,6 +140,15 @@ public class RemoteMaryInterface implements MaryInterface {
 
 	@Override
 	public void setVoice(String newVoiceName) throws IllegalArgumentException {
+		if (availableVoices == null || availableVoices.isEmpty())
+		{
+			try {
+				availableVoices = client.getVoices();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		for (Voice v : availableVoices) {
 			if (v.name().equals(newVoiceName)) {
 				voiceName = newVoiceName;
