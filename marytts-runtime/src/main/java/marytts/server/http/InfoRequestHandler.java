@@ -44,11 +44,11 @@ import org.apache.http.nio.entity.NStringEntity;
 public class InfoRequestHandler extends BaseHttpRequestHandler
 {
     //CorrectMethod interface and HashMap methodsMapping serve the purpose of directing URL to correct function
-    interface CorrectMethod {
+    public interface CorrectMethod {
     	String callCorrectMethod(Map<String, String> queryItems, HttpResponse response);
     }
 
-    Map<String, CorrectMethod> methodsMapping;
+    public Map<String, CorrectMethod> methodsMapping;
 	
     public InfoRequestHandler()
     {

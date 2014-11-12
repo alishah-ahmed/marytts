@@ -42,6 +42,7 @@ import java.util.Vector;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
+import javax.swing.Box.Filler;
 
 import marytts.cart.DirectedGraph;
 import marytts.cart.io.DirectedGraphReader;
@@ -678,6 +679,10 @@ public class Voice
      */
     public static Collection<Voice> getAvailableVoices() 
     { 
+//    	if (allVoices == null || allVoices.size() == 0)
+//    	{
+//    		fillVoices();
+//    	}
     	return Collections.unmodifiableSet(allVoices);
     }
     
