@@ -19,10 +19,20 @@ public class MaryDocumentationTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		LocalMaryInterface mary = new LocalMaryInterface();
-		HMMSynthesizer hmmSynth = new HMMSynthesizer();
-		HMMVoice v = new HMMVoice(voiceName, hmmSynth);
-        Voice.registerVoice(v);
+		try {
+			LocalMaryInterface mary = new LocalMaryInterface();
+			System.out.println("mary interface initialized");
+			HMMSynthesizer hmmSynth = new HMMSynthesizer();
+			System.out.println("hmm synthesizer initialized");
+			HMMVoice v = new HMMVoice(voiceName, hmmSynth);
+			System.out.println("hmm voice initialized");
+	        Voice.registerVoice(v);
+		}
+		catch (Exception e) {
+//			e.printStackTrace();
+			//System.out.println("ERROR: " + "setUp for MaryDocumentationTest failed.\tCause: " + e.getCause().getMessage());
+			throw new Exception("setUp for MaryDocumentationTest failed.\tCause: " + e.getCause().getMessage(), e);
+		}
 	}
 	
 	@Test

@@ -72,6 +72,7 @@ import com.sun.speech.freetts.Utterance;
  */
 public class MaryData
 {
+	private static final String FILENAME = "MaryData.java: ";
     private MaryDataType type;
     private Locale locale;
     private String outputParams = null;
@@ -102,7 +103,7 @@ public class MaryData
 
     public MaryData(MaryDataType type, Locale locale, boolean createStubDocument) {
         if (type == null)
-            throw new NullPointerException("Received null type for MaryData");
+            throw new NullPointerException(FILENAME + " Received null type for MaryData");
         this.type = type;
         this.locale = locale;
         // The following is the default setting for module output (we suppose
@@ -169,7 +170,7 @@ public class MaryData
             TransformerConfigurationException,
             TransformerException {
         if (type.isUtterances())
-            throw new IOException("Cannot read into utterance-based data type!");
+            throw new IOException(FILENAME + " Cannot read into utterance-based data type!");
 
         if (type.isXMLType() || type.isTextType())
             readFrom(new InputStreamReader(is, "UTF-8"), endMarker);
@@ -239,7 +240,7 @@ public class MaryData
                 logger.debug("Setting text input: "+dataString);
                 plainText = dataString;
         } else {
-            throw new IllegalArgumentException("Cannot set data of type "+type+" from a string");
+            throw new IllegalArgumentException(FILENAME + " Cannot set data of type "+type+" from a string");
         }
     }
 
@@ -251,7 +252,7 @@ public class MaryData
     public void writeTo(OutputStream os)
         throws TransformerConfigurationException, FileNotFoundException, TransformerException, IOException, Exception {
         if (type.isUtterances())
-            throw new IOException("Cannot write out utterance-based data type!");
+            throw new IOException(FILENAME + " Cannot write out utterance-based data type!");
 
         if (type.isXMLType()) {
             if (writer == null)
@@ -331,15 +332,15 @@ public class MaryData
     public void writeTo(Writer w)
         throws TransformerConfigurationException, FileNotFoundException, TransformerException, IOException, Exception {
         if (type.isUtterances())
-            throw new IOException("Cannot write out utterance-based data type!");
+            throw new IOException(FILENAME + " Cannot write out utterance-based data type!");
         if (type.isXMLType()) {
-            throw new IOException("Better write XML data to an OutputStream, not to a Writer");
+            throw new IOException(FILENAME + " Better write XML data to an OutputStream, not to a Writer");
         } else if (type.isTextType()) { // caution: XML types are text types!
             w.write(plainText);
             w.flush();
             logger.debug("Writing Text output:\n" + plainText);
         } else { // audio - cannot write this to a writer
-            throw new Exception("Illegal attempt to write audio data to a character Writer");
+            throw new Exception(FILENAME + " Illegal attempt to write audio data to a character Writer");
         }
     }
 
@@ -453,9 +454,9 @@ public class MaryData
     public void append(MaryData md)
     {
         if (md == null)
-            throw new NullPointerException("Received null marydata");
+            throw new NullPointerException(FILENAME + " Received null marydata");
         if (!md.getType().equals(this.getType()))
-            throw new IllegalArgumentException("Cannot append mary data of type `" +
+            throw new IllegalArgumentException(FILENAME + " Cannot append mary data of type `" +
               md.getType().name() + "' to mary data of type `" + this.getType().name() + "'");
         if (getType().isXMLType()) {
             NodeList kids = md.getDocument().getDocumentElement().getChildNodes();
@@ -474,7 +475,7 @@ public class MaryData
         } else if (getType().equals(MaryDataType.get("AUDIO"))) {
             appendAudio(md.getAudio());
         } else {
-            throw new UnsupportedOperationException("Cannot append two mary data items of type `"
+            throw new UnsupportedOperationException(FILENAME + " Cannot append two mary data items of type `"
              + getType() + "'");
         }
     }

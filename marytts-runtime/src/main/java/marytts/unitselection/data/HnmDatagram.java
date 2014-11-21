@@ -37,6 +37,7 @@ import marytts.util.data.Datagram;
  *
  */
 public class HnmDatagram extends Datagram {
+	private static final String FILENAME = "HnmDatagram.java:";
     
     public HntmSpeechFrame frame; //Hnm parameters for a speech frame
     
@@ -66,10 +67,10 @@ public class HnmDatagram extends Datagram {
         super(raf.readLong()); // duration
         int len = raf.readInt();
         if ( len < 0 ) {
-            throw new IOException( "Can't create a datagram with a negative data size [" + len + "]." );
+            throw new IOException(FILENAME + " Can't create a datagram with a negative data size [" + len + "]." );
         }
         if (len < 4*3) {
-            throw new IOException("Hnm with waveform noise datagram too short (len="+len
+            throw new IOException(FILENAME + " Hnm with waveform noise datagram too short (len="+len
                     +"): cannot be shorter than the space needed for first three Hnm parameters (4*3)");
         }
         
@@ -94,10 +95,10 @@ public class HnmDatagram extends Datagram {
         super(bb.getLong()); // duration
         int len = bb.getInt();
         if ( len < 0 ) {
-            throw new IOException( "Can't create a datagram with a negative data size [" + len + "]." );
+            throw new IOException(FILENAME + " Can't create a datagram with a negative data size [" + len + "]." );
         }
         if (len < 4*3) {
-            throw new IOException("Hnm with waveform noise datagram too short (len="+len
+            throw new IOException(FILENAME + " Hnm with waveform noise datagram too short (len="+len
                     +"): cannot be shorter than the space needed for first three Hnm parameters (4*3)");
         }
         

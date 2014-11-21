@@ -58,6 +58,8 @@ import org.w3c.dom.traversal.TreeWalker;
 
 public class CARTDurationModeller extends InternalModule
 {
+	private static final String FILENAME = "CARTDurationModeller.java:";
+	
     protected DirectedGraph cart = new CART();
     // TODO: use a simple regression tree, with FloatLeafNode, for pausetree:
     protected StringPredictionTree pausetree;
@@ -168,7 +170,7 @@ public class CARTDurationModeller extends InternalModule
             }
             
             if (currentCart == null) {
-                throw new NullPointerException("No cart for predicting duration");
+                throw new NullPointerException(FILENAME + " No cart for predicting duration");
             }
             
             // cumulative duration from beginning of sentence, in seconds:
@@ -219,7 +221,7 @@ public class CARTDurationModeller extends InternalModule
             StringPredictionTree currentPauseTree, TargetFeatureComputer currentPauseFeatureComputer)
     {
         if (!boundary.getTagName().equals(MaryXML.BOUNDARY))
-            throw new IllegalArgumentException("cannot call enterPauseDuration for non-pause element");
+            throw new IllegalArgumentException(FILENAME + " cannot call enterPauseDuration for non-pause element");
         
         // If there is already a duration, keep it:
         if (boundary.hasAttribute("duration")) {

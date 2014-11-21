@@ -47,6 +47,7 @@ import org.w3c.dom.NodeList;
  * 
  */
 public class ProsodyAnalyzer {
+	private static final String FILENAME = "ProsodyAnalyzer.java:";
 
     private List<SelectedUnit> units;
 
@@ -142,7 +143,7 @@ public class ProsodyAnalyzer {
         try {
             phoneNodes = getPhoneNodes();
         } catch (Exception e) {
-            throw new Exception("Could not get the phone Nodes from the Document", e);
+            throw new Exception(FILENAME + " Could not get the phone Nodes from the Document" + "\tCause: " + e.getCause().getMessage(), e);
         }
 
         // count the number of Datagrams we need, which is the number of F0 target values the ProsodyElementHandler will return:
@@ -206,7 +207,7 @@ public class ProsodyAnalyzer {
         try {
             phoneNodes = document.getElementsByTagName(MaryXML.PHONE);
         } catch (NullPointerException e) {
-            throw new Exception("Could not access the Document!", e);
+            throw new Exception(FILENAME + " Could not access the Document!" + "\tCause: " + e.getCause().getMessage(), e);
         }
         return phoneNodes;
     }

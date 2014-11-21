@@ -30,6 +30,8 @@ import marytts.util.data.Datagram;
 
 public class MCepTimelineReader extends TimelineReader
 {
+	private static final String FILENAME = "MCepTimelineReader.java:";
+	
     protected int order;
     
 
@@ -55,7 +57,7 @@ public class MCepTimelineReader extends TimelineReader
     private void ensurePresent(Properties props, String key) throws IOException
     {
         if (!props.containsKey(key))
-            throw new IOException("Processing header does not contain required field '"+key+"'");
+            throw new IOException(FILENAME + " Processing header does not contain required field '"+key+"'");
 
     }
 

@@ -53,6 +53,8 @@ import marytts.util.string.ShortStringTranslator;
  */
 public class FeatureDefinition
 {
+	public static final String FILENAME = "FeatureDefinition.java:";
+	
     public static final String BYTEFEATURES = "ByteValuedFeatureProcessors";
     public static final String SHORTFEATURES = "ShortValuedFeatureProcessors";
     public static final String CONTINUOUSFEATURES = "ContinuousFeatureProcessors";
@@ -90,17 +92,17 @@ public class FeatureDefinition
     {
         // Section BYTEFEATURES
         String line = input.readLine();
-        if (line == null) throw new IOException("Could not read from input");
+        if (line == null) throw new IOException(FILENAME + " Could not read from input");
         while ( line.matches("^\\s*#.*") || line.matches("\\s*") ) {
             line = input.readLine();
         }
         if (!line.trim().equals(BYTEFEATURES)) {
-            throw new IOException("Unexpected input: expected '"+BYTEFEATURES+"', read '"+line+"'");
+            throw new IOException(FILENAME + " Unexpected input: expected '"+BYTEFEATURES+"', read '"+line+"'");
         }
         List<String> byteFeatureLines = new ArrayList<String>();
         while (true) {
             line = input.readLine();
-            if (line == null) throw new IOException("Could not read from input");
+            if (line == null) throw new IOException(FILENAME + " Could not read from input");
             line = line.trim();
             if (line.equals(SHORTFEATURES)) break; // Found end of section
             byteFeatureLines.add(line);            
@@ -109,7 +111,7 @@ public class FeatureDefinition
         List<String> shortFeatureLines = new ArrayList<String>();
         while (true) {
             line = input.readLine();
-            if (line == null) throw new IOException("Could not read from input");
+            if (line == null) throw new IOException(FILENAME + " Could not read from input");
             line = line.trim();
             if (line.equals(CONTINUOUSFEATURES)) break; // Found end of section
             shortFeatureLines.add(line);            
@@ -148,13 +150,13 @@ public class FeatureDefinition
             String featureDef;
             if (readWeights) {
                 int seppos = line.indexOf(WEIGHT_SEPARATOR);
-                if (seppos == -1) throw new IOException("Weight separator '"+WEIGHT_SEPARATOR+"' not found in line '"+line+"'");
+                if (seppos == -1) throw new IOException(FILENAME + " Weight separator '"+WEIGHT_SEPARATOR+"' not found in line '"+line+"'");
                 String weightDef = line.substring(0, seppos).trim();
                 featureDef = line.substring(seppos+1).trim();
                 // The weight definition is simply the float number:
                 featureWeights[i] = Float.parseFloat(weightDef);
                 sumOfWeights += featureWeights[i];
-                if (featureWeights[i] < 0) throw new IOException("Negative weight found in line '"+line+"'");
+                if (featureWeights[i] < 0) throw new IOException(FILENAME + " Negative weight found in line '"+line+"'");
             } else {
                 featureDef = line;
             }
@@ -170,13 +172,13 @@ public class FeatureDefinition
             String featureDef;
             if (readWeights) {
                 int seppos = line.indexOf(WEIGHT_SEPARATOR);
-                if (seppos == -1) throw new IOException("Weight separator '"+WEIGHT_SEPARATOR+"' not found in line '"+line+"'");
+                if (seppos == -1) throw new IOException(FILENAME + " Weight separator '"+WEIGHT_SEPARATOR+"' not found in line '"+line+"'");
                 String weightDef = line.substring(0, seppos).trim();
                 featureDef = line.substring(seppos+1).trim();
                 // The weight definition is simply the float number:
                 featureWeights[numByteFeatures+i] = Float.parseFloat(weightDef);
                 sumOfWeights += featureWeights[numByteFeatures+i];
-                if (featureWeights[numByteFeatures+i] < 0) throw new IOException("Negative weight found in line '"+line+"'");
+                if (featureWeights[numByteFeatures+i] < 0) throw new IOException(FILENAME + " Negative weight found in line '"+line+"'");
             } else {
                 featureDef = line;
             }
@@ -192,14 +194,14 @@ public class FeatureDefinition
             String featureDef;
             if (readWeights) {
                 int seppos = line.indexOf(WEIGHT_SEPARATOR);
-                if (seppos == -1) throw new IOException("Weight separator '"+WEIGHT_SEPARATOR+"' not found in line '"+line+"'");
+                if (seppos == -1) throw new IOException(FILENAME + " Weight separator '"+WEIGHT_SEPARATOR+"' not found in line '"+line+"'");
                 String weightDef = line.substring(0, seppos).trim();
                 featureDef = line.substring(seppos+1).trim();
                 // The weight definition is the float number plus a definition of a weight function:
                 String[] weightAndFunction = weightDef.split("\\s+", 2);
                 featureWeights[numByteFeatures+numShortFeatures+i] = Float.parseFloat(weightAndFunction[0]);
                 sumOfWeights += featureWeights[numByteFeatures+numShortFeatures+i];
-                if (featureWeights[numByteFeatures+numShortFeatures+i] < 0) throw new IOException("Negative weight found in line '"+line+"'");
+                if (featureWeights[numByteFeatures+numShortFeatures+i] < 0) throw new IOException(FILENAME + " Negative weight found in line '"+line+"'");
                 try {
                     floatWeightFuncts[i] = weightAndFunction[1];
                 }
@@ -207,8 +209,8 @@ public class FeatureDefinition
 //                    System.out.println( "weightDef string was: '" + weightDef + "'." );
 //                    System.out.println( "Splitting part 1: '" + weightAndFunction[0] + "'." );
 //                    System.out.println( "Splitting part 2: '" + weightAndFunction[1] + "'." );
-                    throw new RuntimeException( "The string [" + weightDef + "] appears to be a badly formed"
-                            + " weight plus weighting function definition." );
+                    throw new RuntimeException(FILENAME + " The string [" + weightDef + "] appears to be a badly formed"
+                            + " weight plus weighting function definition." + "\tCause: " + e.getCause().getMessage() );
               }
             } else {
                 featureDef = line;
@@ -259,7 +261,7 @@ public class FeatureDefinition
             String featureName =  featureUniqueValues[0];
             
             if ( !isByteFeature(featureName) ) {
-                throw new RuntimeException("Similarity matrix support is for bytefeatures only, but not for other feature types...");
+                throw new RuntimeException(FILENAME + " Similarity matrix support is for bytefeatures only, but not for other feature types...");
             }
             
             int featureIndex = this.getFeatureIndex(featureName);
@@ -274,15 +276,15 @@ public class FeatureDefinition
                 
                 String matLine = input.readLine();
                 if ( matLine == null ) {
-                    throw new RuntimeException("Feature definition file is having unexpected format...");
+                    throw new RuntimeException(FILENAME + " Feature definition file is having unexpected format...");
                 }
                 
                 String[] lines = matLine.trim().split("\\s+");
                 if( !featureValue.equals(lines[0]) ){
-                    throw new RuntimeException("Feature definition file is having unexpected format...");
+                    throw new RuntimeException(FILENAME + " Feature definition file is having unexpected format...");
                 }
                 if( lines.length != i){
-                    throw new RuntimeException("Feature definition file is having unexpected format...");
+                    throw new RuntimeException(FILENAME + " Feature definition file is having unexpected format...");
                 }
                 for ( int j=1; j < i; j++ ) {
                     float similarity = (new Float(lines[j])).floatValue();
@@ -911,7 +913,7 @@ public class FeatureDefinition
      */
     public float getSimilarity(int featureIndex, byte i, byte j) {
         if ( !hasSimilarityMatrix(featureIndex) ) {
-            throw new RuntimeException("the given feature index  ");
+            throw new RuntimeException(FILENAME + " the given feature index  ");
         }
         return this.similarityMatrices[featureIndex][i][j];
     }
@@ -959,7 +961,7 @@ public class FeatureDefinition
         featureIndex -= numByteFeatures;
         if (featureIndex < numShortFeatures)
             return shortFeatureValues[featureIndex].getNumberOfValues();
-        throw new IndexOutOfBoundsException("Feature no. "+featureIndex+" is not a byte-valued or short-valued feature");
+        throw new IndexOutOfBoundsException(FILENAME + " Feature no. "+featureIndex+" is not a byte-valued or short-valued feature");
     }
 
     /**
@@ -979,7 +981,7 @@ public class FeatureDefinition
         featureIndex -= numByteFeatures;
         if (featureIndex < numShortFeatures)
             return shortFeatureValues[featureIndex].getStringValues();
-        throw new IndexOutOfBoundsException("Feature no. "+featureIndex+" is not a byte-valued or short-valued feature");
+        throw new IndexOutOfBoundsException(FILENAME + " Feature no. "+featureIndex+" is not a byte-valued or short-valued feature");
     }
     
     /**
@@ -1004,7 +1006,7 @@ public class FeatureDefinition
         featureIndex -= numByteFeatures;
         if (featureIndex < numShortFeatures)
             return shortFeatureValues[featureIndex].get((short)value);
-        throw new IndexOutOfBoundsException("Feature no. "+featureIndex+" is not a byte-valued or short-valued feature");
+        throw new IndexOutOfBoundsException(FILENAME + " Feature no. "+featureIndex+" is not a byte-valued or short-valued feature");
     }
 
     /**
@@ -1054,7 +1056,7 @@ public class FeatureDefinition
     public byte getFeatureValueAsByte(int featureIndex, String value)
     {
         if (featureIndex >= numByteFeatures)
-            throw new IndexOutOfBoundsException("Feature no. "+featureIndex+" is not a byte-valued feature");
+            throw new IndexOutOfBoundsException(FILENAME + " Feature no. "+featureIndex+" is not a byte-valued feature");
         try {
             return byteFeatureValues[featureIndex].get(value);
         } catch (IllegalArgumentException iae) {
@@ -1062,7 +1064,7 @@ public class FeatureDefinition
             for (String v : getPossibleValues(featureIndex)) {
                 message.append(" "+v);
             }
-            throw new IllegalArgumentException(message.toString());
+            throw new IllegalArgumentException(FILENAME + " " + message.toString() + "\tCause: " + iae.getCause().getMessage());
         }
         
     }
@@ -1086,7 +1088,7 @@ public class FeatureDefinition
         featureIndex -= numByteFeatures;
         if (featureIndex < numShortFeatures)
             return shortFeatureValues[featureIndex].get(value);
-        throw new IndexOutOfBoundsException("Feature '"+featureName+"' is not a short-valued feature");
+        throw new IndexOutOfBoundsException(FILENAME + " Feature '"+featureName+"' is not a short-valued feature");
     }
     
     /**
@@ -1107,7 +1109,7 @@ public class FeatureDefinition
         featureIndex -= numByteFeatures;
         if (featureIndex < numShortFeatures)
             return shortFeatureValues[featureIndex].get(value);
-        throw new IndexOutOfBoundsException("Feature no. "+featureIndex+" is not a short-valued feature");
+        throw new IndexOutOfBoundsException(FILENAME + " Feature no. "+featureIndex+" is not a short-valued feature");
     }
         
 
@@ -1334,7 +1336,7 @@ public class FeatureDefinition
     {
         String[] featureValues = featureString.split("\\s+");
         if (featureValues.length != numByteFeatures+numShortFeatures+numContinuousFeatures)
-            throw new IllegalArgumentException("Expected "+(numByteFeatures+numShortFeatures+numContinuousFeatures)+" features, got "+featureValues.length);
+            throw new IllegalArgumentException(FILENAME + " Expected "+(numByteFeatures+numShortFeatures+numContinuousFeatures)+" features, got "+featureValues.length);
         byte[] bytes = new byte[numByteFeatures];
         short[] shorts = new short[numShortFeatures];
         float[] floats = new float[numContinuousFeatures];
@@ -1355,7 +1357,7 @@ public class FeatureDefinition
         if (!((numByteFeatures == 0 && bytes == null || numByteFeatures == bytes.length)
                 && (numShortFeatures == 0 && shorts == null || numShortFeatures == shorts.length)
                 && (numContinuousFeatures == 0 && floats == null || numContinuousFeatures == floats.length))) {
-            throw new IllegalArgumentException("Expected "+numByteFeatures+" bytes (got "+(bytes == null ? "0" : bytes.length)
+            throw new IllegalArgumentException(FILENAME + " Expected "+numByteFeatures+" bytes (got "+(bytes == null ? "0" : bytes.length)
                     + "), "+numShortFeatures+" shorts (got "+(shorts==null ? "0" : shorts.length)
                     + "), "+numContinuousFeatures+" floats (got "+(floats==null ? "0" : floats.length)+")");
         }
@@ -1448,7 +1450,7 @@ public class FeatureDefinition
         if (numByteFeatures != fv.getNumberOfByteFeatures()
                 || numShortFeatures != fv.getNumberOfShortFeatures()
                 || numContinuousFeatures != fv.getNumberOfContinuousFeatures())
-            throw new IllegalArgumentException("Feature vector '"+fv+"' is inconsistent with feature definition");
+            throw new IllegalArgumentException(FILENAME + " Feature vector '"+fv+"' is inconsistent with feature definition");
         StringBuilder buf = new StringBuilder();
         for (int i=0; i<numByteFeatures; i++) {
             if (buf.length()>0) buf.append(" ");
@@ -1681,7 +1683,7 @@ public class FeatureDefinition
         
         /* Byte valued features */
         if ( v1.byteValuedDiscreteFeatures.length < v2.byteValuedDiscreteFeatures.length ) {
-            throw new RuntimeException( "v1 and v2 don't have the same number of byte-valued features: ["
+            throw new RuntimeException(FILENAME + " v1 and v2 don't have the same number of byte-valued features: ["
                     + v1.byteValuedDiscreteFeatures.length + "] versus [" + v2.byteValuedDiscreteFeatures.length
                     + "]." );
         }
@@ -1691,7 +1693,7 @@ public class FeatureDefinition
         
         /* Short valued features */
         if ( v1.shortValuedDiscreteFeatures.length < v2.shortValuedDiscreteFeatures.length ) {
-            throw new RuntimeException( "v1 and v2 don't have the same number of short-valued features: ["
+            throw new RuntimeException(FILENAME + " v1 and v2 don't have the same number of short-valued features: ["
                     + v1.shortValuedDiscreteFeatures.length + "] versus [" + v2.shortValuedDiscreteFeatures.length
                     + "]." );
         }

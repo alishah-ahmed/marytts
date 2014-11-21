@@ -33,6 +33,7 @@ import marytts.vocalizations.VocalizationFeatureFileReader;
  */
 public class VocalizationFFRTargetCostFunction extends FFRTargetCostFunction 
 {
+	private static final String FILENAME = "VocalizationFFRTargetCostFunction.java:";
         
     private int MEANING_RATING_RANGE = 5;  // the range of meaning rating scale
     
@@ -169,7 +170,7 @@ public class VocalizationFFRTargetCostFunction extends FFRTargetCostFunction
     protected double featureCost(Target target, Unit unit, String featureName, FeatureDefinition weights, WeightFunc[] weightFunctions)
     {
         if ( !this.featureDefinition.hasFeature(featureName) ) {
-            throw new IllegalArgumentException("this feature does not exists in feature definition");
+            throw new IllegalArgumentException(FILENAME + " this feature does not exists in feature definition");
         }
         
         FeatureVector targetFeatures = target.getFeatureVector(); 

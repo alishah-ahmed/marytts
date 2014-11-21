@@ -51,7 +51,8 @@ import marytts.util.data.MaryHeader;
  */
 public class PrecompiledJoinCostReader implements JoinCostFunction
 {
-
+	private static final String FILENAME = "PrecompiledJoinCostReader.java:";
+	
     private MaryHeader hdr = null;
     
     // keys = Integers representing left unit index;
@@ -90,7 +91,7 @@ public class PrecompiledJoinCostReader implements JoinCostFunction
         try {
             load(precomputedJoinCostFileName, null, null, 0);
         } catch (IOException ioe) {
-            throw new MaryConfigurationException("Problem loading join file "+precomputedJoinCostFileName, ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem loading join file "+precomputedJoinCostFileName + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
     }
     
@@ -109,12 +110,12 @@ public class PrecompiledJoinCostReader implements JoinCostFunction
         DataInputStream dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.PRECOMPUTED_JOINCOSTS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary precompiled join costs file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary precompiled join costs file." );
         }
         /* Read the number of units */
         int numberOfLeftUnits = dis.readInt();
         if ( numberOfLeftUnits < 0 ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] has a negative number of units. Aborting." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] has a negative number of units. Aborting." );
         }
         
         left = new HashMap();

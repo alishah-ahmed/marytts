@@ -26,6 +26,8 @@ import org.w3c.dom.Element;
 
 
 public class DiphoneTarget extends Target {
+	private static final String FILENAME = "DiphoneTarget.java:";
+	
     public final HalfPhoneTarget left;
     public final HalfPhoneTarget right;
     
@@ -43,23 +45,23 @@ public class DiphoneTarget extends Target {
     @Override
     public Element getMaryxmlElement()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneTargets.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneTargets.");
     }
     
     
     public FeatureVector getFeatureVector()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneTargets.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneTargets.");
     }
     
     public void setFeatureVector(FeatureVector featureVector)
     {
-        throw new IllegalStateException("This method should not be called for DiphoneTargets.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneTargets.");
     }
     
     public float getTargetDurationInSeconds()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneTargets.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneTargets.");
     }
     
     /**
@@ -68,12 +70,12 @@ public class DiphoneTarget extends Target {
      */
     public boolean isSilence()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneTargets.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneTargets.");
     }
     
     public Allophone getAllophone()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneTargets.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneTargets.");
     }
     
 

@@ -72,6 +72,8 @@ import org.w3c.dom.traversal.TreeWalker;
 
 public class UnitSelectionSynthesizer implements WaveformSynthesizer
 {
+	private static final String FILENAME = "UnitSelectionSynthesizer.java:";
+	
     /**
      * A map with Voice objects as keys, and Lists of UtteranceProcessors as values.
      * Idea: For a given voice, find the list of utterance processors to apply. 
@@ -141,7 +143,7 @@ public class UnitSelectionSynthesizer implements WaveformSynthesizer
             }
         } catch (Throwable t) {
             t.printStackTrace();
-            throw new Error("Module " + toString() + ": Power-on self test failed.", t);
+            throw new Error(FILENAME + "Module " + toString() + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
         }
         logger.info("Power-on self test complete.");
     }
@@ -185,7 +187,7 @@ public class UnitSelectionSynthesizer implements WaveformSynthesizer
             PrintWriter pw = new PrintWriter(sw);
             for (Iterator selIt=selectedUnits.iterator(); selIt.hasNext(); )
                 pw.println(selIt.next());
-            throw new SynthesisException("Problems generating audio for unit chain: "+sw.toString(), ioe);
+            throw new SynthesisException(FILENAME + " Problems generating audio for unit chain: "+sw.toString() + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
         
         // Propagate unit durations to XML tree:
@@ -228,7 +230,7 @@ public class UnitSelectionSynthesizer implements WaveformSynthesizer
             if (maryxmlElement != null) {
                 if (maryxmlElement.getNodeName().equals(MaryXML.PHONE)) {
                     if (!maryxmlElement.hasAttribute("d") || !maryxmlElement.hasAttribute("end")) {
-                        throw new IllegalStateException("No duration information in MaryXML -- check log file"
+                        throw new IllegalStateException(FILENAME + " No duration information in MaryXML -- check log file"
                                 + " for messages warning about unloadable acoustic models"
                                 + " instead of voice-specific acoustic feature predictors");
                     }

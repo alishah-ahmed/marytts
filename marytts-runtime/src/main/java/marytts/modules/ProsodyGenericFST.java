@@ -13,7 +13,8 @@ import marytts.fst.FSTLookup;
 
 public class ProsodyGenericFST extends ProsodyGeneric
 {
-
+	private static final String FILENAME = "ProsodyGeneric.javaFST:";
+	
     public ProsodyGenericFST(MaryDataType inputType, MaryDataType outputType,
             Locale locale,
             String tobipredFileName, String accentPriorities,
@@ -59,10 +60,10 @@ public class ProsodyGenericFST extends ProsodyGeneric
     @Override
     protected boolean checkList(String currentVal, String tokenValue) {
         if (currentVal == null || tokenValue == null) {
-            throw new NullPointerException("Received null argument");
+            throw new NullPointerException(FILENAME + " Received null argument");
         }
         if (!currentVal.startsWith("INLIST") && !currentVal.startsWith("!INLIST")) {
-            throw new IllegalArgumentException("currentVal does not start with INLIST or !INLIST");
+            throw new IllegalArgumentException(FILENAME + " currentVal does not start with INLIST or !INLIST");
         }
         boolean negation = currentVal.startsWith("!");
         String listName = currentVal.substring(currentVal.indexOf(":")+1);
@@ -76,7 +77,7 @@ public class ProsodyGenericFST extends ProsodyGeneric
             FSTLookup fst = (FSTLookup) listObj;
             contains = fst.lookup(tokenValue).length > 0;
         } else {
-            throw new IllegalArgumentException("Unknown list representation: " + listObj);
+            throw new IllegalArgumentException(FILENAME + " Unknown list representation: " + listObj);
         }
         if (contains && negation || !contains && !negation) return false;
         else return true;

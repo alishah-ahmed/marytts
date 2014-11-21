@@ -46,7 +46,7 @@ import marytts.util.math.Polynomial;
  */
 
 public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology {
-    
+    private static final String FILENAME = "FDPSOLASynthesisTechnology.java:";
     protected VocalizationIntonationReader vIntonationReader;
     protected TimelineReader audioTimeline;
     protected VocalizationUnitFileReader unitFileReader;
@@ -68,7 +68,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
             }
         }
         catch (IOException e) {
-            throw new MaryConfigurationException("Can not read data from files "+e);
+            throw new MaryConfigurationException(FILENAME + " Can not read data from files " + "\tCause: " + e.getCause().getMessage() +e);
         }
     }
 
@@ -94,7 +94,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
         
         int numberOfBackChannels = unitFileReader.getNumberOfUnits();
         if(backchannelNumber >= numberOfBackChannels){
-            throw new IllegalArgumentException("This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+backchannelNumber);
+            throw new IllegalArgumentException(FILENAME + " This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+backchannelNumber);
         }
         
         VocalizationUnit bUnit = unitFileReader.getUnit(backchannelNumber);
@@ -104,7 +104,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
         try {
             frames = audioTimeline.getDatagrams(start, duration);
         } catch (IOException e) {
-            throw new SynthesisException("Can not read data from timeline file "+e);
+            throw new SynthesisException(FILENAME + " Can not read data from timeline file " + "\tCause: " + e.getCause().getMessage() +e);
         } 
         // Generate audio from frames
         LinkedList<Datagram> datagrams = new LinkedList<Datagram>();
@@ -139,12 +139,12 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
     public AudioInputStream synthesizeUsingImposedF0(int sourceIndex, int targetIndex, AudioFileFormat aft) throws SynthesisException{
         
         if ( !f0ContourImposeSupport ) {
-            throw new SynthesisException("Mary configuration of this voice doesn't support intonation contour imposition");
+            throw new SynthesisException(FILENAME + " Mary configuration of this voice doesn't support intonation contour imposition");
         }
         
         int numberOfUnits = unitFileReader.getNumberOfUnits();
         if ( sourceIndex >= numberOfUnits || targetIndex >=  numberOfUnits) {
-            throw new IllegalArgumentException("sourceIndex("+sourceIndex+") and targetIndex("+targetIndex+") are should be less than number of available units ("+numberOfUnits+")");
+            throw new IllegalArgumentException(FILENAME + " sourceIndex("+sourceIndex+") and targetIndex("+targetIndex+") are should be less than number of available units ("+numberOfUnits+")");
         }
         
         if ( sourceIndex == targetIndex ) {
@@ -191,11 +191,11 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
             double[] tScalesArray, AudioFileFormat aft) throws SynthesisException{
         
         if ( backchannelNumber > unitFileReader.getNumberOfUnits() ) {
-            throw new IllegalArgumentException("requesting unit should not be more than number of units");
+            throw new IllegalArgumentException(FILENAME + " requesting unit should not be more than number of units");
         }
         
         if ( !f0ContourImposeSupport ) {
-            throw new SynthesisException("Mary configuration of this voice doesn't support intonation contour imposition");
+            throw new SynthesisException(FILENAME + " Mary configuration of this voice doesn't support intonation contour imposition");
         }
         
         VocalizationUnit bUnit = unitFileReader.getUnit(backchannelNumber);
@@ -205,7 +205,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
         try {
             frames = audioTimeline.getDatagrams(start, duration);
         } catch (IOException e) {
-            throw new SynthesisException("cannot get audio frames from timeline file " + e);
+            throw new SynthesisException(FILENAME + " cannot get audio frames from timeline file " + "\tCause: " + e.getCause().getMessage() + e);
         } 
         assert frames != null : "Cannot generate audio from null frames";
         

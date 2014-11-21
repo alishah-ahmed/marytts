@@ -40,6 +40,8 @@ import marytts.util.MaryUtils;
 
 public class FFRTargetCostFunction implements TargetCostFunction 
 {
+	private static final String FILENAME = "FFRTargetCostFunction.java:";
+	
     protected WeightFunc[] weightFunction;
     protected TargetFeatureComputer targetFeatureComputer;
     protected FeatureVector[] featureVectors;
@@ -156,7 +158,7 @@ public class FFRTargetCostFunction implements TargetCostFunction
     protected double featureCost(Target target, Unit unit, String featureName, FeatureDefinition weights, WeightFunc[] weightFunctions)
     {
         if ( !this.featureDefinition.hasFeature(featureName) ) {
-            throw new IllegalArgumentException("this feature does not exists in feature definition");
+            throw new IllegalArgumentException(FILENAME + " this feature does not exists in feature definition");
         }
         
         FeatureVector targetFeatures = target.getFeatureVector(); 
@@ -251,7 +253,7 @@ public class FFRTargetCostFunction implements TargetCostFunction
             
             FeatureDefinition newWeights = new FeatureDefinition(new BufferedReader(new InputStreamReader(weightsStream, "UTF-8")), true);
             if (!newWeights.featureEquals(featureDefinition)) {
-                throw new IOException("Weights file: feature definition incompatible with feature file");
+                throw new IOException(FILENAME + " Weights file: feature definition incompatible with feature file");
             }
             featureDefinition = newWeights;
         }

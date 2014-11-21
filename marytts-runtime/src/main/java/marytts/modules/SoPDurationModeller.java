@@ -49,7 +49,8 @@ import org.w3c.dom.traversal.TreeWalker;
 
 public class SoPDurationModeller extends InternalModule
 {
-
+  private static final String FILENAME = "SoPDurationModeller.java:";
+	
   private String sopFileName;
   private SoP vowelSop;
   private SoP consonantSop;
@@ -227,7 +228,7 @@ throws Exception
           System.out.format(" = %.3f\n", durInSeconds);
           // TODO: this problem is not solved, it seems it has to do with punctuation (?)
           if(durInSeconds < 0){
-            throw new Exception("Error generating SoP Duration: durInSeconds < 0.0 ");                     
+            throw new Exception(FILENAME + " Error generating SoP Duration: durInSeconds < 0.0 ");                     
           }
           end += durInSeconds;
           int durInMillis = (int) (1000 * durInSeconds);

@@ -72,7 +72,8 @@ import org.w3c.dom.traversal.TreeWalker;
  */
 public class HMMDurationF0Modeller extends InternalModule
 {
-  
+  private static final String FILENAME = "HMMDurationF0Modeller.java:";
+	
   private String hmmVoiceName;
   private Locale locale;
   private FeatureProcessorManager featureProcessorManager;
@@ -407,7 +408,7 @@ public class HMMDurationF0Modeller extends InternalModule
       Arrays.fill(modifiedF0Values, 0.0);
       
       if ( polyValues.length != modifiedF0Values.length ) {
-          throw new RuntimeException("The lengths of two arrays are not same!");
+          throw new RuntimeException(FILENAME + " The lengths of two arrays are not same!");
       }
       
       modifiedF0Values[0] = polyValues[0];

@@ -31,7 +31,8 @@ import marytts.util.data.Datagram;
 
 
 public class MCepDatagram extends Datagram {
-    
+	private static final String FILENAME = "MCepDatagram.java:";
+	
     protected float[] coeffs;
     
     /**
@@ -59,10 +60,10 @@ public class MCepDatagram extends Datagram {
         super(raf.readLong()); // duration
         int len = raf.readInt();
         if ( len < 0 ) {
-            throw new IOException( "Can't create a datagram with a negative data size [" + len + "]." );
+            throw new IOException(FILENAME + " Can't create a datagram with a negative data size [" + len + "]." );
         }
         if (len < 4*order) {
-            throw new IOException("Mel-Cepstrum datagram too short (len="+len
+            throw new IOException(FILENAME + " Mel-Cepstrum datagram too short (len="+len
                     +"): cannot be shorter than the space needed for Mel-Cepstrum coefficients (4*"+order+")");
         }
         // For speed concerns, read into a byte[] first:
@@ -89,10 +90,10 @@ public class MCepDatagram extends Datagram {
         super(bb.getLong()); // duration
         int len = bb.getInt();
         if ( len < 0 ) {
-            throw new IOException( "Can't create a datagram with a negative data size [" + len + "]." );
+            throw new IOException(FILENAME + " Can't create a datagram with a negative data size [" + len + "]." );
         }
         if (len < 4*order) {
-            throw new IOException("Mel-Cepstrum datagram too short (len="+len
+            throw new IOException(FILENAME + " Mel-Cepstrum datagram too short (len="+len
                     +"): cannot be shorter than the space needed for Mel-Cepstrum coefficients (4*"+order+")");
         }
         coeffs = new float[order];

@@ -51,7 +51,8 @@ import marytts.util.data.MaryHeader;
  */
 public class HNMFeatureFileReader 
 {
-
+	private static final String FILENAME = "HNMFeatureFileReader.java:";
+	
     private MaryHeader hdr = null;
     private HntmSpeechSignal[] hnmSignals;
     private int numberOfUnits = 0;
@@ -80,18 +81,18 @@ public class HNMFeatureFileReader
         try {
             dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         } catch ( FileNotFoundException e ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] was not found." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + e.getCause().getMessage() );
         }
 
         // Load the Mary header 
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.LISTENERFEATS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary Units file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary Units file." );
         }
 
         numberOfUnits = dis.readInt(); // Read the number of units
         if ( numberOfUnits < 0 ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] has a negative number of units. Aborting." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] has a negative number of units. Aborting." );
         }
 
         hnmSignals = new HntmSpeechSignal[numberOfUnits];
@@ -119,7 +120,7 @@ public class HNMFeatureFileReader
      */
     public HntmSpeechSignal getHntmSpeechSignal( int unitnumber ) {
         if ( unitnumber >= this.numberOfUnits ) {
-            throw new IllegalArgumentException("the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
+            throw new IllegalArgumentException(FILENAME + " the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
         }
         return this.hnmSignals[unitnumber];
     }

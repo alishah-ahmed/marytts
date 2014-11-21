@@ -44,8 +44,7 @@ import marytts.util.data.audio.DDSAudioInputStream;
 import marytts.util.math.Polynomial;
 
 public class KMeansClusterer {
-
-    private ArrayList<String> baseNames;
+	private ArrayList<String> baseNames;
     Polynomial[] f0Polynomials;
     private int polynomialOrder = 3;
     private int numberOfSamples = 0;

@@ -45,6 +45,7 @@ import org.apache.log4j.Logger;
  * Translates phone names used in HTS-HTK
  */
 public class PhoneTranslator {
+	private static final String FILENAME = "PhoneTranslator.java";
     
     private Logger logger = MaryUtils.getLogger("PhoneTranslator");
     private String contextFeatureFile, trickyPhonesFile;
@@ -125,7 +126,7 @@ public class PhoneTranslator {
         /* append the other context features included in the featureList */
         for (String f : featureList) {
             if (!def.hasFeature(f)) {
-                throw new IllegalArgumentException("Feature '"+f+"' is not known in the feature definition. Valid features are: "+def.getFeatureNames());
+                throw new IllegalArgumentException(FILENAME + " Feature '"+f+"' is not known in the feature definition. Valid features are: "+def.getFeatureNames());
             }
             //String shortF = shortenPfeat(f);
             //contextName.append(shortF);
@@ -159,7 +160,7 @@ public class PhoneTranslator {
         contextName.append("|");
         for (String f : featureList) {
             if (!def.hasFeature(f)) {
-                throw new IllegalArgumentException("Feature '"+f+"' is not known in the feature definition. Valid features are: "+def.getFeatureNames());
+                throw new IllegalArgumentException(FILENAME + " Feature '"+f+"' is not known in the feature definition. Valid features are: "+def.getFeatureNames());
             }
             contextName.append(f);
             contextName.append("=");

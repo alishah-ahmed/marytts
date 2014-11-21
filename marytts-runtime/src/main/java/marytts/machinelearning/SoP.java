@@ -41,7 +41,8 @@ import marytts.unitselection.select.Target;
  *
  */
 public class SoP {
-  
+  private static final String FILENAME = "SoP.java";
+	
   private double coeffs[];     // coefficients of the multiple linear equation
   private String factors[];    // variables in the multiple linear 
   private int factorsIndex[];  // indices in featureDefinition
@@ -84,7 +85,7 @@ public class SoP {
   public void setCoeffsAndFactors(double coeffsVal[], int selectedFactorsIndex[], String allFactorsList[], boolean b0) throws Exception
   {  
     if(featureDefinition == null){
-      throw new Exception("FeatureDefinition not defined in SoP");
+      throw new Exception(FILENAME + " FeatureDefinition not defined in SoP");
     } else {
       interceptTerm = b0;
       int numFactors = selectedFactorsIndex.length;      

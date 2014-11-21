@@ -56,7 +56,8 @@ import org.w3c.dom.traversal.TreeWalker;
  * 
  */
 public class AcousticModeller extends InternalModule {
-
+	private static final String FILENAME = "AcousticModeller.java:";
+	
     // three constructors adapted from DummyAllophones2AcoustParams (used if this is in modules.classes.list):
 
     public AcousticModeller() {
@@ -172,16 +173,16 @@ public class AcousticModeller extends InternalModule {
         // apply critical Models to Elements:
         Model durationModel = voice.getDurationModel();
         if (durationModel == null) {
-            throw new SynthesisException("No duration model available for voice " + voice);
+            throw new SynthesisException(FILENAME + " No duration model available for voice " + voice);
         }
         List<Element> durationElements = elementLists.get(durationModel.getApplyTo());
         if (durationElements == null) {
-            throw new SynthesisException("Could not determine to which Elements to apply duration model!");
+            throw new SynthesisException(FILENAME + " Could not determine to which Elements to apply duration model!");
         }
         try {
             durationModel.applyTo(durationElements); // Note that this assumes that Elements always predict their own duration!
         } catch (MaryConfigurationException e) {
-            throw new SynthesisException("Duration model could not be applied", e);
+            throw new SynthesisException(FILENAME + " Duration model could not be applied" + "\tCause:" + e.getCause().getMessage(), e);
         }
 
         // hack duration attributes:
@@ -198,31 +199,31 @@ public class AcousticModeller extends InternalModule {
          */
         Model f0Model = voice.getF0Model();
         if (f0Model == null) {
-            throw new SynthesisException("No F0 model available for voice " + voice);
+            throw new SynthesisException(FILENAME + " No F0 model available for voice " + voice);
         }
         try {
             List<Element> predictFromElements = elementLists.get(f0Model.getPredictFrom());
             List<Element> applyToElements = elementLists.get(f0Model.getApplyTo());
             if (predictFromElements == null || applyToElements == null) {
-                throw new SynthesisException("Could not determine to which Elements to apply F0 model!");
+                throw new SynthesisException(FILENAME + " Could not determine to which Elements to apply F0 model!");
             }
             f0Model.applyFromTo(predictFromElements, applyToElements);
         } catch (MaryConfigurationException e) {
-            throw new SynthesisException("Could not apply F0 model", e);
+            throw new SynthesisException(FILENAME + " Could not apply F0 model" + "\tCause:" + e.getCause().getMessage(), e);
         }
 
         Model boundaryModel = voice.getBoundaryModel();
         if (boundaryModel == null) {
-            throw new SynthesisException("No boundary model available for voice " + voice);
+            throw new SynthesisException(FILENAME + " No boundary model available for voice " + voice);
         }
         try {
             List<Element> boundaryElements = elementLists.get(boundaryModel.getApplyTo());
             if (boundaryElements == null) {
-                throw new SynthesisException("Could not determine to which Elements to apply boundary model!");
+                throw new SynthesisException(FILENAME + " Could not determine to which Elements to apply boundary model!");
             }
             voice.getBoundaryModel().applyTo(boundaryElements);
         } catch (MaryConfigurationException e) {
-            throw new SynthesisException("Could not apply boundary model", e);
+            throw new SynthesisException(FILENAME + " Could not apply boundary model" + "\tCause:" + e.getCause().getMessage(), e);
         }
 
         // apply other Models, if applicable:
@@ -242,7 +243,7 @@ public class AcousticModeller extends InternalModule {
                     // remember, the Model constructor will predict from, and apply the model to, "segments" by default
                     model.applyFromTo(predictFromElements, applyToElements);
                 } catch (MaryConfigurationException e) {
-                    throw new SynthesisException("Could not apply model '" + modelName + "'", e);
+                    throw new SynthesisException("Could not apply model '" + modelName + "'" + "\tCause:" + e.getCause().getMessage(), e);
                 }
             }
         }
@@ -307,7 +308,7 @@ public class AcousticModeller extends InternalModule {
         try {
             treeWalker = MaryDomUtils.createTreeWalker(doc, MaryXML.SYLLABLE, MaryXML.BOUNDARY);
         } catch (DOMException e) {
-            throw new SynthesisException("Could not parse XML Document", e);
+            throw new SynthesisException(FILENAME + " Could not parse XML Document" + "\tCause:" + e.getCause().getMessage(), e);
         }
         Node node;
         while ((node = treeWalker.nextNode()) != null) {
@@ -328,7 +329,7 @@ public class AcousticModeller extends InternalModule {
             try {
                 allophoneSet = MaryRuntimeUtils.determineAllophoneSet(element);
             } catch (MaryConfigurationException e) {
-                throw new SynthesisException("Could not determine AllophoneSet", e);
+                throw new SynthesisException("Could not determine AllophoneSet" + "\tCause:" + e.getCause().getMessage(), e);
             }
             assert allophoneSet != null;
 
@@ -349,13 +350,13 @@ public class AcousticModeller extends InternalModule {
                 // get "p" attribute...
                 String phone = UnitSelector.getPhoneSymbol(segment);
                 if (phone.length() == 0) {
-                    throw new SynthesisException("No phone found for segment " + segment);
+                    throw new SynthesisException(FILENAME + " No phone found for segment " + segment);
                 }
 
                 // ...and get the corresponding allophone, which knows about its phonological features:
                 Allophone allophone = allophoneSet.getAllophone(phone);
                 if (allophone == null) {
-                    throw new SynthesisException("No Allophone found for phone '" + phone + "'");
+                    throw new SynthesisException(FILENAME + " No Allophone found for phone '" + phone + "'");
                 }
 
                 if (allophone.isVoiced()) { // all and only voiced segments are potential F0 anchors

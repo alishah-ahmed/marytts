@@ -66,7 +66,8 @@ import org.w3c.dom.traversal.TreeWalker;
  */
 public class PronunciationModel extends InternalModule
 {
-
+	private static final String FILENAME = "PronounciationModel.java:";
+	
 	// for prediction, core of the model - maps phones to decision trees
 	private Map<String, StringPredictionTree> treeMap;
 	  
@@ -359,9 +360,9 @@ public class PronunciationModel extends InternalModule
     
     protected void updatePhAttributesFromPhElements(Element token)
     {
-        if (token == null) throw new NullPointerException("Got null token");
+        if (token == null) throw new NullPointerException(FILENAME + " Got null token");
         if (!token.getTagName().equals(MaryXML.TOKEN)) {
-            throw new IllegalArgumentException("Argument should be a <"+MaryXML.TOKEN+">, not a <"+token.getTagName()+">");
+            throw new IllegalArgumentException(FILENAME + " Argument should be a <"+MaryXML.TOKEN+">, not a <"+token.getTagName()+">");
         }
         StringBuilder tPh = new StringBuilder();
         TreeWalker sylWalker = MaryDomUtils.createTreeWalker(token, MaryXML.SYLLABLE);

@@ -118,6 +118,8 @@ import org.w3c.dom.traversal.NodeIterator;
  */
 public class HTSEngine extends InternalModule
 {
+	private static final String FILENAME = "HTSEngine.java:";
+	
     private Logger loggerHts = MaryUtils.getLogger("HTSEngine");
     private String realisedDurations;  // HMM realised duration to be save in a file
     private boolean phoneAlignmentForDurations;
@@ -523,7 +525,7 @@ public class HTSEngine extends InternalModule
       
       if(phoneAlignmentForDurations && alignDur != null)
         if( um.getNumUttModel() != alignDurSize )
-            throw new Exception("The number of durations provided for phone alignment (" + alignDurSize +
+            throw new Exception(FILENAME + " The number of durations provided for phone alignment (" + alignDurSize +
                     ") is greater than the number of feature vectors (" + um.getNumUttModel() + ")."); 
 
       for(i=0; i<um.getNumUttModel(); i++){

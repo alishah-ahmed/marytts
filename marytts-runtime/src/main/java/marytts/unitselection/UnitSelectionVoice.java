@@ -67,7 +67,8 @@ import marytts.unitselection.select.UnitSelector;
  * 
  */
 public class UnitSelectionVoice extends Voice { 
-
+	private static final String FILENAME = "UnitSelectionVoice.java:";
+	
     protected UnitDatabase database;
     protected UnitSelector unitSelector;
     protected UnitConcatenator concatenator;
@@ -100,7 +101,7 @@ public class UnitSelectionVoice extends Voice {
             
             FeatureProcessorManager featProcManager = FeatureRegistry.getFeatureProcessorManager(this);
             if (featProcManager == null) featProcManager = FeatureRegistry.getFeatureProcessorManager(getLocale());
-            if (featProcManager == null) throw new MaryConfigurationException("No feature processor manager for voice '"+name+"' (locale "+getLocale()+")");
+            if (featProcManager == null) throw new MaryConfigurationException(FILENAME + " No feature processor manager for voice '"+name+"' (locale "+getLocale()+")");
             
             // build and load targetCostFunction
             logger.debug("...loading target cost function...");
@@ -214,7 +215,7 @@ public class UnitSelectionVoice extends Voice {
         } catch (MaryConfigurationException mce) {
             throw mce;
         } catch (Exception ex) {
-            throw new MaryConfigurationException("Cannot build unit selection voice '"+name+"'", ex);
+            throw new MaryConfigurationException(FILENAME + " Cannot build unit selection voice '"+name+"'" + "\tCause: " + ex.getCause().getMessage(), ex);
         }
         
     }

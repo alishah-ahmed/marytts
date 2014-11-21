@@ -75,6 +75,7 @@ import org.apache.log4j.PropertyConfigurator;
  */
 
 public class Mary {
+	private static final String FILENAME = "Mary.java:";
     public static final int STATE_OFF = 0;
     public static final int STATE_STARTING = 1;
     public static final int STATE_RUNNING = 2;
@@ -147,7 +148,7 @@ public class Mary {
                 try {
                     m.startup();
                 } catch (Throwable t) {
-                    throw new Exception("Problem starting module "+ m.name(), t);
+                    throw new Exception(FILENAME + " Problem starting module "+ m.name() + "\tCause: " + t.getCause().getMessage(), t);
                 }
                 long after = System.currentTimeMillis();
                 startupTimes.add(new Pair<MaryModule, Long>(m, after-before));
@@ -185,7 +186,7 @@ public class Mary {
                     FeatureRegistry.setFallbackFeatureProcessorManager(mgr);
                 }
             } catch (Throwable t) {
-                throw new Exception("Cannot instantiate feature processor manager '"+fpmInitInfo+"'", t);
+                throw new Exception(FILENAME + " Cannot instantiate feature processor manager '"+fpmInitInfo+"'" + "\tCause: " + t.getCause().getMessage(), t);
             }
         }
     }
@@ -217,7 +218,7 @@ public class Mary {
      */
     public static void startup(boolean addJarsToClasspath) throws Exception
     {
-        if (currentState != STATE_OFF) throw new IllegalStateException("Cannot start system: it is not offline");
+        if (currentState != STATE_OFF) throw new IllegalStateException(FILENAME + " Cannot start system: it is not offline");
         currentState = STATE_STARTING;
 
         if (addJarsToClasspath) {
@@ -381,7 +382,7 @@ public class Mary {
      */
     public static void shutdown()
     {
-        if (currentState != STATE_RUNNING) throw new IllegalStateException("MARY system is not running");
+        if (currentState != STATE_RUNNING) throw new IllegalStateException(FILENAME + " MARY system is not running");
         currentState = STATE_SHUTTING_DOWN;
         logger.info("Shutting down modules...");
         // Shut down modules:
@@ -426,7 +427,7 @@ public class Mary {
             String style, String effects, String outputTypeParams, OutputStream output)
     throws Exception
     {
-        if (currentState != STATE_RUNNING) throw new IllegalStateException("MARY system is not running");
+        if (currentState != STATE_RUNNING) throw new IllegalStateException(FILENAME + " MARY system is not running");
         
         MaryDataType inputType = MaryDataType.get(inputTypeName);
         MaryDataType outputType = MaryDataType.get(outputTypeName);
@@ -535,7 +536,7 @@ public class Mary {
                                 MaryProperties.getProperty("output.type.params", null),
                                 System.out);
         			} catch (Exception e) {
-        				throw new RuntimeException(e);
+        				throw new RuntimeException(FILENAME  + "\tCause: " + e.getCause().getMessage(), e);
         			}
         		}
         	};

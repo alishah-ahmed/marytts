@@ -50,7 +50,8 @@ import marytts.util.data.MaryHeader;
  */
 public class VocalizationIntonationReader 
 {
-
+	private static final String FILENAME = "VocalizationIntonationReader.java:";
+	
     private MaryHeader hdr = null;
     private int numberOfUnits = 0;
     private double windowSize = 0.0;
@@ -88,31 +89,31 @@ public class VocalizationIntonationReader
             dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         }
         catch ( FileNotFoundException e ) {
-            throw new RuntimeException( "File [" + fileName + "] was not found." );
+            throw new RuntimeException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + e.getCause().getMessage());
         }
         
         try {
             /* Load the Mary header */
             hdr = new MaryHeader( dis );
             if ( hdr.getType() != MaryHeader.LISTENERFEATS ) {
-                throw new RuntimeException( "File [" + fileName + "] is not a valid Mary Units file." );
+                throw new RuntimeException(FILENAME + " File [" + fileName + "] is not a valid Mary Units file." );
             }
             
             windowSize = dis.readFloat();
             
             if ( this.windowSize <= 0 ) {
-                throw new RuntimeException( "File [" + fileName + "] has a negative number for window size. Aborting." );
+                throw new RuntimeException(FILENAME + " File [" + fileName + "] has a negative number for window size. Aborting." );
             }
             
             skipSize = dis.readFloat();
             if ( this.skipSize <= 0 ) {
-                throw new RuntimeException( "File [" + fileName + "] has a negative number for window size. Aborting." );
+                throw new RuntimeException(FILENAME + " File [" + fileName + "] has a negative number for window size. Aborting." );
             }
             
             /* Read the number of units */
             numberOfUnits = dis.readInt();
             if ( numberOfUnits < 0 ) {
-                throw new RuntimeException( "File [" + fileName + "] has a negative number of units. Aborting." );
+                throw new RuntimeException(FILENAME + " File [" + fileName + "] has a negative number of units. Aborting." );
             }
             
             contours = new double[numberOfUnits][];
@@ -142,7 +143,7 @@ public class VocalizationIntonationReader
                 }
             }
         } catch ( IOException e ) {
-            throw new RuntimeException( "Reading the Mary header from file [" + fileName + "] failed.", e );
+            throw new RuntimeException(FILENAME + " Reading the Mary header from file [" + fileName + "] failed." + "\tCause: " + e.getCause().getMessage(), e );
         }
         
     }

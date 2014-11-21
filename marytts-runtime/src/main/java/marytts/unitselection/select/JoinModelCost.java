@@ -40,6 +40,8 @@ import marytts.unitselection.data.Unit;
 
 public class JoinModelCost implements JoinCostFunction
 {
+	private static final String FILENAME = "JoinModelCost.java:";
+	
     protected int nCostComputations = 0;
     
     /****************/
@@ -85,7 +87,7 @@ public class JoinModelCost implements JoinCostFunction
             String trickyPhonesFileName = MaryProperties.needFilename(configPrefix + ".trickyPhonesFile");
             load(joinFileName, joinPdfStream, joinTreeStream, trickyPhonesFileName);
         } catch (IOException ioe) {
-            throw new MaryConfigurationException("Problem loading join file", ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem loading join file" + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
     }
     
@@ -93,7 +95,7 @@ public class JoinModelCost implements JoinCostFunction
     @Deprecated
     public void load(String a, InputStream b, String c, float d)
     {
-        throw new RuntimeException("Do not use load() -- use init()");
+        throw new RuntimeException(FILENAME + " Do not use load() -- use init()");
     }
     
     
@@ -122,7 +124,7 @@ public class JoinModelCost implements JoinCostFunction
             joinTree = htsReader.load(numStates, joinTreeStream, joinPdfStream, PdfFileFormat.join, featureDef, phTranslator);
             
         } catch (Exception e) {
-            IOException ioe = new IOException("Cannot load join model trees");
+            IOException ioe = new IOException(FILENAME + " Cannot load join model trees" + "\tCause: " + e.getCause().getMessage());
             ioe.initCause(e);
             throw ioe;
         }

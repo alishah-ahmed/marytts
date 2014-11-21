@@ -50,6 +50,8 @@ import com.sun.speech.freetts.util.BulkTimer;
  * collection of data, such as the lexicon, and some reference values.
  */
 public class DummyFreeTTSVoice extends com.sun.speech.freetts.Voice {
+	private static final String FILENAME = "DummyFreeTTSVoice.java:";
+	
     protected marytts.modules.synthesis.Voice maryVoice;
     protected boolean useBinaryIO = System.getProperty("com.sun.speech.freetts.useBinaryIO", "true").equals("true");
     /**
@@ -98,11 +100,11 @@ public class DummyFreeTTSVoice extends com.sun.speech.freetts.Voice {
                 Lexicon lex = (Lexicon)Class.forName(lexiconClassName).newInstance();
                 setLexicon(lex);
             } catch (IllegalAccessException iae) {
-                throw new RuntimeException("Illegal access trying to instantiate "+lexiconClassName);
+                throw new RuntimeException(FILENAME + " Illegal access trying to instantiate "+lexiconClassName + "\tCause: " + iae.getCause().getMessage());
             } catch (ClassNotFoundException iae) {
-                throw new RuntimeException("Class not found trying to instantiate "+lexiconClassName);
+                throw new RuntimeException(FILENAME + " Class not found trying to instantiate "+lexiconClassName + "\tCause: " + iae.getCause().getMessage());
             } catch (InstantiationException iae) {
-                throw new RuntimeException("Instantiation exception trying to instantiate "+lexiconClassName);
+                throw new RuntimeException(FILENAME + " Instantiation exception trying to instantiate "+lexiconClassName + "\tCause: " + iae.getCause().getMessage());
             }
         }
         setRate(135f);
@@ -159,7 +161,7 @@ public class DummyFreeTTSVoice extends com.sun.speech.freetts.Voice {
         try {
         lexicon.load();
         } catch (IOException ioe) {
-        throw new Error("Can't load voice", ioe);
+        throw new Error("Can't load voice" + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
     }
 

@@ -48,7 +48,8 @@ import marytts.util.data.MaryHeader;
  */
 public class MLSAFeatureFileReader 
 {
-
+	private static final String FILENAME = "MLSAFeatureFileReader.java:";
+	
     private MaryHeader hdr = null;
 
     private int numberOfUnits;
@@ -86,18 +87,18 @@ public class MLSAFeatureFileReader
         try {
             dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         } catch ( FileNotFoundException e ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] was not found." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + e.getCause().getMessage() );
         }
 
         // Load the Mary header 
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.LISTENERFEATS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary Units file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary Units file." );
         }
 
         numberOfUnits = dis.readInt(); // Read the number of units
         if ( numberOfUnits < 0 ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] has a negative number of units. Aborting." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] has a negative number of units. Aborting." );
         }
 
         LF0VECTORSIZE = dis.readInt(); // Read  LF0 vector size
@@ -105,7 +106,7 @@ public class MLSAFeatureFileReader
         STRVECTORSIZE = dis.readInt(); // Read  STR vector size
 
         if ( LF0VECTORSIZE != 1 || MGCVECTORSIZE <= 0 || STRVECTORSIZE <= 0 ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] has no proper feature vector size information... Aborting." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] has no proper feature vector size information... Aborting." );
         }
 
         logf0 = new double[numberOfUnits][];
@@ -171,7 +172,7 @@ public class MLSAFeatureFileReader
      */
     public boolean[] getVoicedFrames( int unitnumber ) {
         if ( unitnumber >= this.numberOfUnits ) {
-            throw new IllegalArgumentException("the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
+            throw new IllegalArgumentException(FILENAME + " the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
         }
         return this.voiced[unitnumber];
     }
@@ -184,7 +185,7 @@ public class MLSAFeatureFileReader
      */
     public double[] getUnitLF0( int unitnumber ) {
         if ( unitnumber >= this.numberOfUnits ) {
-            throw new IllegalArgumentException("the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
+            throw new IllegalArgumentException(FILENAME + " the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
         }
         return this.logf0[unitnumber];
     }
@@ -197,7 +198,7 @@ public class MLSAFeatureFileReader
      */
     public double[][] getUnitMGCs( int unitnumber ) {
         if ( unitnumber >= this.numberOfUnits ) {
-            throw new IllegalArgumentException("the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
+            throw new IllegalArgumentException(FILENAME + " the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
         }
         return this.mgc[unitnumber];
     }
@@ -210,7 +211,7 @@ public class MLSAFeatureFileReader
      */
     public double[][] getUnitStrengths( int unitnumber ) {
         if ( unitnumber >= this.numberOfUnits ) {
-            throw new IllegalArgumentException("the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
+            throw new IllegalArgumentException(FILENAME + " the given unit index number("+unitnumber+") must be less than number of available units("+this.numberOfUnits+")");
         }
         return this.strengths[unitnumber];
     }

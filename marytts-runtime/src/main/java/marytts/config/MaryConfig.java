@@ -45,6 +45,8 @@ import marytts.util.io.PropertiesTrimTrailingWhitespace;
  *
  */
 public abstract class MaryConfig {
+	private static final String FILENAME = "MaryConfig.java:";
+	
 	private static final ServiceLoader<MaryConfig> configLoader = ServiceLoader.load(MaryConfig.class);
 	
 	/**
@@ -187,7 +189,7 @@ public abstract class MaryConfig {
 		try {
 			props.load(propertyStream);
 		} catch (Exception e) {
-			throw new MaryConfigurationException("cannot load properties", e);
+			throw new MaryConfigurationException(FILENAME + " cannot load properties" + "\tCause: " + e.getCause().getMessage(), e);
 		}
 	}
 	

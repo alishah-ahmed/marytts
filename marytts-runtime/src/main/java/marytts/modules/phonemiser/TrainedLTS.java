@@ -43,6 +43,7 @@ import marytts.features.FeatureVector;
  *
  */
 public class TrainedLTS {
+	public static final String FILENAME = "TrainedLTS.java:";
     public static final String PREDICTED_STRING_FEATURENAME="predicted-string";
     
     private CART tree;
@@ -92,7 +93,7 @@ public class TrainedLTS {
         this.featureDefinition = tree.getFeatureDefinition();
         this.indexPredictedFeature = featureDefinition.getFeatureIndex(PREDICTED_STRING_FEATURENAME);
         Properties props = tree.getProperties();
-        if (props == null) throw new IllegalArgumentException("Prediction tree does not contain properties");
+        if (props == null) throw new IllegalArgumentException(FILENAME + " Prediction tree does not contain properties");
         convertToLowercase = Boolean.parseBoolean(props.getProperty("lowercase"));
         context = Integer.parseInt(props.getProperty("context"));
     }
@@ -112,7 +113,7 @@ public class TrainedLTS {
         this.indexPredictedFeature = featureDefinition.getFeatureIndex(PREDICTED_STRING_FEATURENAME);
         this.convertToLowercase = false;
         Properties props = tree.getProperties();
-        if (props == null) throw new IllegalArgumentException("Prediction tree does not contain properties");
+        if (props == null) throw new IllegalArgumentException(FILENAME + " Prediction tree does not contain properties");
         convertToLowercase = Boolean.parseBoolean(props.getProperty("lowercase"));
         context = Integer.parseInt(props.getProperty("context"));
     }

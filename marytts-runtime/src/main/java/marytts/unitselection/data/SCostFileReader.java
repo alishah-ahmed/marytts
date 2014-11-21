@@ -49,6 +49,7 @@ import marytts.util.data.MaryHeader;
  */
 public class SCostFileReader
 {
+	private static final String FILENAME = "SCostFileReader.java:";
 
     private MaryHeader hdr = null;
     private int numberOfUnits = 0;
@@ -89,18 +90,18 @@ public class SCostFileReader
             dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         }
         catch ( FileNotFoundException e ) {
-            throw new RuntimeException( "File [" + fileName + "] was not found." );
+            throw new RuntimeException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + e.getCause().getMessage() );
         }
         try {
             /* Load the Mary header */
             hdr = new MaryHeader( dis );
             if ( hdr.getType() != MaryHeader.SCOST ) {
-                throw new RuntimeException( "File [" + fileName + "] is not a valid Mary Units file." );
+                throw new RuntimeException(FILENAME + " File [" + fileName + "] is not a valid Mary Units file." );
             }
             /* Read the number of units */
             numberOfUnits = dis.readInt();
             if ( numberOfUnits < 0 ) {
-                throw new RuntimeException( "File [" + fileName + "] has a negative number of units. Aborting." );
+                throw new RuntimeException(FILENAME + " File [" + fileName + "] has a negative number of units. Aborting." );
             }
             
             sCost = new double[numberOfUnits];
@@ -110,7 +111,7 @@ public class SCostFileReader
             }
         }
         catch ( IOException e ) {
-            throw new RuntimeException( "Reading the Mary header from file [" + fileName + "] failed.", e );
+            throw new RuntimeException(FILENAME + " Reading the Mary header from file [" + fileName + "] failed." + "\tCause: " + e.getCause().getMessage(), e );
         }
         
     }

@@ -38,6 +38,8 @@ import marytts.server.MaryProperties;
  */
 public class MaryCache
 {
+	private static final String FILENAME = "MaryCache.java:";
+	
     private static MaryCache maryCache;
     
     /**
@@ -137,7 +139,7 @@ public class MaryCache
         Statement st = connection.createStatement();
         int ok = st.executeUpdate(query);
         if (ok == -1) {
-            throw new SQLException("DB problem with query: "+query);
+            throw new SQLException(FILENAME + " DB problem with query: "+query);
         }
         st.close();
     }
@@ -179,7 +181,7 @@ public class MaryCache
     throws SQLException
     {
         if (inputtype == null || outputtype == null || locale == null || voice == null || inputtext == null || outputtext == null) {
-            throw new NullPointerException("Null argument");
+            throw new NullPointerException(FILENAME + " Null argument");
         }
         // Need to verify, here in the synchronized code, once again that really we don't have this entry already.
         // If we do, we ignore this call.
@@ -233,7 +235,7 @@ public class MaryCache
     throws SQLException
     {
         if (inputtype == null || locale == null || voice == null || inputtext == null) {
-            throw new NullPointerException("Null argument");
+            throw new NullPointerException(FILENAME + " Null argument");
         }
         // Need to verify, here in the synchronized code, once again that really we don't have this entry already.
         // If we do, we ignore this call.
@@ -286,7 +288,7 @@ public class MaryCache
     throws SQLException
     {
         if (inputtype == null || outputtype == null || locale == null || voice == null || inputtext == null) {
-            throw new NullPointerException("Null argument");
+            throw new NullPointerException(FILENAME + " Null argument");
         }
         String outputtext = null;
         String query = "SELECT outputtext FROM marycache WHERE inputtype = '"+inputtype
@@ -341,7 +343,7 @@ public class MaryCache
     throws SQLException
     {
         if (inputtype == null || locale == null || voice == null || inputtext == null) {
-            throw new NullPointerException("Null argument");
+            throw new NullPointerException(FILENAME + " Null argument");
         }
         byte[] audio = null;
         String query = "Select outputaudio FROM marycache WHERE inputtype = '"+inputtype

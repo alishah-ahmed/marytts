@@ -47,6 +47,8 @@ import com.twmacinta.util.MD5;
  *
  */
 public class CreateComponentXML {
+	private static final String FILENAME = "CreateComponentXML.java:";
+	
     public static final String PROPERTY_XML_FOLDER = "mary.componentXML.folder";
     public static final String PROPERTY_XML_OUTPUTFILE = "mary.componentXML.outputfile";
 
@@ -110,7 +112,7 @@ public class CreateComponentXML {
             haveCustomXMLFolder = true;
             File custom = new File(customXMLFolder);
             if (!custom.isDirectory()) {
-                throw new FileNotFoundException("Custom XML folder '"+customXMLFolder+"' was specified in system properties but does not exist!");
+                throw new FileNotFoundException(FILENAME + " Custom XML folder '"+customXMLFolder+"' was specified in system properties but does not exist!");
             }
             xmlFolders.add(custom);
         } else {
@@ -129,10 +131,10 @@ public class CreateComponentXML {
         for (String a : args) {
             File f = new File(a);
             if (!f.canRead()) {
-                throw new FileNotFoundException("Cannot read file: "+a);
+                throw new FileNotFoundException(FILENAME + " Cannot read file: "+a);
             }
             if (!f.getName().startsWith("mary-") || !f.getName().endsWith(".zip")) {
-                throw new IllegalArgumentException("File '"+f.getName()+" doesn't follow convention 'mary-(name)-(version).zip'");
+                throw new IllegalArgumentException(FILENAME + " File '"+f.getName()+" doesn't follow convention 'mary-(name)-(version).zip'");
             }
             zips.add(f);
             if (!haveCustomXMLFolder) {

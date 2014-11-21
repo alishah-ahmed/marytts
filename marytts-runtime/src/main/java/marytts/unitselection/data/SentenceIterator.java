@@ -31,7 +31,8 @@ import marytts.features.FeatureVector;
  * @author marc
  */
 public class SentenceIterator implements Iterator<Sentence> {
-
+	private static final String FILENAME = "SentenceIterator.java:";
+	
     private final FeatureFileReader features;
     private final int fiSentenceStart;
     private final int fiSentenceEnd;
@@ -81,7 +82,7 @@ public class SentenceIterator implements Iterator<Sentence> {
         }
         if (nextSentence == null) {
             // no more sentences
-            throw new NoSuchElementException("no more sentences!");
+            throw new NoSuchElementException(FILENAME + " no more sentences!");
         }
         Sentence retval = nextSentence;
         nextSentence = null;
@@ -89,7 +90,7 @@ public class SentenceIterator implements Iterator<Sentence> {
     }
 
     public void remove() {
-        throw new UnsupportedOperationException("This iterator cannot remove sentences");
+        throw new UnsupportedOperationException(FILENAME + " This iterator cannot remove sentences");
     }
 
     /**

@@ -70,7 +70,8 @@ import com.google.gson.JsonObject;
  *
  */
 public class MaryRuntimeUtils {
-
+	private static final String FILENAME = "MaryRuntimeUtils.java:";		
+	
 	public static void ensureMaryStarted() throws Exception {
 		synchronized (MaryConfig.getMainConfig()) {
 			if (Mary.currentState() == Mary.STATE_OFF) {
@@ -136,7 +137,7 @@ public class MaryRuntimeUtils {
 	        }
 	    } catch (Exception e) {
 	    	// try to make e's message more informative if possible
-	    	throw new MaryConfigurationException("Cannot instantiate object from '"+objectInitInfo+"': "+MaryUtils.getFirstMeaningfulMessage(e), e);
+	    	throw new MaryConfigurationException(FILENAME + "Cannot instantiate object from '"+objectInitInfo+"': "+MaryUtils.getFirstMeaningfulMessage(e) + "\tCause: " + e.getCause().getMessage(), e);
 	    }
         return obj;
     }
@@ -329,7 +330,7 @@ public class MaryRuntimeUtils {
     throws MaryConfigurationException {
     	String propertyValue = MaryProperties.getProperty(propertyName);
     	if (propertyValue == null) {
-    		throw new MaryConfigurationException("No such property: "+propertyName);
+    		throw new MaryConfigurationException(FILENAME + " No such property: "+propertyName);
     	}
     	if (AllophoneSet.hasAllophoneSet(propertyValue)) {
     		return AllophoneSet.getAllophoneSetById(propertyValue);
@@ -338,7 +339,7 @@ public class MaryRuntimeUtils {
     	try {
     		alloStream = MaryProperties.needStream(propertyName);
     	} catch (FileNotFoundException e) {
-    		throw new MaryConfigurationException("Cannot open allophone stream for property "+propertyName, e);
+    		throw new MaryConfigurationException(FILENAME + " Cannot open allophone stream for property "+propertyName + "\tCause: " + e.getCause().getMessage(), e);
     	}
     	assert alloStream != null;
     	return AllophoneSet.getAllophoneSet(alloStream, propertyValue);

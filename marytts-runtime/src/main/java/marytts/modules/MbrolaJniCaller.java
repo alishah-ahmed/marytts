@@ -39,6 +39,8 @@ import marytts.util.data.audio.AudioDestination;
  */
 
 public class MbrolaJniCaller extends MbrolaCaller {
+	private static final String FILENAME = "MbrolaJniCaller.java:";
+	
     /* Return true on success, false on failure: */
     private native boolean mbrolaStartup();
     private native void mbrolaShutdown();
@@ -103,7 +105,7 @@ public class MbrolaJniCaller extends MbrolaCaller {
         currentlyLoadedVoice = null;
         String errMsg = "Mbrola error " + mbrolaLastError();
         mbrolaReset();
-        throw new IOException(errMsg);
+        throw new IOException(FILENAME + " " + errMsg);
 
     }
 
@@ -116,7 +118,7 @@ public class MbrolaJniCaller extends MbrolaCaller {
      */
     public synchronized AudioInputStream synthesiseOneSection(String mbrolaMarkup, Voice voice) throws IOException {
         if (mbrolaMarkup == null || voice == null) {
-            throw new IllegalArgumentException("Received null argument.");
+            throw new IllegalArgumentException(FILENAME + " Received null argument.");
         }
         audioDestination = MaryRuntimeUtils.createAudioDestination();
         logger.debug("Keeping audio data in " + (audioDestination.isInRam() ? "RAM" : " a temp file"));

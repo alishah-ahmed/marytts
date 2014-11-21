@@ -40,6 +40,8 @@ import marytts.tools.install.ComponentDescription.Status;
  */
 public class ProgressPanel extends javax.swing.JPanel implements Runnable, Observer
 {
+	private static final String FILENAME = "ProgressPanel.java:";
+	
     private List<ComponentDescription> allComponents;
     private ComponentDescription currentComponent = null;
     private boolean install;
@@ -258,7 +260,7 @@ public class ProgressPanel extends javax.swing.JPanel implements Runnable, Obser
 
     public void update(Observable o, Object arg) {
         if (o != currentComponent) {
-            throw new IllegalStateException("We are observing "+o+" but the currentComponent is "+currentComponent);
+            throw new IllegalStateException(FILENAME + " We are observing "+o+" but the currentComponent is "+currentComponent);
         }
         verifyCurrentComponentDisplay();
     }

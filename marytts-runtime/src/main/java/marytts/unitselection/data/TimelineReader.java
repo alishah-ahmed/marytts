@@ -63,6 +63,8 @@ import marytts.util.io.StreamUtils;
  */
 public class TimelineReader 
 {
+	private static final String FILENAME = "TimelineReader.java:";
+	
     protected MaryHeader maryHdr = null;   // The standard Mary header
     protected ProcHeader procHdr = null;   // The processing info header
     
@@ -120,12 +122,12 @@ public class TimelineReader
     public TimelineReader( String fileName, boolean tryMemoryMapping ) throws MaryConfigurationException
     {
         if (fileName == null) {
-            throw new NullPointerException("Filename is null");
+            throw new NullPointerException(FILENAME + " Filename is null");
         }
         try {
             load(fileName, tryMemoryMapping);
         } catch (Exception e) {
-            throw new MaryConfigurationException("Cannot load timeline file from "+fileName, e);
+            throw new MaryConfigurationException(FILENAME + " Cannot load timeline file from "+fileName + "\tCause: " + e.getCause().getMessage(), e);
         }
     }
     
@@ -173,7 +175,7 @@ public class TimelineReader
         
         maryHdr = new MaryHeader(headerBB);
         if ( maryHdr.getType() != MaryHeader.TIMELINE ) {
-            throw new MaryConfigurationException( "File is not a valid timeline file." );
+            throw new MaryConfigurationException(FILENAME + " File is not a valid timeline file." );
         }
         /* Load the processing info header */
         procHdr = new ProcHeader(headerBB);
@@ -182,14 +184,14 @@ public class TimelineReader
         sampleRate = headerBB.getInt();
         numDatagrams = headerBB.getLong();
         if (sampleRate <= 0 || numDatagrams < 0) {
-            throw new MaryConfigurationException("Illegal values in timeline file.");
+            throw new MaryConfigurationException(FILENAME + " Illegal values in timeline file.");
         }
         
         /* Load the positions of the various subsequent components */
         datagramsBytePos = (int) headerBB.getLong();
         timeIdxBytePos = (int) headerBB.getLong();
         if (timeIdxBytePos < datagramsBytePos) {
-            throw new MaryConfigurationException("File seems corrupt: index is expected after data, not before");
+            throw new MaryConfigurationException(FILENAME + " File seems corrupt: index is expected after data, not before");
         }
         
         /* Go fetch the time index at the end of the file */
@@ -304,10 +306,10 @@ public class TimelineReader
                 }
             }
         } catch (Exception e) {
-            throw new MaryConfigurationException("Could not compute total duration", e);
+            throw new MaryConfigurationException(FILENAME + " Could not compute total duration" + "\tCause: " + e.getCause().getMessage(), e);
         }
         if (!haveReadAll) {
-            throw new MaryConfigurationException("Could not read all datagrams to compute total duration");
+            throw new MaryConfigurationException(FILENAME + " Could not read all datagrams to compute total duration");
         }
         totalDuration = time;
     }
@@ -367,7 +369,7 @@ public class TimelineReader
         long datagramDuration = bb.getLong();
         int datagramSize = bb.getInt();
         if (bb.position()+datagramSize > bb.limit()) {
-            throw new IOException("cannot skip datagram: it is not fully contained in byte buffer");
+            throw new IOException(FILENAME + " cannot skip datagram: it is not fully contained in byte buffer");
         }
         bb.position(bb.position() + datagramSize);
         return datagramDuration;
@@ -602,10 +604,10 @@ public class TimelineReader
     throws IllegalArgumentException, IOException {
         /* Check the input arguments */
         if ( targetTimeInSamples < 0 ) {
-            throw new IllegalArgumentException( "Can't get a datagram from a negative time position (given time position was [" + targetTimeInSamples + "])." );
+            throw new IllegalArgumentException(FILENAME + " Can't get a datagram from a negative time position (given time position was [" + targetTimeInSamples + "])." );
         }
         if ( reqSampleRate <= 0 ) {
-            throw new IllegalArgumentException( "sample rate must be positive, but is "+reqSampleRate );
+            throw new IllegalArgumentException(FILENAME + " sample rate must be positive, but is "+reqSampleRate );
         }
         // Get the datagrams by number or by time span?
         boolean byNumber;
@@ -627,7 +629,7 @@ public class TimelineReader
         long time = p.getSecond();
         if ( returnOffset != null ) { // return offset between target and actual start time
             if (returnOffset.length == 0) {
-                throw new IllegalArgumentException("If returnOffset is given, it must have length of at least 1");
+                throw new IllegalArgumentException(FILENAME + " If returnOffset is given, it must have length of at least 1");
             }
             returnOffset[0] = unScaleTime( reqSampleRate, (scaledTargetTime - time) );
         }
@@ -902,10 +904,10 @@ public class TimelineReader
          */
         public Index(int idxInterval, Vector<IdxField> indexFields) throws IllegalArgumentException, NullPointerException {
             if (idxInterval <= 0) {
-                throw new IllegalArgumentException("got index interval <= 0");
+                throw new IllegalArgumentException(FILENAME + " got index interval <= 0");
             }
             if (indexFields == null) {
-                throw new NullPointerException("null argument");
+                throw new NullPointerException(FILENAME + " null argument");
             }
             this.idxInterval = idxInterval;
             bytePtrs = new long[indexFields.size()];
@@ -916,7 +918,7 @@ public class TimelineReader
                 timePtrs[i] = f.timePtr;
                 if (i > 0) {
                     if (bytePtrs[i] < bytePtrs[i-1] || timePtrs[i] < timePtrs[i-1]) {
-                        throw new IllegalArgumentException ("Pointer positions in index fields must be strictly monotonously rising");
+                        throw new IllegalArgumentException (FILENAME + " Pointer positions in index fields must be strictly monotonously rising");
                     }
                 }
             }
@@ -938,7 +940,7 @@ public class TimelineReader
             int numIdx = rafIn.readInt();
             idxInterval = rafIn.readInt();
             if (idxInterval <= 0) {
-                throw new MaryConfigurationException("read negative index interval -- file seems corrupt");
+                throw new MaryConfigurationException(FILENAME + " read negative index interval -- file seems corrupt");
             }
             
             bytePtrs = new long[numIdx];
@@ -954,7 +956,7 @@ public class TimelineReader
                 timePtrs[i] = bufIn.readLong();
                 if (i > 0) {
                     if (bytePtrs[i] < bytePtrs[i-1] || timePtrs[i] < timePtrs[i-1]) {
-                        throw new MaryConfigurationException("File seems corrupt: Pointer positions in index fields are not strictly monotonously rising");
+                        throw new MaryConfigurationException(FILENAME + " File seems corrupt: Pointer positions in index fields are not strictly monotonously rising");
                     }
                 }
             }
@@ -974,7 +976,7 @@ public class TimelineReader
             int numIdx = bb.getInt();
             idxInterval = bb.getInt();
             if (idxInterval <= 0) {
-                throw new MaryConfigurationException("read negative index interval -- file seems corrupt");
+                throw new MaryConfigurationException(FILENAME + " read negative index interval -- file seems corrupt");
             }
             
             bytePtrs = new long[numIdx];
@@ -985,7 +987,7 @@ public class TimelineReader
                 timePtrs[i] = bb.getLong();
                 if (i > 0) {
                     if (bytePtrs[i] < bytePtrs[i-1] || timePtrs[i] < timePtrs[i-1]) {
-                        throw new MaryConfigurationException("File seems corrupt: Pointer positions in index fields are not strictly monotonously rising");
+                        throw new MaryConfigurationException(FILENAME + " File seems corrupt: Pointer positions in index fields are not strictly monotonously rising");
                     }
                 }
             }
@@ -1055,10 +1057,10 @@ public class TimelineReader
         
         public IdxField getIdxField( int i ) {
             if ( i < 0 ) {
-                throw new IndexOutOfBoundsException( "Negative index." );
+                throw new IndexOutOfBoundsException(FILENAME + " Negative index." );
             }
             if (i >= bytePtrs.length) {
-                throw new IndexOutOfBoundsException("Requested index no. "+i+", but highest is "+bytePtrs.length);
+                throw new IndexOutOfBoundsException(FILENAME + " Requested index no. "+i+", but highest is "+bytePtrs.length);
             }
             return new IdxField(bytePtrs[i], timePtrs[i]);
         }
@@ -1079,14 +1081,14 @@ public class TimelineReader
          */
         public IdxField getIdxFieldBefore( long timePosition ) {
             if (timePosition < 0) {
-                throw new IllegalArgumentException("Negative time given");
+                throw new IllegalArgumentException(FILENAME + " Negative time given");
             }
             int index = (int)( timePosition / idxInterval ); /* <= This is an integer division between two longs,
                                                             *    implying a flooring operation on the decimal result. */
             // System.out.println( "TIMEPOS=" + timePosition + " IDXINT=" + idxInterval + " IDX=" + idx );
             // System.out.flush();
             if ( index < 0 ) {
-                throw new RuntimeException( "Negative index field: [" + index
+                throw new RuntimeException(FILENAME + " Negative index field: [" + index
                         + "] encountered when getting index before time=[" + timePosition
                         + "] (idxInterval=[" + idxInterval + "])." );
             }
@@ -1169,7 +1171,7 @@ public class TimelineReader
         public ProcHeader( String procStr ) 
         {
             if (procStr == null) {
-                throw new NullPointerException("null argument");
+                throw new NullPointerException(FILENAME + " null argument");
             }
             procHeader = procStr;
         }

@@ -39,7 +39,7 @@ import org.apache.http.nio.util.SharedOutputBuffer;
 public class TestProducingNHttpEntity
 extends AbstractHttpEntity implements ProducingNHttpEntity
 {
-    
+    private static final String FILENAME = "TestProducingNHttpEntity.java:";
 
     public TestProducingNHttpEntity() {
     }
@@ -92,7 +92,7 @@ extends AbstractHttpEntity implements ProducingNHttpEntity
     }
 
     public void writeTo(final OutputStream outstream) throws IOException {
-        throw new RuntimeException("Should not be called");
+        throw new RuntimeException(FILENAME + " Should not be called");
     }
 
 }

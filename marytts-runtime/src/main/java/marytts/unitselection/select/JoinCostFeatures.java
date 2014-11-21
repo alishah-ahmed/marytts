@@ -53,7 +53,7 @@ import marytts.util.io.StreamUtils;
 
 public class JoinCostFeatures implements JoinCostFunction
 {
-
+	private static final String FILENAME = "JoinCostFeatures.java:";
    
     protected float wSignal;
     protected float wPhonetic;
@@ -114,7 +114,7 @@ public class JoinCostFeatures implements JoinCostFunction
             InputStream joinWeightStream = MaryProperties.getStream(configPrefix + ".joinCostWeights");
             load(joinFileName, joinWeightStream, precomputedJoinCostFileName, wSignal);
         } catch (IOException ioe) {
-            throw new MaryConfigurationException("Problem loading join file "+joinFileName, ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem loading join file "+joinFileName + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
     }
     
@@ -155,7 +155,7 @@ public class JoinCostFeatures implements JoinCostFunction
         /* Read the Mary header */
         hdr = new MaryHeader(bb);
         if ( hdr.getType() != MaryHeader.JOINFEATS ) {
-            throw new IOException( "File [" + joinFileName + "] is not a valid Mary join features file." );
+            throw new IOException(FILENAME + " File [" + joinFileName + "] is not a valid Mary join features file." );
         }
         try {
             /* Read the feature weights and feature processors */
@@ -178,7 +178,7 @@ public class JoinCostFeatures implements JoinCostFunction
                 featureWeight = (float[]) weightData[0];
                 String[] wf = (String[])weightData[1];
                 if (featureWeight.length != numberOfFeatures)
-                    throw new IllegalArgumentException("Join cost file contains "+numberOfFeatures+" features, but weight file contains "+featureWeight.length+" feature weights!");
+                    throw new IllegalArgumentException(FILENAME + " Join cost file contains "+numberOfFeatures+" features, but weight file contains "+featureWeight.length+" feature weights!");
                 for (int i=0; i<numberOfFeatures; i++) {
                     weightFunction[i] = wfm.getWeightFunction(wf[i]);
                 }
@@ -202,7 +202,7 @@ public class JoinCostFeatures implements JoinCostFunction
             }
         }
         catch ( EOFException e ) {
-            IOException ioe = new IOException( "The currently read Join Cost File has prematurely reached EOF.");
+            IOException ioe = new IOException(FILENAME + " The currently read Join Cost File has prematurely reached EOF." + "\tCause: " + e.getCause().getMessage());
             ioe.initCause(e);
             throw ioe;
             
@@ -240,7 +240,7 @@ public class JoinCostFeatures implements JoinCostFunction
         /* Read the Mary header */
         hdr = new MaryHeader( raf );
         if ( hdr.getType() != MaryHeader.JOINFEATS ) {
-            throw new MaryConfigurationException( "File [" + joinFileName + "] is not a valid Mary join features file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + joinFileName + "] is not a valid Mary join features file." );
         }
         try {
             /* Read the feature weights and feature processors */
@@ -263,7 +263,7 @@ public class JoinCostFeatures implements JoinCostFunction
                 featureWeight = (float[]) weightData[0];
                 String[] wf = (String[])weightData[1];
                 if (featureWeight.length != numberOfFeatures)
-                    throw new IllegalArgumentException("Join cost file contains "+numberOfFeatures+" features, but weight file contains "+featureWeight.length+" feature weights!");
+                    throw new IllegalArgumentException(FILENAME + " Join cost file contains "+numberOfFeatures+" features, but weight file contains "+featureWeight.length+" feature weights!");
                 for (int i=0; i<numberOfFeatures; i++) {
                     weightFunction[i] = wfm.getWeightFunction(wf[i]);
                 }
@@ -290,7 +290,7 @@ public class JoinCostFeatures implements JoinCostFunction
             }
         }
         catch ( EOFException e ) {
-            IOException ioe = new IOException( "The currently read Join Cost File has prematurely reached EOF.");
+            IOException ioe = new IOException(FILENAME + " The currently read Join Cost File has prematurely reached EOF." + "\tCause: " + e.getCause().getMessage());
             ioe.initCause(e);
             throw ioe;
             
@@ -385,11 +385,11 @@ public class JoinCostFeatures implements JoinCostFunction
      */
     public float[] getLeftJCF( int u ) {
         if ( u < 0 ) {
-            throw new RuntimeException( "The unit index [" + u +
+            throw new RuntimeException(FILENAME + " The unit index [" + u +
                     "] is out of range: a unit index can't be negative." );
         }
         if ( u > getNumberOfUnits() ) {
-            throw new RuntimeException( "The unit index [" + u +
+            throw new RuntimeException(FILENAME + " The unit index [" + u +
                     "] is out of range: this file contains [" + getNumberOfUnits() + "] units." );
         }
         return( leftJCF[u] );
@@ -404,11 +404,11 @@ public class JoinCostFeatures implements JoinCostFunction
      */
     public float[] getRightJCF( int u ) {
         if ( u < 0 ) {
-            throw new RuntimeException( "The unit index [" + u +
+            throw new RuntimeException(FILENAME + " The unit index [" + u +
                     "] is out of range: a unit index can't be negative." );
         }
         if ( u > getNumberOfUnits() ) {
-            throw new RuntimeException( "The unit index [" + u +
+            throw new RuntimeException(FILENAME + " The unit index [" + u +
                     "] is out of range: this file contains [" + getNumberOfUnits() + "] units." );
         }
         return( rightJCF[u] );
@@ -431,21 +431,21 @@ public class JoinCostFeatures implements JoinCostFunction
     public double cost( int u1, int u2 ) {
         /* Check the given indexes */
         if ( u1 < 0 ) {
-            throw new RuntimeException( "The left unit index [" + u1 +
+            throw new RuntimeException(FILENAME + " The left unit index [" + u1 +
                     "] is out of range: a unit index can't be negative." );
         }
 //        if ( u1 > getNumberOfUnits() ) {
         if (u1 > leftJCF.length) {
-            throw new RuntimeException( "The left unit index [" + u1 +
+            throw new RuntimeException(FILENAME + " The left unit index [" + u1 +
                     "] is out of range: this file contains [" + getNumberOfUnits() + "] units." );
         }
         if ( u2 < 0 ) {
-            throw new RuntimeException( "The right unit index [" + u2 +
+            throw new RuntimeException(FILENAME + " The right unit index [" + u2 +
                     "] is out of range: a unit index can't be negative." );
         }
 //        if ( u2 > getNumberOfUnits() ) {
         if ( u2 > leftJCF.length ) {
-            throw new RuntimeException( "The right unit index [" + u2 +
+            throw new RuntimeException(FILENAME + " The right unit index [" + u2 +
                     "] is out of range: this file contains [" + getNumberOfUnits() + "] units." );
         }
         if (debugShowCostGraph) {

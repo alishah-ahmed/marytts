@@ -54,6 +54,7 @@ import org.w3c.dom.NodeList;
  * The Mbrola waveform synthesizer wrapper.
  */
 public class MbrolaSynthesizer implements WaveformSynthesizer {
+	private static final String FILENAME = "MbrolaSynthesizer.java";
     private MaryXMLToMbrola maryxmlToMbrola;
     private MbrolaCaller mbrolaCaller;
     private Logger logger;
@@ -96,7 +97,7 @@ public class MbrolaSynthesizer implements WaveformSynthesizer {
             obj = mbrolaClass.newInstance();
         }
         if (!(obj instanceof MbrolaCaller)) {
-            throw new ClassCastException("Class `" + mbrolaClass.getName() +
+            throw new ClassCastException(FILENAME + " Class `" + mbrolaClass.getName() +
                 "' is not an MbrolaCaller. Check property `" + mbrolaCallerProperty +
                 "' in configuration files");
         }
@@ -179,7 +180,7 @@ public class MbrolaSynthesizer implements WaveformSynthesizer {
                  logger.debug("No example text -- no power-on self test!");
              }
          } catch (Throwable t) {
-             throw new Error("Module " + toString() + ": Power-on self test failed.", t);
+             throw new Error("Module " + toString() + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
          }
          logger.info("Power-on self test complete.");
      }
@@ -242,7 +243,7 @@ public class MbrolaSynthesizer implements WaveformSynthesizer {
         try {
             ais = mbrolaCaller.synthesiseOneSection(pho, voice);
         } catch (IOException ioe) {
-            throw new SynthesisException("Cannot synthesise", ioe);
+            throw new SynthesisException(FILENAME + " Cannot synthesise" + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
         assert ais != null;
         return ais;
@@ -275,9 +276,9 @@ public class MbrolaSynthesizer implements WaveformSynthesizer {
     
     public static boolean isMbrolaVoice(Voice voice)
     {
-        if (voice == null) throw new NullPointerException("Received null argument");
+        if (voice == null) throw new NullPointerException(FILENAME + " Received null argument");
         WaveformSynthesizer ws = voice.synthesizer();
-        if (ws == null) throw new NullPointerException("Voice has no waveform synthesizer");
+        if (ws == null) throw new NullPointerException(FILENAME + " Voice has no waveform synthesizer");
         return (ws instanceof MbrolaSynthesizer);
     }
 }

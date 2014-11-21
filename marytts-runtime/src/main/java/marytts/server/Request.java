@@ -83,6 +83,8 @@ import org.w3c.dom.traversal.TreeWalker;
  * (<code>writeOutputData</code>).
  */
 public class Request {
+	private static final String FILENAME = "Request.java:";
+	
     protected MaryDataType inputType;
     protected MaryDataType outputType;
     protected String outputTypeParams;
@@ -118,9 +120,9 @@ public class Request {
                    String outputTypeParams)
     {
         if (!inputType.isInputType())
-            throw new IllegalArgumentException("not an input type: " + inputType.name());
+            throw new IllegalArgumentException(FILENAME + " not an input type: " + inputType.name());
         if (!outputType.isOutputType())
-            throw new IllegalArgumentException("not an output type: " + outputType.name());
+            throw new IllegalArgumentException(FILENAME + " not an output type: " + outputType.name());
         this.inputType = inputType;
         this.outputType = outputType;
         this.defaultLocale = defaultLocale;
@@ -132,7 +134,7 @@ public class Request {
         this.streamAudio = streamAudio;
         if (outputType == MaryDataType.get("AUDIO")) {
             if (audioFileFormat == null)
-                throw new NullPointerException("audio file format is needed for output type AUDIO");
+                throw new NullPointerException(FILENAME + " audio file format is needed for output type AUDIO");
             this.appendableAudioStream = new AppendableSequenceAudioInputStream(audioFileFormat.getFormat(), null);
         } else {
             this.appendableAudioStream = null;
@@ -272,11 +274,11 @@ public class Request {
         assert Mary.currentState() == Mary.STATE_RUNNING;
         long startTime = System.currentTimeMillis();
         if (inputData == null)
-            throw new NullPointerException("Input data is not set.");
+            throw new NullPointerException(FILENAME + " Input data is not set.");
         if (inputType.isXMLType() && inputData.getDocument() == null)
-            throw new NullPointerException("Input data contains no XML document.");
+            throw new NullPointerException(FILENAME + " Input data contains no XML document.");
         if (inputType.isMaryXML() && !inputData.getDocument().getDocumentElement().hasAttribute("xml:lang"))
-            throw new IllegalArgumentException("Mandatory attribute xml:lang is missing from maryxml document element.");
+            throw new IllegalArgumentException(FILENAME + " Mandatory attribute xml:lang is missing from maryxml document element.");
 
         NodeList inputDataList;
         MaryData rawmaryxml;
@@ -509,7 +511,7 @@ public class Request {
         	String outputType = oneOutputType.toString();
         	String tempLocale = locale.toString();
             String message = "input type: " + inputType + "\noutput type: " + outputType + "\nlocale: " + tempLocale + "\nNo known way of generating output from input -- " + "no processing path through modules.";
-            throw new UnsupportedOperationException(message);
+            throw new UnsupportedOperationException(FILENAME + " " + message);
         }
         usedModules.addAll(neededModules);
         logger.info("Handling request using the following modules:");
@@ -553,11 +555,11 @@ public class Request {
             try {
                 outData = m.process(currentData);
             } catch (Exception e) {
-                throw new Exception("Module " + m.name() + ": Problem processing the data.", e);
+                throw new Exception(FILENAME + " Module " + m.name() + ": Problem processing the data." + "\tCause: " + e.getCause().getMessage(), e);
             }
 
             if (outData == null) {
-                throw new NullPointerException("Module " + m.name() + " returned null. This should not happen.");
+                throw new NullPointerException(FILENAME + " Module " + m.name() + " returned null. This should not happen.");
             }
             outData.setDefaultVoice(defaultVoice);
             outData.setDefaultStyle(defaultStyle);
@@ -598,9 +600,9 @@ public class Request {
     {
         // TODO: replace this with code that combines this and the splitting functionality of Synthesis: one chunk is one locale and one voice
         if (rawmaryxml == null)
-            throw new NullPointerException("Received null data");
+            throw new NullPointerException(FILENAME + " Received null data");
         if (rawmaryxml.getType() != MaryDataType.get("RAWMARYXML"))
-            throw new IllegalArgumentException("Expected data of type RAWMARYXML, got " + rawmaryxml.getType());
+            throw new IllegalArgumentException(FILENAME + " Expected data of type RAWMARYXML, got " + rawmaryxml.getType());
         if (logger.getEffectiveLevel().equals(Level.DEBUG)) {
                 logger.debug("Now splitting the following RAWMARYXML data into chunks:");
                 ByteArrayOutputStream dummy = new ByteArrayOutputStream();
@@ -710,7 +712,7 @@ public class Request {
     private static void moveBoundariesIntoParagraphs(Document rawmaryxml)
     {
         if (rawmaryxml == null) {
-            throw new NullPointerException("Received null rawmaryxml");
+            throw new NullPointerException(FILENAME + " Received null rawmaryxml");
         }
         TreeWalker paraTW = ((DocumentTraversal)rawmaryxml).createTreeWalker
         (rawmaryxml.getDocumentElement(), NodeFilter.SHOW_ELEMENT,
@@ -721,7 +723,7 @@ public class Request {
         // Find first paragraph, to see if there are any leading boundaries
         Element firstParagraph = (Element) paraTW.nextNode();
         if (firstParagraph == null) {
-            throw new NullPointerException("Document does not have a paragraph");
+            throw new NullPointerException(FILENAME + " Document does not have a paragraph");
         }
         tw.setCurrentNode(firstParagraph);
         // Now move any leading boundaries to the left of into the first paragraph 
@@ -755,7 +757,7 @@ public class Request {
 	private static MaryData extractParagraphAsMaryData(MaryData maryxml,
 			Element paragraph) {
         if (!maryxml.getType().isMaryXML()) {
-            throw new IllegalArgumentException("Expected MaryXML data");
+            throw new IllegalArgumentException(FILENAME + " Expected MaryXML data");
         }
         String rootLanguage = maryxml.getDocument().getDocumentElement().getAttribute("xml:lang");
         Document newDoc = MaryXML.newDocument();
@@ -838,10 +840,10 @@ public class Request {
      */
     public void writeOutputData(OutputStream outputStream) throws Exception {
         if (outputData == null) {
-            throw new NullPointerException("No output data -- did process() succeed?");
+            throw new NullPointerException(FILENAME + " No output data -- did process() succeed?");
         }
         if (outputStream == null)
-            throw new NullPointerException("cannot write to null output stream");
+            throw new NullPointerException(FILENAME + " cannot write to null output stream");
         // Safety net: if the output is not written within a certain amount of
         // time, give up. This prevents our thread from being locked forever if an
         // output deadlock occurs (happened very rarely on Java 1.4.2beta).

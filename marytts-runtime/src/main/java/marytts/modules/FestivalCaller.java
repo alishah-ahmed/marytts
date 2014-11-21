@@ -53,6 +53,8 @@ import org.apache.log4j.Logger;
 
 public class FestivalCaller extends SynthesisCallerBase
 {
+	private static final String FILENAME = "FestivalCaller.java:";
+	
     protected File festivalDir;
     protected File relationsDir;
     protected File segmentDir;
@@ -107,14 +109,14 @@ public class FestivalCaller extends SynthesisCallerBase
             if (dir.exists()) { // exists, but is not a directory
                 success = dir.delete();
                 if (!success) {
-                    throw new IOException("Need to create directory " +
+                    throw new IOException(FILENAME + " Need to create directory " +
                                         dir.getPath() +
                                         ", but file exists that cannot be deleted.");
                 }
             }
             success = dir.mkdir();
             if (!success) {
-                throw new IOException("Cannot create directory " + dir.getPath());
+                throw new IOException(FILENAME + " Cannot create directory " + dir.getPath());
             }
         }
     }

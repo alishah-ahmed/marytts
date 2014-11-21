@@ -42,6 +42,8 @@ import marytts.util.MaryUtils;
 
 public class HalfPhoneFFRTargetCostFunction extends FFRTargetCostFunction
 {
+	private static final String FILENAME = "HalfPhoneFFRTargetCostFunction.java:";
+	
     protected FeatureDefinition leftWeights;
     protected FeatureDefinition rightWeights;
     protected WeightFunc[] leftWeightFunction;
@@ -60,7 +62,7 @@ public class HalfPhoneFFRTargetCostFunction extends FFRTargetCostFunction
     public double cost(Target target, Unit unit)
     {
         if (!(target instanceof HalfPhoneTarget))
-            throw new IllegalArgumentException("This target cost function can only be called for half-phone targets!");
+            throw new IllegalArgumentException(FILENAME + " This target cost function can only be called for half-phone targets!");
         HalfPhoneTarget hpTarget = (HalfPhoneTarget) target;
         boolean isLeftHalf = hpTarget.isLeftHalf();
         FeatureDefinition weights = isLeftHalf ? leftWeights : rightWeights;
@@ -91,7 +93,7 @@ public class HalfPhoneFFRTargetCostFunction extends FFRTargetCostFunction
     throws IOException
     {
         if (!(featureFileReader instanceof HalfPhoneFeatureFileReader))
-            throw new IllegalArgumentException("Featurefilereader must be a HalfPhoneFeatureFileReader");
+            throw new IllegalArgumentException(FILENAME + " Featurefilereader must be a HalfPhoneFeatureFileReader");
         HalfPhoneFeatureFileReader ffr = (HalfPhoneFeatureFileReader) featureFileReader;
         this.leftWeights = ffr.getLeftWeights();
         this.featureDefinition = this.leftWeights;
@@ -102,7 +104,7 @@ public class HalfPhoneFFRTargetCostFunction extends FFRTargetCostFunction
             MaryUtils.getLogger("TargetCostFeatures").debug("Overwriting target cost weights from file "+weightsFile);
             String[] weightsFiles = weightsFile.split("\\|");
             if (weightsFiles.length != 2)
-                throw new IllegalArgumentException("Parameter weightsFile should contain exactly two fields separated by a '|' character -- instead, it is: '"+weightsFile+"'");
+                throw new IllegalArgumentException(FILENAME + " Parameter weightsFile should contain exactly two fields separated by a '|' character -- instead, it is: '"+weightsFile+"'");
             File leftF = new File(weightsFiles[0].trim());
             File rightF;
             // If the second weights file has no path, it is in the same directory as the first
@@ -117,12 +119,12 @@ public class HalfPhoneFFRTargetCostFunction extends FFRTargetCostFunction
             // overwrite weights from files
             FeatureDefinition newLeftWeights = new FeatureDefinition(new BufferedReader(new InputStreamReader(new FileInputStream(leftF), "UTF-8")), true);
             if (!newLeftWeights.featureEquals(leftWeights)) {
-                throw new IOException("Weights file '"+leftF+"': feature definition incompatible with feature file");
+                throw new IOException(FILENAME + " Weights file '"+leftF+"': feature definition incompatible with feature file");
             }
             leftWeights = newLeftWeights;
             FeatureDefinition newRightWeights = new FeatureDefinition(new BufferedReader(new InputStreamReader(new FileInputStream(rightF), "UTF-8")), true);
             if (!newRightWeights.featureEquals(rightWeights)) {
-                throw new IOException("Weights file '"+rightF+"': feature definition incompatible with feature file");
+                throw new IOException(FILENAME + " Weights file '"+rightF+"': feature definition incompatible with feature file");
             }
             rightWeights = newRightWeights;
         }

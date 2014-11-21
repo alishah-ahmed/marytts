@@ -41,6 +41,8 @@ import java.io.IOException;
  */
 public class FeatureVector
 {
+	private static final String FILENAME = "FeatureVector.java";
+	
     public enum FeatureType {byteValued, shortValued, floatValued}; 
     public final int unitIndex;
     public final byte[] byteValuedDiscreteFeatures;
@@ -54,7 +56,7 @@ public class FeatureVector
         this.shortValuedDiscreteFeatures = shortValuedDiscreteFeatures;
         this.continuousFeatures = continuousFeatures;
         if ( setUnitIndex < 0 ) {
-            throw new RuntimeException( "The unit index can't be negative or null when instanciating a new feature vector." );
+            throw new RuntimeException(FILENAME + " The unit index can't be negative or null when instanciating a new feature vector." );
         }
         this.unitIndex = setUnitIndex;
     }
@@ -71,7 +73,7 @@ public class FeatureVector
     public FeatureType getFeatureType(int featureIndex) {
         FeatureType t = null;
         if (featureIndex < 0 || featureIndex >= byteValuedDiscreteFeatures.length + shortValuedDiscreteFeatures.length + continuousFeatures.length) {
-            throw new IllegalArgumentException("Index "+featureIndex+" is out of range [0, "+getLength()+"[");
+            throw new IllegalArgumentException(FILENAME + " Index "+featureIndex+" is out of range [0, "+getLength()+"[");
         }
         if (featureIndex < byteValuedDiscreteFeatures.length) {
             t = FeatureType.byteValued;
@@ -186,7 +188,7 @@ public class FeatureVector
     public final byte getByteFeature(int index)
     {
         if (index < 0 || index >= byteValuedDiscreteFeatures.length) {
-            throw new IndexOutOfBoundsException(index+" is not between 0 and "+byteValuedDiscreteFeatures.length);
+            throw new IndexOutOfBoundsException(FILENAME + " " + index+" is not between 0 and "+byteValuedDiscreteFeatures.length);
         }
         return byteValuedDiscreteFeatures[index];
     }

@@ -65,6 +65,8 @@ import org.w3c.dom.traversal.TreeWalker;
  */
 
 public class TobiContourGenerator extends InternalModule {
+	private static final String FILENAME = "TobiContourGenerator.java:";
+	
     /** This map contains the topline-baseline frequency configurations for the
      * currently used phrase and sub-phrase prosody elements. As this is a
      * WeakHashMap, entries will automatically be deleted when not in regular
@@ -372,7 +374,7 @@ public class TobiContourGenerator extends InternalModule {
             voice = Voice.getDefaultVoice(getLocale());
         }
         if (!(voice instanceof MbrolaVoice)) {
-            throw new IllegalStateException("TobiContourGenerator can be used only for MBROLA voices, but voice "+voice.getName()+" is a "+voice.getClass().toString());
+            throw new IllegalStateException(FILENAME + " TobiContourGenerator can be used only for MBROLA voices, but voice "+voice.getName()+" is a "+voice.getClass().toString());
         }
         MbrolaVoice mVoice = (MbrolaVoice) voice;
         int topStart = mVoice.topStart();
@@ -431,9 +433,9 @@ public class TobiContourGenerator extends InternalModule {
      */
     private void determineProsodyTopBaseConf(Element prosody) {
         if (prosody == null)
-            throw new NullPointerException("Received null argument");
+            throw new NullPointerException(FILENAME + " Received null argument");
         if (!prosody.getTagName().equals(MaryXML.PROSODY))
-            throw new IllegalArgumentException("Expected <prosody> argument, got <" + prosody.getTagName() + ">");
+            throw new IllegalArgumentException(FILENAME + " Expected <prosody> argument, got <" + prosody.getTagName() + ">");
         // Find closest ancestor phrase or prosody element:
         Element phrase = (Element) MaryDomUtils.getAncestor(prosody, MaryXML.PHRASE);
         if (phrase == null) {
@@ -1248,7 +1250,7 @@ public class TobiContourGenerator extends InternalModule {
     private int calculateTargetFrequency(Target target, int lastHFreq) {
         // sanity check:
         if (target == null || target.targetRule() == null || target.segment() == null)
-            throw new NullPointerException("Null target specification -- cannot calculate Frequency");
+            throw new NullPointerException(FILENAME + " Null target specification -- cannot calculate Frequency");
         // Calculate target frequency:
         String f0descr = target.targetRule().getAttribute("f0");
         int f0 = 0;

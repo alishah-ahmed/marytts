@@ -48,6 +48,8 @@ import org.apache.log4j.Logger;
 
 public class MaryDataType
 {
+	private static final String FILENAME = "MaryDataType.java:";
+	
     public static final Traits PLAIN_TEXT      = new Traits(true, false, false, false);
     public static final Traits EXTERNAL_MARKUP = new Traits(true, true, false, false);
     public static final Traits MARYXML         = new Traits(true, true, true, false);
@@ -196,7 +198,7 @@ public class MaryDataType
     throws IllegalStateException
     {
         if (registrationComplete)
-            throw new IllegalStateException("Registration has already completed, cannot do that a second time");
+            throw new IllegalStateException(FILENAME + " Registration has already completed, cannot do that a second time");
 
         sortDataTypes();
         registrationComplete = true;
@@ -266,7 +268,7 @@ public class MaryDataType
     public static Vector<String> getInputTypeStrings()
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about data types while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about data types while registration is ongoing");
         Vector<String> result = new Vector<String>(10);
         for (MaryDataType t : knownDataTypes) {
             if (t.isInputType())
@@ -283,7 +285,7 @@ public class MaryDataType
     public static Vector<String> getOutputTypeStrings()
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about data types while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about data types while registration is ongoing");
         Vector<String> result = new Vector<String>(10);
         for (MaryDataType t : knownDataTypes) {
             if (t.isOutputType())
@@ -301,7 +303,7 @@ public class MaryDataType
     public static List<MaryDataType> getInputTypes()
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about data types while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about data types while registration is ongoing");
         Vector<MaryDataType> result = new Vector<MaryDataType>(10);
         for (MaryDataType t : knownDataTypes) {
             if (t.isInputType())
@@ -318,7 +320,7 @@ public class MaryDataType
     public static List<MaryDataType> getOutputTypes()
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about data types while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about data types while registration is ongoing");
         Vector<MaryDataType> result = new Vector<MaryDataType>(10);
         for (MaryDataType t : knownDataTypes) {
             if (t.isOutputType())
@@ -336,7 +338,7 @@ public class MaryDataType
     public static MaryDataType get(String name)
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about data types while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about data types while registration is ongoing");
         return dataTypesByName.get(name);
     }
 
@@ -348,7 +350,7 @@ public class MaryDataType
     public static List<MaryDataType> getDataTypes()
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about data types while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about data types while registration is ongoing");
         return Collections.unmodifiableList(knownDataTypes);
     }
 

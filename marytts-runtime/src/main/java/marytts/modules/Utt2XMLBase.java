@@ -60,6 +60,8 @@ import com.sun.speech.freetts.Utterance;
  */
 
 public abstract class Utt2XMLBase extends InternalModule {
+	private static final String FILENAME = "Utt2XMLBase.java:";
+	
     protected DocumentBuilderFactory factory = null;
     protected DocumentBuilder docBuilder = null;
 
@@ -245,7 +247,7 @@ public abstract class Utt2XMLBase extends InternalModule {
      */
     protected void insertToken(Item tokenItem, Element parent, boolean deep) {
         if (tokenItem == null || parent == null) {
-            throw new NullPointerException("Null arguments to insertToken()");
+            throw new NullPointerException(FILENAME + " Null arguments to insertToken()");
         }
         Document doc = parent.getOwnerDocument();
         Voice maryVoice = null;
@@ -254,7 +256,7 @@ public abstract class Utt2XMLBase extends InternalModule {
         }
         AllophoneSet allophoneSet = (AllophoneSet) tokenItem.getUtterance().getObject("allophoneset");
         if (allophoneSet == null) {
-            throw new NullPointerException("Utterance does not have an AllophoneSet -- should have been set in XML2UttBase.process()");
+            throw new NullPointerException(FILENAME + " Utterance does not have an AllophoneSet -- should have been set in XML2UttBase.process()");
         }
         Element insertHere = parent;
         boolean needMtu = false;
@@ -444,10 +446,10 @@ public abstract class Utt2XMLBase extends InternalModule {
      */
     protected String insertSyllable(Item syllableItem, Element token, boolean deep) {
         if (syllableItem == null || token == null) {
-            throw new NullPointerException("Null arguments to insertSyllable()");
+            throw new NullPointerException(FILENAME + " Null arguments to insertSyllable()");
         }
         if (!token.getTagName().equals(MaryXML.TOKEN)) {
-            throw new IllegalArgumentException("Syllables can only be inserted in <t> elements");
+            throw new IllegalArgumentException(FILENAME + " Syllables can only be inserted in <t> elements");
         }
         Document doc = token.getOwnerDocument();
         Element syllable = null;
@@ -507,10 +509,10 @@ public abstract class Utt2XMLBase extends InternalModule {
     protected String insertSegment(Item segmentItem, Element syllable, boolean deep) {
         // allow for syllable == null if not deep:
         if (segmentItem == null || deep && syllable == null) {
-            throw new NullPointerException("Null arguments to insertSegment()");
+            throw new NullPointerException(FILENAME + " Null arguments to insertSegment()");
         }
         if (deep && !syllable.getTagName().equals(MaryXML.SYLLABLE)) {
-            throw new IllegalArgumentException("Segments can only be inserted in <syllable> elements");
+            throw new IllegalArgumentException(FILENAME + " Segments can only be inserted in <syllable> elements");
         }
         String segmentString = segmentItem.toString();
         Voice maryVoice = FreeTTSVoices.getMaryVoice(segmentItem.getUtterance().getVoice());
@@ -547,7 +549,7 @@ public abstract class Utt2XMLBase extends InternalModule {
        */
     protected Element insertProsodySettings(Element insertHere, FeatureSet featureSet) {
         if (insertHere == null || featureSet == null)
-            throw new NullPointerException("I thoroughly dislike getting null arguments!");
+            throw new NullPointerException(FILENAME + " I thoroughly dislike getting null arguments!");
         boolean haveProsodyInfo = false;
         for (String att : XML2UttBase.PROSODY_ATTRIBUTES) {
             if (featureSet.getString(att) != null) {

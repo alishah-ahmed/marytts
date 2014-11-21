@@ -103,7 +103,8 @@ import org.apache.log4j.Logger;
  * @author Marcela Charfuelan 
  */
 public class HTSVocoder {
-  
+	private static final String FILENAME = "HTSVocoder.java:";
+	
     public static final int IPERIOD = 1;         /* interpolation period */
     public static final int SEED    = 1;
     public static final int PADEORDER = 5;       /* pade order for MLSA filter */
@@ -292,7 +293,7 @@ public class HTSVocoder {
         //i.e. the number of filters is equal to the number of generated strengths per frame.
         if(numM != strPst.getOrder()) {
           logger.debug("htsMLSAVocoder: error num mix-excitation filters =" + numM + " in configuration file is different from generated str order=" + strPst.getOrder());
-          throw new Exception("htsMLSAVocoder: error num mix-excitation filters = " + numM + " in configuration file is different from generated str order=" + strPst.getOrder());
+          throw new Exception(FILENAME + " htsMLSAVocoder: error num mix-excitation filters = " + numM + " in configuration file is different from generated str order=" + strPst.getOrder());
         }
         logger.debug("HMM speech generation with mixed-excitation.");
       } else

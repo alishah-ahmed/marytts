@@ -61,6 +61,8 @@ import org.apache.log4j.Logger;
  */
 public class BaseUnitConcatenator implements UnitConcatenator
 {
+	private static final String FILENAME = "BaseUnitConcatenator.java:";
+	
     protected Logger logger;
     protected UnitDatabase database;
     protected TimelineReader timeline;
@@ -125,7 +127,7 @@ public class BaseUnitConcatenator implements UnitConcatenator
         try {
             prosodyAnalyzer = new ProsodyAnalyzer(units, timeline.getSampleRate());
         } catch (Exception e) {
-            throw new IOException("Could not analyze prosody!", e);
+            throw new IOException(FILENAME + " Could not analyze prosody!" + "\tCause: " + e.getCause().getMessage(), e);
         }
         
         // 3. Generate audio to match the target pitchmarks as closely as possible

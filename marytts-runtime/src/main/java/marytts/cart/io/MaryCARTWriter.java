@@ -52,7 +52,8 @@ import org.apache.log4j.Logger;
  * @author Marcela Charfuelan
  */
 public class MaryCARTWriter{
-
+	private static final String FILENAME = "MaryCARTWriter.java:";
+	
     protected Logger logger = MaryUtils.getLogger(this.getClass().getName());
 
     /**
@@ -117,7 +118,7 @@ public class MaryCARTWriter{
             pw.close();
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    "Error dumping CART to standard output");
+                    FILENAME + " Error dumping CART to standard output" + "\tCause: " + ioe.getCause().getMessage());
             newIOE.initCause(ioe);
             throw newIOE;
         }
@@ -181,7 +182,7 @@ public class MaryCARTWriter{
             
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    "Error dumping CART to output stream");
+                    FILENAME + "Error dumping CART to output stream" + "\tCause: " + ioe.getCause().getMessage());
             newIOE.initCause(ioe);
             throw newIOE;
         }

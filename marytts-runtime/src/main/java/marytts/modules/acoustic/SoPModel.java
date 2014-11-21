@@ -44,7 +44,8 @@ import marytts.util.MaryUtils;
  *
  */
 public class SoPModel extends Model {
-    
+    private static final String FILENAME = "SoPModel.java:";
+	
     /**
      * The SopModels map contains one SoP model for F0 and three SoP models duration: vowel, consonant and pause.
      */
@@ -107,7 +108,7 @@ public class SoPModel extends Model {
         s.close();
         
         } catch (Exception e) {
-            throw new IOException("Error reading SoP data",  e);
+            throw new IOException(FILENAME + " Error reading SoP data" + "\tCause: " + e.getCause().getMessage(), e);
         }
     }
 

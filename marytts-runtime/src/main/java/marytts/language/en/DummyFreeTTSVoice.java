@@ -47,6 +47,7 @@ import com.sun.speech.freetts.util.BulkTimer;
  */
 public class DummyFreeTTSVoice extends marytts.modules.DummyFreeTTSVoice
 {
+	private static final String FILENAME = "DummyFreeTTSVoice.java:";
     /**
      * Creates a simple voice containing a reference to a
      * <code>marytts.modules.synthesis.Voice</code>.
@@ -74,7 +75,7 @@ public class DummyFreeTTSVoice extends marytts.modules.DummyFreeTTSVoice
     {
         super(maryVoice, lexiconClassName);
         if (!maryVoice.getLocale().equals(Locale.US)) {
-            throw new IllegalArgumentException("This dummy freetts voice is meant for US English voices only!");
+            throw new IllegalArgumentException(FILENAME + " This dummy freetts voice is meant for US English voices only!");
         }
     }
 
@@ -91,7 +92,7 @@ public class DummyFreeTTSVoice extends marytts.modules.DummyFreeTTSVoice
             String lexiconClassName) {
         super.initialise(aMaryVoice, lexiconClassName);
         if (!aMaryVoice.getLocale().equals(Locale.US)) {
-            throw new IllegalArgumentException("This dummy freetts voice is meant for US English voices only!");
+            throw new IllegalArgumentException(FILENAME + " This dummy freetts voice is meant for US English voices only!");
         }
     }
 

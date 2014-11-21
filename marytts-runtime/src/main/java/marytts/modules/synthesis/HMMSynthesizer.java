@@ -105,6 +105,8 @@ import org.w3c.dom.traversal.TreeWalker;
  * @author Marc Schr&ouml;der, Marcela Charfuelan 
  */
 public class HMMSynthesizer implements WaveformSynthesizer {
+	private static final String FILENAME = "HMMSynthesizer.java:";
+	
     private TargetFeatureLister targetFeatureLister;
     private HTSEngine htsEngine;
     private Logger logger;
@@ -208,7 +210,7 @@ public class HMMSynthesizer implements WaveformSynthesizer {
                  logger.debug("No example text -- no power-on self test!");
              }
          } catch (Throwable t) {
-             throw new Error("Module " + toString() + ": Power-on self test failed.", t);
+             throw new Error("Module " + toString() + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
          }
          logger.info("Power-on self test complete.");
          
@@ -273,7 +275,7 @@ public class HMMSynthesizer implements WaveformSynthesizer {
             return audio.getAudio();           
                      
         } catch (Exception e) {
-            throw new SynthesisException("HMM Synthesiser could not synthesise: ", e);
+            throw new SynthesisException(FILENAME + " HMM Synthesiser could not synthesise: " + "\tCause: " + e.getCause().getMessage(), e);
         }
     }
     

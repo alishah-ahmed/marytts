@@ -51,6 +51,8 @@ import marytts.util.math.MathUtils;
  * 
  */
 public class HnmTimelineReader extends TimelineReader {
+	private static final String FILENAME = "HnmTimelineReader.java:";
+	
     public HntmAnalyzerParams analysisParams;
     public HnmTimelineReader(String fileName) throws IOException, MaryConfigurationException
     {
@@ -106,7 +108,7 @@ public class HnmTimelineReader extends TimelineReader {
     private void ensurePresent(Properties props, String key) throws MaryConfigurationException
     {
         if (!props.containsKey(key))
-            throw new MaryConfigurationException("Processing header does not contain required field '"+key+"'");
+            throw new MaryConfigurationException(FILENAME + " Processing header does not contain required field '"+key+"'");
     }
 
     /**

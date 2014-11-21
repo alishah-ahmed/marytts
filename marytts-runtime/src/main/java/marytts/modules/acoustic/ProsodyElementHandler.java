@@ -51,6 +51,7 @@ import org.w3c.dom.traversal.TreeWalker;
  * 
  */
 public class ProsodyElementHandler {
+	private static final String FILENAME = "ProsodyElementHandler.java";
     
     private int F0CONTOUR_LENGTH = 101; // Assumption: the length of f0 contour of a prosody element is 101 (0,1,2....100)
                                         // DONOT change this number as some index numbers are based on this number    
@@ -262,7 +263,7 @@ public class ProsodyElementHandler {
         Arrays.fill(modifiedF0Values, 0.0);
         
         if ( baseF0Contour.length != modifiedF0Values.length ) {
-            throw new RuntimeException("The lengths of two arrays are not same!");
+            throw new RuntimeException(FILENAME + " The lengths of two arrays are not same!");
         }
         
         modifiedF0Values[0] = baseF0Contour[0];
@@ -287,7 +288,7 @@ public class ProsodyElementHandler {
             
             int percentDuration  =  Math.round((new Float(percent.substring(0, percent.length()-1))).floatValue());
             if ( percentDuration > 100 ) {
-                throw new RuntimeException("Given percentage of duration ( "+ percentDuration+"%"+ " ) is illegal.. ") ;
+                throw new RuntimeException(FILENAME + " Given percentage of duration ( "+ percentDuration+"%"+ " ) is illegal.. ") ;
             }
             
             //System.out.println( percent  + " " + f0Value );
@@ -409,20 +410,20 @@ public class ProsodyElementHandler {
     public double[] getF0Contour(NodeList nl, int arraysize) {
         
         if ( nl == null || nl.getLength() == 0 ) {
-            throw new IllegalArgumentException("Input NodeList should not be null or zero length list"); 
+            throw new IllegalArgumentException(FILENAME + " Input NodeList should not be null or zero length list"); 
         }
         if ( arraysize <= 0 ) {
-            throw new IllegalArgumentException("Given arraysize should be is greater than zero"); 
+            throw new IllegalArgumentException(FILENAME + " Given arraysize should be is greater than zero"); 
         }
         
         // A sanity checker for NodeList: for 'ph' elements only condition
         for ( int i=0; i < nl.getLength(); i++ ) {
             Element e = (Element) nl.item(i);
             if ( !"ph".equals(e.getNodeName()) ) {
-                throw new IllegalArgumentException("Input NodeList should contain 'ph' elements only");
+                throw new IllegalArgumentException(FILENAME + " Input NodeList should contain 'ph' elements only");
             }
             if ( !e.hasAttribute("d") || !e.hasAttribute("end") ) {
-                throw new IllegalArgumentException("All 'ph' elements should contain 'd' and 'end' attributes");
+                throw new IllegalArgumentException(FILENAME + " All 'ph' elements should contain 'd' and 'end' attributes");
             }
         }
         

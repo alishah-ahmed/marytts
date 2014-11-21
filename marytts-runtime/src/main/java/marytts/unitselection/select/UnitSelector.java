@@ -41,6 +41,8 @@ import org.w3c.dom.NodeList;
  */
 public class UnitSelector
 {
+	private static final String FILENAME = "UnitSelector.java:";
+	
     protected UnitDatabase database;
     protected Logger logger;
     protected float targetCostWeight;
@@ -123,7 +125,7 @@ public class UnitSelector
         // If you can not associate the candidate units in the best path 
         // with the items in the segment relation, there is no best path
         if (selectedUnits == null) {
-            throw new IllegalStateException("Viterbi: can't find path");
+            throw new IllegalStateException(FILENAME + " Viterbi: can't find path");
         }
         long newtime = System.currentTimeMillis() - time;
         logger.debug("Selection took "+newtime+" milliseconds");

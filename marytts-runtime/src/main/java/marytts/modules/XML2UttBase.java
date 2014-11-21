@@ -68,6 +68,8 @@ import com.sun.speech.freetts.Utterance;
 
 public abstract class XML2UttBase extends InternalModule
 {
+	private static final String FILENAME = "XML2UttBase.java:";
+	
     public static final String[] PROSODY_ATTRIBUTES = new String[] {"rate", "pitch", "range", "volume", "contour"};
     public static final String PROSODY_START = "prosody-start";
     public static final String PROSODY_END = "prosody-end";
@@ -132,10 +134,10 @@ public abstract class XML2UttBase extends InternalModule
                 allophoneSet = MaryRuntimeUtils.determineAllophoneSet(locale);
             }
             if (freettsVoice == null) {
-                throw new NullPointerException("No FreeTTS voice for mary voice " + maryVoice.getName());
+                throw new NullPointerException(FILENAME + " No FreeTTS voice for mary voice " + maryVoice.getName());
             }
             if (allophoneSet == null) {
-                throw new MaryConfigurationException("Cannot get allophone set for voice "+maryVoice+" / locale "+locale);
+                throw new MaryConfigurationException(FILENAME + " Cannot get allophone set for voice "+maryVoice+" / locale "+locale);
             }
             Utterance utterance = new Utterance(freettsVoice);
             if (voice != null && voice.hasAttribute("style")) {

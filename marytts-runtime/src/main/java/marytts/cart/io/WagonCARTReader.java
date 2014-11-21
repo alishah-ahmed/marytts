@@ -42,6 +42,7 @@ import marytts.util.data.MaryHeader;
  * @author Anna Hunecke, Marc Schröder, Marcela Charfuelan
  */
 public class WagonCARTReader {
+   private static final String FILENAME = "WagonCARTReader.java:";
     
    private Node rootNode;
    private Node lastNode;
@@ -282,7 +283,7 @@ public class WagonCARTReader {
                 }
                 
             } catch (Exception exc) {
-                throw new RuntimeException("Cannot create decision node for cart line: '"+line+"'", exc);
+                throw new RuntimeException(FILENAME + " Cannot create decision node for cart line: '"+line+"'" + "\tCause: " + exc.getCause().getMessage(), exc);
             }
 
             if (lastNode != null) {

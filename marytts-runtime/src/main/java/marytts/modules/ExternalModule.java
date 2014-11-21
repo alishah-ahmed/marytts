@@ -108,6 +108,8 @@ import org.xml.sax.SAXException;
 
 public class ExternalModule implements MaryModule
 {
+	private static final String FILENAME = "ExternalModule.java:";
+	
     private String name;
     private String cmd;
     private MaryDataType inputType;
@@ -264,7 +266,7 @@ public class ExternalModule implements MaryModule
                 logger.debug("No example text -- no power-on self test!");
             }
         } catch (Throwable t) {
-            throw new Error("Module " + name + ": Power-on self test failed.", t);
+            throw new Error("Module " + name + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
         }
         logger.info("Power-on self test complete.");
     }
@@ -370,7 +372,7 @@ public class ExternalModule implements MaryModule
                     setNeedToRestart(true);
                 }
                 removeRequest(request);
-                throw new IOException("Module " + name() + " cannot process.");
+                throw new IOException(FILENAME + " Module " + name() + " cannot process.");
             }
         }
         logger.info("Request processed");

@@ -90,7 +90,8 @@ import org.apache.log4j.Logger;
  * @author Marcela Charfuelan
  */
 public class GVModelSet {
-  
+  private static final String FILENAME = "GVModelSet.java:";
+	
   /** ____________________ GV related variables ____________________
   GV: Global mean and covariance (diagonal covariance only) it should be inverse for GV method Gradient
   weight by default is 1.0 but it can be between 0.0-2.0
@@ -281,7 +282,7 @@ public class GVModelSet {
      
    } catch (FileNotFoundException e) {
        logger.debug("FileNotFoundException: " + e.getMessage());
-       throw new FileNotFoundException("LoadTreeSet: " + e.getMessage());
+       throw new FileNotFoundException(FILENAME + " LoadTreeSet: " + e.getMessage() + "\tCause: " + e.getCause().getMessage());
    }
   
 }

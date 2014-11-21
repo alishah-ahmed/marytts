@@ -66,6 +66,8 @@ import org.w3c.dom.traversal.TreeWalker;
  */
 
 public class ProsodyGeneric extends InternalModule {
+	private static final String FILENAME = "ProsodyGeneric.java:";
+	
     protected String paragraphDeclination; // name of the config file entry
 	protected boolean applyParagraphDeclination; // specified per language in mary config files
 	
@@ -130,7 +132,7 @@ public class ProsodyGeneric extends InternalModule {
     	    try {
                 priorities.load(accentStream);
             } catch (IOException e) {
-                throw new MaryConfigurationException("can't load accent priorities from "+MaryProperties.getProperty(accentPriorities), e);
+                throw new MaryConfigurationException(FILENAME + " can't load accent priorities from "+MaryProperties.getProperty(accentPriorities) + "\tCause: " + e.getCause().getMessage(), e);
             } finally {
             	accentStream.close();
             }
@@ -151,7 +153,7 @@ public class ProsodyGeneric extends InternalModule {
             loadTobiPredRules(); // fill the rule map
             buildListMap(); // fill the list map
         } catch (Exception e) {
-            throw new MaryConfigurationException("Can't fill prosody maps ", e);
+            throw new MaryConfigurationException(FILENAME + " Can't fill prosody maps " + "\tCause: " + e.getCause().getMessage(), e);
         }
         
         convertToBI2Contour = MaryProperties.getBoolean("prosody.convertToBI2Contour", false);
@@ -162,7 +164,7 @@ public class ProsodyGeneric extends InternalModule {
                 try {
                     toBI2ContourMap = getToBI2ContourMap(externalFileName);
                 } catch (IOException e) {
-                    throw new MaryConfigurationException("can't read ToBI2Contour lookup file: "+externalFileName, e);
+                    throw new MaryConfigurationException(FILENAME + " can't read ToBI2Contour lookup file: "+externalFileName + "\tCause: " + e.getCause().getMessage(), e);
                 }
             } 
             else {
@@ -278,7 +280,7 @@ public class ProsodyGeneric extends InternalModule {
              in.close();
              return listSet; // put the set on the map
          } else {
-             throw new IllegalArgumentException("Unknown list file format: " + suffix);
+             throw new IllegalArgumentException(FILENAME + " Unknown list file format: " + suffix);
          }
 
      }
@@ -1455,10 +1457,10 @@ public class ProsodyGeneric extends InternalModule {
      */
     protected boolean checkList(String currentVal, String tokenValue) {
         if (currentVal == null || tokenValue == null) {
-            throw new NullPointerException("Received null argument");
+            throw new NullPointerException(FILENAME + " Received null argument");
         }
         if (!currentVal.startsWith("INLIST") && !currentVal.startsWith("!INLIST")) {
-            throw new IllegalArgumentException("currentVal does not start with INLIST or !INLIST");
+            throw new IllegalArgumentException(FILENAME + " currentVal does not start with INLIST or !INLIST");
         }
         boolean negation = currentVal.startsWith("!");
         String listName = currentVal.substring(currentVal.indexOf(":")+1);
@@ -1469,7 +1471,7 @@ public class ProsodyGeneric extends InternalModule {
             Set<String> set = (Set) listObj;
             contains = set.contains(tokenValue);
         } else {
-            throw new IllegalArgumentException("Unknown list representation: " + listObj);
+            throw new IllegalArgumentException(FILENAME + " Unknown list representation: " + listObj);
         }
         return !(contains && negation || !contains && !negation);
     }
@@ -1744,9 +1746,9 @@ public class ProsodyGeneric extends InternalModule {
      */
     protected boolean isPunctuation(Element token) {
         if (token == null)
-            throw new NullPointerException("Received null token");
+            throw new NullPointerException(FILENAME + " Received null token");
         if (!token.getTagName().equals(MaryXML.TOKEN))
-            throw new IllegalArgumentException("Expected <" + MaryXML.TOKEN + "> element, got <" + token.getTagName() + ">");
+            throw new IllegalArgumentException(FILENAME + " Expected <" + MaryXML.TOKEN + "> element, got <" + token.getTagName() + ">");
         
         String tokenText = MaryDomUtils.tokenText(token);
         

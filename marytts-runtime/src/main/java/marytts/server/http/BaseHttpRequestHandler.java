@@ -77,6 +77,8 @@ import org.apache.log4j.Logger;
  */
 public abstract class BaseHttpRequestHandler extends SimpleNHttpRequestHandler implements HttpRequestHandler  
 {
+	private static final String FILENAME = "BaseHttpRequestHandler.java:";
+	
     private final boolean useFileChannels = true;
     
     protected static Logger logger;
@@ -106,14 +108,14 @@ public abstract class BaseHttpRequestHandler extends SimpleNHttpRequestHandler i
             
             String method = request.getRequestLine().getMethod().toUpperCase(Locale.ENGLISH);
             if (!(method.equals("GET") || method.equals("POST"))) {
-                throw new MethodNotSupportedException(method + " method not supported");
+                throw new MethodNotSupportedException(FILENAME + " " + method + " method not supported");
             }
 
             String absPath = null;
             String query = null;
             if (uri != null && uri.length()>0) {
                 if (!uri.startsWith("/")) {
-                    throw new HttpException("Unexpected uri: '"+uri+"' does not start with a slash");
+                    throw new HttpException(FILENAME + " Unexpected uri: '"+uri+"' does not start with a slash");
                 }
                 int q = uri.indexOf('?');
                 if (q == -1) {

@@ -33,7 +33,6 @@ import marytts.features.FeatureVector;
  */
 public class FeatureArrayIndexer
 {
-    
     private MaryNode tree = null;
     private int[] featureSequence = null;
     private FeatureComparator c = new FeatureComparator( -1, null );
@@ -265,7 +264,7 @@ public class FeatureArrayIndexer
         int level = 0;
         /* Check if the tree is there */
         if ( tree == null ) {
-            throw new RuntimeException( "Can't retrieve candidate units if a tree has not been built." +
+            throw new RuntimeException("Can't retrieve candidate units if a tree has not been built." +
             " (Run this.deepSort(int[]) or this.deepFill(MaryNode) first.)" );
         }
         /* Walk down the tree */
@@ -312,7 +311,7 @@ public class FeatureArrayIndexer
         int level = 0;
         /* Check if the tree is there */
         if ( tree == null ) {
-            throw new RuntimeException( "Can't retrieve candidate units if a tree has not been built." +
+            throw new RuntimeException("Can't retrieve candidate units if a tree has not been built." +
                     " (Run this.deepSort(int[]) or this.deepFill(MaryNode) first.)" );
         }
 //      /**/

@@ -48,6 +48,8 @@ import marytts.util.io.StreamLogger;
  */
 
 public class MbrolaCaller extends SynthesisCallerBase {
+	private static final String FILENAME = "MbrolaCaller.java:";
+	
     private String baseCmd;
     private int timeout;
 
@@ -78,7 +80,7 @@ public class MbrolaCaller extends SynthesisCallerBase {
             baseCmd = findMbrolaBinary(basePath);
         }
         if (baseCmd == null) {
-            throw new NullPointerException("No mbrola binary found in "+basePath+" that can be run on this machine.");
+            throw new NullPointerException(FILENAME + " No mbrola binary found in "+basePath+" that can be run on this machine.");
         }
         logger.debug("Found mbrola binary in "+baseCmd);
         timeout = MaryProperties.needInteger("modules.timeout");
@@ -94,7 +96,7 @@ public class MbrolaCaller extends SynthesisCallerBase {
     public AudioInputStream synthesiseOneSection(String mbrolaData, Voice voice) throws IOException {
         assert getState() == MODULE_RUNNING;
         if (mbrolaData == null || voice == null) {
-            throw new IllegalArgumentException("Received null argument.");
+            throw new IllegalArgumentException(FILENAME + " Received null argument.");
         }
         assert voice instanceof MbrolaVoice : "Not an MBROLA voice: "+voice.getName();
         // Construct command line for external program call
@@ -151,7 +153,7 @@ public class MbrolaCaller extends SynthesisCallerBase {
             }
             logger.warn("Timeout occurred in attempt " + nrAttempts + " out of " + MAX_NR_ATTEMPTS);
         } while (nrAttempts < MAX_NR_ATTEMPTS);
-        throw new IOException("Repeated timeouts -- cannot synthesise.");
+        throw new IOException(FILENAME + " Repeated timeouts -- cannot synthesise.");
     }
 
     /**

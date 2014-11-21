@@ -56,6 +56,8 @@ import org.w3c.dom.traversal.NodeIterator;
 
 public class Synthesis extends InternalModule
 {
+	private static final String FILENAME = "Synthesis.java:";
+	
     private List<WaveformSynthesizer> waveformSynthesizers;
     private EffectsApplier effects;
     
@@ -125,7 +127,7 @@ public class Synthesis extends InternalModule
         if (defaultVoice == null) {
             defaultVoice = Voice.getDefaultVoice(locale);
             if (defaultVoice == null) {
-                throw new SynthesisException("No voice available for locale '"+locale+"'");
+                throw new SynthesisException(FILENAME + " No voice available for locale '"+locale+"'");
             }
             logger.info("No default voice associated with data. Assuming global default " +
                          defaultVoice.getName());

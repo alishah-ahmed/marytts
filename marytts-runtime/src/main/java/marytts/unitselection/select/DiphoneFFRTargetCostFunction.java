@@ -34,6 +34,8 @@ import marytts.unitselection.data.Unit;
 
 public class DiphoneFFRTargetCostFunction implements TargetCostFunction 
 {
+	private static final String FILENAME = "DiphoneFFRTargetCostFunction.java:";
+	
     protected FFRTargetCostFunction tcfForHalfphones;
     
     public DiphoneFFRTargetCostFunction()
@@ -109,9 +111,9 @@ public class DiphoneFFRTargetCostFunction implements TargetCostFunction
         if (target instanceof HalfPhoneTarget)
             return tcfForHalfphones.cost(target, unit);
         if (!(target instanceof DiphoneTarget))
-            throw new IllegalArgumentException("This target cost function can only be called for diphone and half-phone targets!");
+            throw new IllegalArgumentException(FILENAME + " This target cost function can only be called for diphone and half-phone targets!");
         if (!(unit instanceof DiphoneUnit))
-            throw new IllegalArgumentException("Diphone targets need diphone units!");
+            throw new IllegalArgumentException(FILENAME + " Diphone targets need diphone units!");
         DiphoneTarget dt = (DiphoneTarget) target;
         DiphoneUnit du = (DiphoneUnit) unit;
         return tcfForHalfphones.cost(dt.left, du.left) + tcfForHalfphones.cost(dt.right, du.right);

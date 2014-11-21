@@ -44,7 +44,7 @@ import org.w3c.dom.Element;
  */
 
 public class VocalizationSynthesizer {
-    
+    private static final String FILENAME = "VocalizationSynthesizer.java:";
     
     protected VocalizationSynthesisTechnology vSynthesizer;
     protected VocalizationSelector vSelector;
@@ -56,7 +56,7 @@ public class VocalizationSynthesizer {
     public VocalizationSynthesizer(Voice voice) throws MaryConfigurationException {
         
         if(!voice.hasVocalizationSupport()) {
-            throw new MaryConfigurationException("This voice "+voice.toString()+ " doesn't support synthesis of vocalizations");
+            throw new MaryConfigurationException(FILENAME + " This voice "+voice.toString()+ " doesn't support synthesis of vocalizations");
         }
         
         String unitFileName = MaryProperties.getFilename("voice."+voice.getName()+".vocalization.unitfile");
@@ -64,7 +64,7 @@ public class VocalizationSynthesizer {
         try {
             this.unitFileReader = new VocalizationUnitFileReader(unitFileName);
         } catch (IOException e) {
-            throw new MaryConfigurationException("can't read unit file");
+            throw new MaryConfigurationException(FILENAME + " can't read unit file" + "\tCause: " + e.getCause().getMessage());
         }
         
         String intonationFile = MaryProperties.getFilename("voice."+voice.getName()+".vocalization.intonationfile");
@@ -87,7 +87,7 @@ public class VocalizationSynthesizer {
             vSynthesizer = new HNMSynthesisTechnology(timelineFile, unitFileName, hnmFeatureFile, intonationFile, f0ContourImposeSupport);
         } 
         else {
-            throw new MaryConfigurationException("the property 'voice."+voice.getName()+".vocalization.synthesisTechnology' should be one among 'hnm', 'mlsa' and 'fdpsola'");
+            throw new MaryConfigurationException(FILENAME + " the property 'voice."+voice.getName()+".vocalization.synthesisTechnology' should be one among 'hnm', 'mlsa' and 'fdpsola'");
         }
         
         this.vSelector = new VocalizationSelector(voice);
@@ -138,7 +138,7 @@ public class VocalizationSynthesizer {
         }
 
         if(backchannelNumber >= numberOfBackChannels){
-            throw new IllegalArgumentException("This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+backchannelNumber);
+            throw new IllegalArgumentException(FILENAME + " This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+backchannelNumber);
         }
         
         return synthesizeSelectedVocalization(backchannelNumber, aft, domElement);
@@ -201,11 +201,11 @@ public class VocalizationSynthesizer {
         int numberOfBackChannels = unitFileReader.getNumberOfUnits();
         
         if( targetIndex >= numberOfBackChannels ){
-            throw new IllegalArgumentException("This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+targetIndex);
+            throw new IllegalArgumentException(FILENAME + " This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+targetIndex);
         }
         
         if( sourceIndex >= numberOfBackChannels ){
-            throw new IllegalArgumentException("This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+sourceIndex);
+            throw new IllegalArgumentException(FILENAME + " This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+sourceIndex);
         }
         
         VocalizationUnit bUnit = unitFileReader.getUnit(sourceIndex);
@@ -239,7 +239,7 @@ public class VocalizationSynthesizer {
         
         int numberOfBackChannels = unitFileReader.getNumberOfUnits();
         if(backchannelNumber >= numberOfBackChannels){
-            throw new IllegalArgumentException("This voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+backchannelNumber);
+            throw new IllegalArgumentException(FILENAME + " his voice has "+numberOfBackChannels+ " backchannels only. so it doesn't support unit number "+backchannelNumber);
         }
         
         VocalizationUnit bUnit = unitFileReader.getUnit(backchannelNumber);

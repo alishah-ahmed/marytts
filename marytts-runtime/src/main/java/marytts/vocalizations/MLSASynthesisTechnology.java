@@ -43,7 +43,7 @@ import marytts.util.math.Polynomial;
  */
 
 public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
-
+	private static final String FILENAME = "MLSASynthesisTechnology.java:";
     protected MLSAFeatureFileReader vMLSAFeaturesReader;
     protected VocalizationIntonationReader vIntonationReader;
     protected HMMData htsData;
@@ -62,11 +62,11 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
                 this.vIntonationReader = null;
             }
         } catch (IOException ioe) {
-            throw new MaryConfigurationException("Problem with loading mlsa feature file", ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem with loading mlsa feature file" + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
 
         if ( vMLSAFeaturesReader.getNumberOfUnits() <= 0 ) {
-            throw new MaryConfigurationException("mlsa feature file doesn't contain any data"); 
+            throw new MaryConfigurationException(FILENAME + " mlsa feature file doesn't contain any data"); 
         }
 
         this.imposePolynomialContour = imposePolynomialContour;
@@ -85,7 +85,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
             htsData.setF0Mean(0.0); // variable for f0 control, add f0           [0.0][0.0--100.0]
         }
         catch (Exception e) {
-            throw new MaryConfigurationException("htsData initialization failed.. ", e);
+            throw new MaryConfigurationException(FILENAME + " htsData initialization failed.. " + "\tCause: " + e.getCause().getMessage(), e);
         }
 
         par2speech = new HTSVocoder();
@@ -102,11 +102,11 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
     public AudioInputStream synthesize(int backchannelNumber, AudioFileFormat aft) throws SynthesisException {
 
         if ( backchannelNumber > vMLSAFeaturesReader.getNumberOfUnits() ) {
-            throw new IllegalArgumentException("requesting unit should not be more than number of units");
+            throw new IllegalArgumentException(FILENAME + " requesting unit should not be more than number of units");
         }
 
         if ( backchannelNumber < 0 ) {
-            throw new IllegalArgumentException("requesting unit index should not be less than zero");
+            throw new IllegalArgumentException(FILENAME + " requesting unit index should not be less than zero");
         }
 
         double[] lf0 = vMLSAFeaturesReader.getUnitLF0(backchannelNumber);
@@ -141,11 +141,11 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
     public AudioInputStream synthesizeUsingImposedF0(int sourceIndex, int targetIndex, AudioFileFormat aft) throws SynthesisException {
 
         if ( sourceIndex > vMLSAFeaturesReader.getNumberOfUnits() || targetIndex > vMLSAFeaturesReader.getNumberOfUnits() ) {
-            throw new IllegalArgumentException("requesting unit should not be more than number of units");
+            throw new IllegalArgumentException(FILENAME + " requesting unit should not be more than number of units");
         }
 
         if ( sourceIndex < 0 || targetIndex < 0 ) {
-            throw new IllegalArgumentException("requesting unit index should not be less than zero");
+            throw new IllegalArgumentException(FILENAME + " requesting unit index should not be less than zero");
         }
 
         boolean[] voiced = vMLSAFeaturesReader.getVoicedFrames(sourceIndex);
@@ -196,7 +196,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
         
         for ( int i=0; i < lf0.length; i++ ) {
             if ( lf0[i] > 0 && (Math.log(30) > lf0[i] || Math.log(1000) < lf0[i]) ) {
-                throw new SynthesisException("given log f0 values should be in the natural pitch range ");
+                throw new SynthesisException(FILENAME + " given log f0 values should be in the natural pitch range ");
             }
         }
         
@@ -213,7 +213,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
             mcepPst = new HTSPStream(mcepVsize*3, mgc.length, HMMData.FeatureType.MGC, 0);
             strPst = new HTSPStream(strVsize*3, strengths.length, HMMData.FeatureType.STR, 0);
         } catch (Exception e) {
-            throw new SynthesisException("HTSPStream initialiaztion failed.. "+e);
+            throw new SynthesisException(FILENAME + " HTSPStream initialiaztion failed.. " + "\tCause: " + e.getCause().getMessage() +e);
         }  
 
 
@@ -249,7 +249,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
         try {
             audio_double = par2speech.htsMLSAVocoder(lf0Pst, mcepPst, strPst, null, voiced, htsData, null);
         } catch (Exception e) {
-            throw new SynthesisException("MLSA vocoding failed .. "+e);
+            throw new SynthesisException(FILENAME + " MLSA vocoding failed .. " + "\tCause: " + e.getCause().getMessage()+e);
         }
 
         /* Normalise the signal before return, this will normalise between 1 and -1 */

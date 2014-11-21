@@ -51,6 +51,8 @@ import org.w3c.dom.traversal.NodeIterator;
 
 public class MaryXMLToMbrola extends InternalModule
 {
+	private static final String FILENAME = "MaryXMLToMbrola.java:";
+	
     public MaryXMLToMbrola()
     {
         super("MaryXMLToMbrola",
@@ -124,7 +126,7 @@ public class MaryXMLToMbrola extends InternalModule
     public String convertToMbrola(List<Element> phonesAndBoundaries, Voice voice)
     {
         if (!(voice instanceof MbrolaVoice))
-            throw new IllegalArgumentException("Expected an MBROLA voice, but "+voice.getName()+" is a "+voice.getClass());
+            throw new IllegalArgumentException(FILENAME + " Expected an MBROLA voice, but "+voice.getName()+" is a "+voice.getClass());
 
         MbrolaVoice mbrolaVoice = (MbrolaVoice) voice;
         StringBuilder buf = new StringBuilder();

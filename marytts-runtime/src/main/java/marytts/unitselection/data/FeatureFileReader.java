@@ -34,6 +34,8 @@ import marytts.util.data.MaryHeader;
 
 public class FeatureFileReader
 {
+	private static final String FILENAME = "FeatureFileReader.java:";
+	
     protected MaryHeader hdr;
     protected FeatureDefinition featureDefinition;
     protected FeatureVector[] featureVectors;
@@ -52,7 +54,7 @@ public class FeatureFileReader
             return new FeatureFileReader(fileName);
         else if (fileType == MaryHeader.HALFPHONE_UNITFEATS)
             return new HalfPhoneFeatureFileReader(fileName);
-        throw new MaryConfigurationException("File "+fileName+": Type "+fileType+" is not a known unit feature file type");
+        throw new MaryConfigurationException(FILENAME + " File "+fileName+": Type "+fileType+" is not a known unit feature file type");
     }
     
     
@@ -84,7 +86,7 @@ public class FeatureFileReader
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.UNITFEATS 
                 && hdr.getType() != MaryHeader.HALFPHONE_UNITFEATS) {
-            throw new IOException( "File [" + fileName + "] is not a valid Mary feature file." );
+            throw new IOException(FILENAME + " File [" + fileName + "] is not a valid Mary feature file." );
         }
         featureDefinition = new FeatureDefinition(dis);
         int numberOfUnits = dis.readInt();
@@ -107,7 +109,7 @@ public class FeatureFileReader
         hdr = new MaryHeader(bb);
         if ( hdr.getType() != MaryHeader.UNITFEATS 
                 && hdr.getType() != MaryHeader.HALFPHONE_UNITFEATS) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary feature file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary feature file." );
         }
         featureDefinition = new FeatureDefinition(bb);
         int numberOfUnits = bb.getInt();
@@ -155,7 +157,7 @@ public class FeatureFileReader
     public FeatureVector[] featureVectorMapping(FeatureDefinition newFeatureDefinition) {
         
         if(!this.featureDefinition.contains(newFeatureDefinition)){
-            throw new RuntimeException("the new feature definition is not a subset of original feature definition");
+            throw new RuntimeException(FILENAME + " the new feature definition is not a subset of original feature definition");
         }
         
         int numberOfFeatures = newFeatureDefinition.getNumberOfFeatures();
@@ -164,7 +166,7 @@ public class FeatureFileReader
         int noContiniousFeatures = newFeatureDefinition.getNumberOfContinuousFeatures();
         
         if( numberOfFeatures != (noByteFeatures+noShortFeatures+noContiniousFeatures) ) {
-            throw new RuntimeException("The sum of byte, short and continious features are not equal to number of features");
+            throw new RuntimeException(FILENAME + " The sum of byte, short and continious features are not equal to number of features");
         }
         
         String[] featureNames = new String[numberOfFeatures]; 

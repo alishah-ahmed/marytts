@@ -49,6 +49,8 @@ import org.w3c.dom.Element;
  *
  */
 public class HMMModel extends Model {
+	private static final String FILENAME = "HMMModel.java:";
+	
     /**
      * Configuration information of the model
      */
@@ -100,7 +102,7 @@ public class HMMModel extends Model {
     throws MaryConfigurationException {
         super(featureManager, voiceName, dataStream, targetAttributeName, targetAttributeFormat, featureName, predictFrom, applyTo);
         if(!(targetAttributeName.contentEquals("d") || targetAttributeName.contentEquals("f0"))) {                         
-            throw new MaryConfigurationException("targetAttributeName = " + targetAttributeName + " Not known");
+            throw new MaryConfigurationException(FILENAME + " targetAttributeName = " + targetAttributeName + " Not known");
         }
         load();
     }
@@ -255,7 +257,7 @@ public class HMMModel extends Model {
           }
           return um;
         } catch (Exception e) {
-            throw new MaryConfigurationException("Error searching in tree when predicting duration. ",  e);
+            throw new MaryConfigurationException(FILENAME + " Error searching in tree when predicting duration. " + "\tCause: " + e.getCause().getMessage(),  e);
          }
     }
     
@@ -320,7 +322,7 @@ public class HMMModel extends Model {
           //um = null;
               
         } catch (Exception e) {
-            throw new MaryConfigurationException("Error generating F0 out of HMMs trees and pdfs. ",  e);
+            throw new MaryConfigurationException(FILENAME + " Error generating F0 out of HMMs trees and pdfs. " + "\tCause: " + e.getCause().getMessage(),  e);
         }     
         
     }
@@ -390,7 +392,7 @@ public class HMMModel extends Model {
           }
           return um;
         } catch (Exception e) {
-            throw new MaryConfigurationException("Error searching in tree when creating utterance model. ",  e);
+            throw new MaryConfigurationException(FILENAME + " Error searching in tree when creating utterance model. " + "\tCause: " + e.getCause().getMessage(),  e);
          }
     }
         
@@ -401,7 +403,7 @@ public class HMMModel extends Model {
      */
     @Override
     protected float evaluate(Target target) { 
-        throw new RuntimeException("This method should never be called");
+        throw new RuntimeException(FILENAME + " This method should never be called");
     }
     
 }

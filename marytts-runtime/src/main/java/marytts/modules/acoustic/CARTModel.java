@@ -37,6 +37,8 @@ import marytts.unitselection.select.Target;
  * 
  */
 public class CARTModel extends Model {
+	private static final String FILENAME = "CARTModel.java:";
+	
     private DirectedGraph cart;
 
     public CARTModel(FeatureProcessorManager featureManager, String voiceName, InputStream dataStream, String targetAttributeName,
@@ -55,10 +57,10 @@ public class CARTModel extends Model {
         try {
             predictionFeatureNames = cart.getFeatureDefinition().getFeatureNames();
         } catch (NullPointerException e) {
-            throw new IOException("Could not get FeatureDefinition from CART", e);
+            throw new IOException(FILENAME + " Could not get FeatureDefinition from CART" + "\tCause: " + e.getCause().getMessage(), e);
         }
         if (predictionFeatureNames.length() == 0) { // isEmpty
-            throw new IOException("Could not get prediction feature names");
+            throw new IOException(FILENAME + " Could not get prediction feature names" + "\tCause: ");
         }
     }
 
@@ -73,14 +75,14 @@ public class CARTModel extends Model {
         try {
             result = (float[]) cart.interpret(target);
         } catch (IllegalArgumentException e) {
-            throw new Exception("Could not interpret target '" + target + "'", e);
+            throw new Exception(FILENAME + " Could not interpret target '" + target + "'" + "\tCause: " + e.getCause().getMessage(), e);
         }
 
         float value = 0;
         try {
             value = result[1]; // assuming result is [stdev, val]
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new Exception("Could not handle predicted value: '" + value + "'", e);
+            throw new Exception(FILENAME + " Could not handle predicted value: '" + value + "'" + "\tCause: " + e.getCause().getMessage(), e);
         }
         return value;
     }

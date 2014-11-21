@@ -42,6 +42,8 @@ import com.sun.speech.freetts.Utterance;
 
 public class XML2UttAcoustParams extends XML2UttBase
 {
+	private static final String FILENAME = "XML2UttAcoustParams.java:";
+	
     public XML2UttAcoustParams() {
         super("XML2Utt AcoustParams",
               MaryDataType.ACOUSTPARAMS,
@@ -58,7 +60,7 @@ public class XML2UttAcoustParams extends XML2UttBase
         com.sun.speech.freetts.Voice freettsVoice =
             FreeTTSVoices.getFreeTTSVoice(maryVoice);
         if (freettsVoice == null) {
-            throw new NullPointerException("No FreeTTS voice for mary voice " + maryVoice.getName());
+            throw new NullPointerException(FILENAME + " No FreeTTS voice for mary voice " + maryVoice.getName());
         }
         Utterance utterance = new Utterance(freettsVoice);
         utterance.createRelation(Relation.TOKEN);

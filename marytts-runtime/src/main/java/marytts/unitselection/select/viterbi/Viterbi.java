@@ -85,6 +85,8 @@ import org.apache.log4j.Logger;
  */
 public  class Viterbi
 {
+	private static final String FILENAME = "Viterbi.java:";
+	
     //a general flag indicating which type of viterbi search
 	//to use:
     //-1: unlimited search
@@ -150,7 +152,7 @@ public  class Viterbi
         lastPoint = new ViterbiPoint(null);
         last.setNext(lastPoint);
         if (beamSize == 0) {
-            throw new IllegalStateException("General beam search not implemented");
+            throw new IllegalStateException(FILENAME + " General beam search not implemented");
     	}
     }
    
@@ -193,7 +195,7 @@ public  class Viterbi
         lastPoint = new ViterbiPoint(null);
         last.setNext(lastPoint);
         if (beamSize == 0) {
-            throw new IllegalStateException("General beam search not implemented");
+            throw new IllegalStateException(FILENAME + " General beam search not implemented");
         }
     }
 	
@@ -237,9 +239,9 @@ public  class Viterbi
                     point.next = newP;
                     candidates = database.getCandidates(left);
                     if (candidates.size() == 0) 
-                        throw new SynthesisException("Cannot even find any halfphone unit for target "+left);
+                        throw new SynthesisException(FILENAME + " Cannot even find any halfphone unit for target "+left);
                 } else {
-                    throw new SynthesisException("Cannot find any units for target "+target);
+                    throw new SynthesisException(FILENAME + " Cannot find any units for target "+target);
                 }
             }
             assert candidates.size() > 0;

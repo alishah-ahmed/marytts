@@ -21,6 +21,8 @@ package marytts.unitselection.data;
 
 public class DiphoneUnit extends Unit
 {
+	private static final String FILENAME = "DiphoneUnit.java:";
+	
     public final Unit left;
     public final Unit right;
     
@@ -34,12 +36,12 @@ public class DiphoneUnit extends Unit
 
     public int getIndex()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneUnits.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneUnits.");
     }
     
     public boolean isEdgeUnit()
     {
-        throw new IllegalStateException("This method should not be called for DiphoneUnits.");
+        throw new IllegalStateException(FILENAME + " This method should not be called for DiphoneUnits.");
     }
 
     public String toString()

@@ -43,6 +43,7 @@ import java.util.Map;
  *
  */
 public class WeightFunctionManager {
+	private static final String FILENAME = "WeightFunctionManager.java:";
     
     public static Map weightFuncMap;
     
@@ -84,7 +85,7 @@ public class WeightFunctionManager {
                 strKnown = strKnown + "; " + known[i];
             }
             strKnown = strKnown + ".";
-            throw new RuntimeException( "The weighting manager was asked for the unknown weighting function type ["
+            throw new RuntimeException(FILENAME + " The weighting manager was asked for the unknown weighting function type ["
                     + funcName + "]. Known types are: " + strKnown );
         }
         /* If the function has a parameter, parse and set it */

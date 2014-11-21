@@ -52,6 +52,8 @@ import org.xml.sax.SAXException;
 
 public abstract class SynthesisCallerBase extends InternalModule
 {
+	private static final String FILENAME = "SynthesisCallerBase.java:";
+	
     protected SynthesisCallerBase(String name, MaryDataType inputType,
 			       MaryDataType outputType)
     {
@@ -124,7 +126,7 @@ public abstract class SynthesisCallerBase extends InternalModule
         } else if (MaryDataType.get("MBROLA") != null && inputType().equals(MaryDataType.get("MBROLA"))) {
             sectioner = new MbrolaVoiceSectioner(input, defaultVoice);
         } else {
-            throw new RuntimeException("Don't know how to handle input type '"+inputType()+"'");
+            throw new RuntimeException(FILENAME + " Don't know how to handle input type '"+inputType()+"'");
         }
         VoiceSection section = null;
         // A first pass identifying the voice with the highest sampling rate:

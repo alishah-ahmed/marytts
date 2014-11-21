@@ -32,6 +32,8 @@ import marytts.util.io.General;
 
 
 public class LPCDatagram extends Datagram {
+	private static final String FILENAME = "LPCDatagram.java:";
+	
     protected short[] quantizedCoeffs;
     protected byte[] quantizedResidual;
     
@@ -75,10 +77,10 @@ public class LPCDatagram extends Datagram {
         super(raf.readLong()); // duration
         int len = raf.readInt();
         if ( len < 0 ) {
-            throw new IOException( "Can't create a datagram with a negative data size [" + len + "]." );
+            throw new IOException(FILENAME + " Can't create a datagram with a negative data size [" + len + "]." );
         }
         if (len < 2*lpcOrder) {
-            throw new IOException("LPC datagram too short (len="+len+"): cannot be shorter than the space needed for lpc coefficients (2*"+lpcOrder+")");
+            throw new IOException(FILENAME + " LPC datagram too short (len="+len+"): cannot be shorter than the space needed for lpc coefficients (2*"+lpcOrder+")");
         }
         // For speed concerns, read into a byte[] first:
         byte[] buf = new byte[len];
@@ -107,10 +109,10 @@ public class LPCDatagram extends Datagram {
         super(bb.getLong()); // duration
         int len = bb.getInt();
         if ( len < 0 ) {
-            throw new IOException( "Can't create a datagram with a negative data size [" + len + "]." );
+            throw new IOException(FILENAME + " Can't create a datagram with a negative data size [" + len + "]." );
         }
         if (len < 2*lpcOrder) {
-            throw new IOException("LPC datagram too short (len="+len+"): cannot be shorter than the space needed for lpc coefficients (2*"+lpcOrder+")");
+            throw new IOException(FILENAME + " LPC datagram too short (len="+len+"): cannot be shorter than the space needed for lpc coefficients (2*"+lpcOrder+")");
         }
 
         int residualLength = len - 2*lpcOrder;

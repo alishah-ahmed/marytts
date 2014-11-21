@@ -34,6 +34,8 @@ import marytts.util.data.MaryHeader;
 
 public class HalfPhoneFeatureFileReader extends FeatureFileReader
 {
+	private static final String FILENAME = "HalfPhoneFeatureFileReader.java:";
+	
     protected FeatureDefinition leftWeights;
     protected FeatureDefinition rightWeights;
 
@@ -56,7 +58,7 @@ public class HalfPhoneFeatureFileReader extends FeatureFileReader
         /* Load the Mary header */
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.HALFPHONE_UNITFEATS ) {
-            throw new IOException( "File [" + fileName + "] is not a valid Mary Halfphone Features file." );
+            throw new IOException(FILENAME + " File [" + fileName + "] is not a valid Mary Halfphone Features file." );
         }
         leftWeights = new FeatureDefinition(dis);
         rightWeights = new FeatureDefinition(dis);
@@ -82,7 +84,7 @@ public class HalfPhoneFeatureFileReader extends FeatureFileReader
         /* Load the Mary header */
         hdr = new MaryHeader(bb);
         if ( hdr.getType() != MaryHeader.HALFPHONE_UNITFEATS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary Halfphone Features file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary Halfphone Features file." );
         }
         leftWeights = new FeatureDefinition(bb);
         rightWeights = new FeatureDefinition(bb);

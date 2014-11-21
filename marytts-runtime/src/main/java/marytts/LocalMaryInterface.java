@@ -46,7 +46,7 @@ import marytts.util.MaryRuntimeUtils;
  *
  */
 public class LocalMaryInterface implements MaryInterface {
-	
+	private static final String FILENAME = "LocalMaryInterface.java:";
 	private MaryDataType inputType;
 	private MaryDataType outputType;
 	private Locale locale;
@@ -62,7 +62,8 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			MaryRuntimeUtils.ensureMaryStarted();
 		} catch (Exception e) {
-			throw new MaryConfigurationException("Cannot start MARY server", e);
+//			System.out.println("ERROR: " + FILENAME + " Cannot start MARY server" + "\tCause: " + e.getCause().getMessage());
+			throw new MaryConfigurationException(FILENAME + " Cannot start MARY server" + "\tCause: " + e.getCause().getMessage(), e);
 		}
 		
 		init();
@@ -101,9 +102,9 @@ public class LocalMaryInterface implements MaryInterface {
 	public void setInputType(String newInputType) throws IllegalArgumentException {
 		inputType = MaryDataType.get(newInputType);
 		if (inputType == null) {
-			throw new IllegalArgumentException("No such type: "+newInputType);
+			throw new IllegalArgumentException(FILENAME + " No such type: "+newInputType);
 		} else if (!inputType.isInputType()) {
-			throw new IllegalArgumentException("Not an input type: "+newInputType);
+			throw new IllegalArgumentException(FILENAME + " Not an input type: "+newInputType);
 		}
 	}
 	
@@ -122,9 +123,9 @@ public class LocalMaryInterface implements MaryInterface {
 	public void setOutputType(String newOutputType) throws IllegalArgumentException {
 		outputType = MaryDataType.get(newOutputType);
 		if (outputType == null) {
-			throw new IllegalArgumentException("No such type: "+newOutputType);
+			throw new IllegalArgumentException(FILENAME + " No such type: "+newOutputType);
 		} else if (!outputType.isOutputType()) {
-			throw new IllegalArgumentException("Not an output type: "+newOutputType);
+			throw new IllegalArgumentException(FILENAME + " Not an output type: "+newOutputType);
 		}
 	}
 	
@@ -142,7 +143,7 @@ public class LocalMaryInterface implements MaryInterface {
 	@Override
 	public void setLocale(Locale newLocale) throws IllegalArgumentException {
 		if (MaryConfig.getLanguageConfig(newLocale) == null) {
-			throw new IllegalArgumentException("Unsupported locale: "+newLocale);
+			throw new IllegalArgumentException(FILENAME + " Unsupported locale: "+newLocale);
 		}
 		locale = newLocale;
 		voice = Voice.getDefaultVoice(locale);
@@ -164,7 +165,7 @@ public class LocalMaryInterface implements MaryInterface {
 	public void setVoice(String voiceName) throws IllegalArgumentException {
 		voice = Voice.getVoice(voiceName);
 		if (voice == null) {
-			throw new IllegalArgumentException("No such voice: "+voiceName);
+			throw new IllegalArgumentException(FILENAME + " No such voice: "+voiceName);
 		}
 		locale = voice.getLocale();
 		setAudioFileFormatForVoice();
@@ -324,31 +325,31 @@ public class LocalMaryInterface implements MaryInterface {
 
 	private void verifyOutputTypeIsXML() {
 		if (!outputType.isXMLType()) {
-			throw new IllegalArgumentException("Cannot provide XML output for non-XML-based output type "+outputType);
+			throw new IllegalArgumentException(FILENAME + " Cannot provide XML output for non-XML-based output type "+outputType);
 		}
 	}
 
 	private void verifyInputTypeIsXML() {
 		if (!inputType.isXMLType()) {
-			throw new IllegalArgumentException("Cannot provide XML input for non-XML-based input type "+inputType);
+			throw new IllegalArgumentException(FILENAME + " Cannot provide XML input for non-XML-based input type "+inputType);
 		}
 	}
 	
 	private void verifyInputTypeIsText() {
 		if (inputType.isXMLType()) {
-			throw new IllegalArgumentException("Cannot provide plain-text input for XML-based input type "+inputType);
+			throw new IllegalArgumentException(FILENAME + " Cannot provide plain-text input for XML-based input type "+inputType);
 		}
 	}
 
 	private void verifyOutputTypeIsAudio() {
 		if (!outputType.equals(MaryDataType.AUDIO)) {
-			throw new IllegalArgumentException("Cannot provide audio output for non-audio output type "+outputType);
+			throw new IllegalArgumentException(FILENAME + " Cannot provide audio output for non-audio output type "+outputType);
 		}
 	}
 
 	private void verifyOutputTypeIsText() {
 		if (outputType.isXMLType() || !outputType.isTextType()) {
-			throw new IllegalArgumentException("Cannot provide text output for non-text output type "+outputType);
+			throw new IllegalArgumentException(FILENAME + " Cannot provide text output for non-text output type "+outputType);
 		}
 	}
 
@@ -363,7 +364,7 @@ public class LocalMaryInterface implements MaryInterface {
 	private void verifyVoiceIsAvailableForLocale() {
 		if (outputType.equals(MaryDataType.AUDIO)) {
 			if (getAvailableVoices(locale).isEmpty()) {
-				throw new IllegalArgumentException("No voice is available for Locale: " + locale);
+				throw new IllegalArgumentException(FILENAME + " No voice is available for Locale: " + locale);
 			}
 		}
 	}
@@ -373,7 +374,7 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			in.setData(text);
 		} catch (Exception ioe) {
-			throw new SynthesisException(ioe);
+			throw new SynthesisException(FILENAME + "\tCause: " + ioe.getCause().getMessage(), ioe);
 		}
 		return in;
 	}
@@ -383,7 +384,7 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			in.setDocument(doc);
 		} catch (Exception ioe) {
-			throw new SynthesisException(ioe);
+			throw new SynthesisException(FILENAME + "\tCause: " + ioe.getCause().getMessage(), ioe);
 		}
 		return in;
 	}
@@ -394,7 +395,7 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			r.process();
 		} catch (Exception e) {
-			throw new SynthesisException("cannot process", e);
+			throw new SynthesisException(FILENAME + " cannot process" + "\tCause: " + e.getCause().getMessage(), e);
 		}
 		return r.getOutputData();
 	}

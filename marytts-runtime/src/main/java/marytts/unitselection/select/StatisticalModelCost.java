@@ -33,6 +33,7 @@ import marytts.util.data.MaryHeader;
  */
 public class StatisticalModelCost implements StatisticalCostFunction
 {
+	private static final String FILENAME = "StatisticalModelCost.java:";
 
     protected SCostFileReader sCostReader;
     protected float sCostWeight;
@@ -69,7 +70,7 @@ public class StatisticalModelCost implements StatisticalCostFunction
             sCostWeight = Float.parseFloat(MaryProperties.getProperty(configPrefix+".sCostWeight", "1.0"));
             sCostReader = new SCostFileReader(sCostFileName);
         } catch (Exception e) {
-            throw new MaryConfigurationException("Cannot initialise scost model", e);
+            throw new MaryConfigurationException(FILENAME + " Cannot initialise scost model" + "\tCause: " + e.getCause().getMessage(), e);
         }
     }
      

@@ -36,7 +36,7 @@ public class AudioEffects {
 			try {
 				effs.add((AudioEffect) Class.forName(className).newInstance());
 			} catch (Exception e) {
-				throw new Error("Cannot set up effect class '"+className+"'", e);
+				throw new Error("Cannot set up effect class '"+className+"'" + "\tCause: " + e.getCause().getMessage(), e);
 			}
 		}
 		return effs;

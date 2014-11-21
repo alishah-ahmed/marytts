@@ -49,6 +49,7 @@ import org.xml.sax.SAXException;
  */
 public class MaryDomUtils extends DomUtils
 {
+	private static final String FILENAME = "MaryDomUtils.java:";
 
     /**
      * Create a new <mtu> element, inserted in the tree at the position of t
@@ -64,7 +65,7 @@ public class MaryDomUtils extends DomUtils
     {
         if (!t.getNodeName().equals(MaryXML.TOKEN))
             throw new DOMException(DOMException.INVALID_ACCESS_ERR,
-                                   "Only t elements allowed, received " +
+            		FILENAME + " Only t elements allowed, received " +
                                    t.getNodeName() + ".");
         Element parent = (Element) t.getParentNode();
         assert parent != null;
@@ -87,7 +88,7 @@ public class MaryDomUtils extends DomUtils
     {
         if (!t.getNodeName().equals(MaryXML.TOKEN))
             throw new DOMException(DOMException.INVALID_ACCESS_ERR,
-                                   "Only t elements allowed, received " +
+            		FILENAME + " Only t elements allowed, received " +
                                    t.getNodeName() + ".");
         Element parent = (Element) t.getParentNode();
         Document doc = t.getOwnerDocument();
@@ -105,7 +106,7 @@ public class MaryDomUtils extends DomUtils
     {
         if (!t.getNodeName().equals(MaryXML.TOKEN))
             throw new DOMException(DOMException.INVALID_ACCESS_ERR,
-                                   "Only t elements allowed, received " +
+            		FILENAME + " Only t elements allowed, received " +
                                    t.getNodeName() + ".");
         // Return all text nodes under t, concatenated and trimmed.
         return getPlainTextBelow(t).trim();
@@ -118,7 +119,7 @@ public class MaryDomUtils extends DomUtils
     {
         if (!t.getNodeName().equals(MaryXML.TOKEN))
             throw new DOMException(DOMException.INVALID_ACCESS_ERR,
-                                   "Only " + MaryXML.TOKEN + " elements allowed, received " +
+            		FILENAME + " Only " + MaryXML.TOKEN + " elements allowed, received " +
                                    t.getNodeName() + ".");
         // Here, we rely on the fact that a t element has at most
         // one TEXT child with non-whitespace content:
@@ -150,7 +151,7 @@ public class MaryDomUtils extends DomUtils
         if (!doc.getDocumentElement().getTagName().equals(MaryXML.MARYXML))
             throw new DOMException
                 (DOMException.INVALID_ACCESS_ERR,
-                 "Expected <" + MaryXML.MARYXML + "> document, received " +
+                		FILENAME + " Expected <" + MaryXML.MARYXML + "> document, received " +
                  doc.getDocumentElement().getTagName() + ".");
         Element boundary = MaryXML.createElement(doc, MaryXML.BOUNDARY);
         boundary.setAttribute("breakindex", "3");
@@ -189,14 +190,14 @@ public class MaryDomUtils extends DomUtils
         try {
         	mnw.output(doc, baos);
         } catch (TransformerException te) {
-        	throw new MaryConfigurationException("Cannot serialize document for Schema-valid parsing", te);
+        	throw new MaryConfigurationException(FILENAME + " Cannot serialize document for Schema-valid parsing" + "\tCause: " + te.getCause().getMessage(), te);
         }
         try {
         	parseDocument(new ByteArrayInputStream(baos.toByteArray()), true /*validating*/);
         } catch (ParserConfigurationException pce) {
-        	throw new MaryConfigurationException("Problem setting up parser", pce);
+        	throw new MaryConfigurationException(FILENAME + " Problem setting up parser" + "\tCause: " + pce.getCause().getMessage(), pce);
         } catch (IOException ioe) {
-        	throw new MaryConfigurationException("IOException should not occur but it does", ioe);
+        	throw new MaryConfigurationException(FILENAME + " IOException should not occur but it does" + "\tCause: " + ioe.getCause().getMessage(), ioe);
         } catch (SAXException se) {
         	// document is not schema valid
         	return false;

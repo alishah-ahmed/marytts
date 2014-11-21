@@ -49,6 +49,8 @@ import marytts.exceptions.NoSuchPropertyException;
 
 public class MaryProperties
 {
+	private static final String FILENAME = "MaryProperties.java:";
+	
     /** The mary base directory, e.g. /usr/local/mary */
     public static String maryBase()
     {
@@ -287,7 +289,7 @@ public class MaryProperties
     {
         String value = getProperty(property);
         if (value == null) {
-            throw new NoSuchPropertyException("Missing value `" + property + "' in configuration files");
+            throw new NoSuchPropertyException(FILENAME + " Missing value `" + property + "' in configuration files");
         }
         return value;
     }
@@ -303,12 +305,12 @@ public class MaryProperties
     {
         String value = getProperty(property);
         if (value == null) {
-            throw new NoSuchPropertyException("Missing property `" + property + "' in configuration files");
+            throw new NoSuchPropertyException(FILENAME + " Missing property `" + property + "' in configuration files");
         }
         try {
             return Boolean.valueOf(value).booleanValue();
         } catch (NumberFormatException e) {
-            throw new NoSuchPropertyException("Boolean property `" + property + "' in configuration files has wrong value `" + value + "'");
+            throw new NoSuchPropertyException(FILENAME + " Boolean property `" + property + "' in configuration files has wrong value `" + value + "'" + "\tCause: " + e.getCause().getMessage());
         }
     }
     
@@ -326,7 +328,7 @@ public class MaryProperties
     {
         String value = getProperty(property);
         if (value == null) {
-            throw new NoSuchPropertyException("Missing property `" + property + "' in configuration files");
+            throw new NoSuchPropertyException(FILENAME + " Missing property `" + property + "' in configuration files");
         }
         if (value.equals("auto")) {
             return (needProperty("server").equals("commandline") ? false:true);
@@ -347,12 +349,12 @@ public class MaryProperties
     {
         String value = getProperty(property);
         if (value == null) {
-            throw new NoSuchPropertyException("Missing property `" + property + "' in configuration files");
+            throw new NoSuchPropertyException(FILENAME + " Missing property `" + property + "' in configuration files");
         }
         try {
             return Integer.decode(value).intValue();
         } catch (NumberFormatException e) {
-            throw new NoSuchPropertyException("Integer property `" + property + "' in configuration files has wrong value `" + value + "'");
+            throw new NoSuchPropertyException(FILENAME + " Integer property `" + property + "' in configuration files has wrong value `" + value + "'" + "\tCause: " + e.getCause().getMessage());
         }
     }
 
@@ -369,7 +371,7 @@ public class MaryProperties
     {
         String filename = expandPath(needProperty(property));
         if (!new File(filename).canRead()) {
-            throw new NoSuchPropertyException("Cannot read file `" + filename +
+            throw new NoSuchPropertyException(FILENAME + " Cannot read file `" + filename +
                                 "'. Check property `" + property +
 								"' in configuration files");
         }
@@ -411,7 +413,7 @@ public class MaryProperties
 			String classpathLocation = propertyValue.substring("jar:".length());
 			stream = MaryProperties.class.getResourceAsStream(classpathLocation);
 			if (stream == null) {
-				throw new MaryConfigurationException("For property '"+propertyName+"', no classpath resource available at '"+classpathLocation+"'");
+				throw new MaryConfigurationException(FILENAME + " For property '"+propertyName+"', no classpath resource available at '"+classpathLocation+"'");
 			}
 		} else {
 			String fileName = MaryProperties.getFilename(propertyName);
@@ -436,9 +438,9 @@ public class MaryProperties
 		try {
 			c = Class.forName(value);
 		} catch (ClassNotFoundException e) {
-			throw new NoSuchPropertyException("Cannot find class `" + value +
+			throw new NoSuchPropertyException(FILENAME + " Cannot find class `" + value +
 				"'. Check property `" + property +
-				"' in configuration files");
+				"' in configuration files" + "\tCause: " + e.getCause().getMessage());
 		}
 		return c;
 	}

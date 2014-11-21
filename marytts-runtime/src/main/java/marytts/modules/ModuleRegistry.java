@@ -48,6 +48,8 @@ import org.apache.log4j.Logger;
  */
 public class ModuleRegistry
 {
+	private static final String FILENAME = "ModuleRegistry.java:";
+	
     private static MultiKeyMap mkm;
     private static List<MaryModule> allModules;
     private static boolean registrationComplete;
@@ -117,7 +119,7 @@ public class ModuleRegistry
     throws IllegalStateException
     {
         if (registrationComplete)
-            throw new IllegalStateException("cannot register modules after registration is complete");
+            throw new IllegalStateException(FILENAME + " cannot register modules after registration is complete");
         MaryDataType type = module.inputType();
         Object o = mkm.get(type, locale, voice);
         List<MaryModule> l;
@@ -159,7 +161,7 @@ public class ModuleRegistry
     throws IllegalStateException
     {
         if (registrationComplete)
-            throw new IllegalStateException("Registration has already completed, cannot do that a second time");
+            throw new IllegalStateException(FILENAME + " Registration has already completed, cannot do that a second time");
 
         registrationComplete = true;
         MaryDataType.setRegistrationComplete();
@@ -182,7 +184,7 @@ public class ModuleRegistry
     public static List<MaryModule> getAllModules()
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about modules while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about modules while registration is ongoing");
         return Collections.unmodifiableList(allModules);
     }
 
@@ -195,7 +197,7 @@ public class ModuleRegistry
     // TODO: what should happen with this method when we parameterise modules, so that there can be several instances of the same class?
     public static MaryModule getModule(Class<?> moduleClass) {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about modules while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about modules while registration is ongoing");
         for (Iterator<MaryModule> it = allModules.iterator(); it.hasNext();) {
             MaryModule m = it.next();
             if (moduleClass.isInstance(m)) {
@@ -234,11 +236,11 @@ public class ModuleRegistry
         MaryDataType sourceType, MaryDataType targetType, Locale locale, Voice voice)
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about modules while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about modules while registration is ongoing");
         if (sourceType == null)
-            throw new NullPointerException("Received null source type");
+            throw new NullPointerException(FILENAME + " Received null source type");
         if (targetType == null)
-            throw new NullPointerException("Received null target type");
+            throw new NullPointerException(FILENAME + " Received null target type");
         //if (locale == null)
         //    throw new NullPointerException("Received null locale");
         LinkedList<MaryDataType> seenTypes = new LinkedList<MaryDataType>();
@@ -341,7 +343,7 @@ public class ModuleRegistry
     throws IllegalStateException
     {
         if (!registrationComplete)
-            throw new IllegalStateException("Cannot inquire about modules while registration is ongoing");
+            throw new IllegalStateException(FILENAME + " Cannot inquire about modules while registration is ongoing");
         LinkedHashMap<MaryDataType,MaryModule> results = new LinkedHashMap<MaryDataType,MaryModule>();
         // First, get all results:
         List<List<MaryModule>> listOfLists = new ArrayList<List<MaryModule>>();

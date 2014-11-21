@@ -38,6 +38,8 @@ import org.apache.commons.collections.map.MultiKeyMap;
  */
 public class FeatureRegistry
 {
+	private static final String FILENAME = "FeatureRegistry.java:";
+	
     /**
      * No instances of this class.
      */
@@ -197,7 +199,7 @@ public class FeatureRegistry
             while (st.hasMoreTokens()) {
                 String feature = st.nextToken();
                 if (mgr.getFeatureProcessor(feature) == null) {
-                    throw new IllegalArgumentException("Feature processor manager '"+mgr.getClass().toString()+"' does not know the feature '"+feature+"'");
+                    throw new IllegalArgumentException(FILENAME + " Feature processor manager '"+mgr.getClass().toString()+"' does not know the feature '"+feature+"'");
                 }
                 
             }

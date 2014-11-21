@@ -56,6 +56,8 @@ import org.w3c.dom.Element;
  */
 public class InterpolatingSynthesizer implements WaveformSynthesizer
 {
+	private static final String FILENAME = "InterpolatingSynthesizer.java:";
+	
     protected Logger logger;
     
     /**
@@ -113,10 +115,10 @@ public class InterpolatingSynthesizer implements WaveformSynthesizer
 
         // 2. do unit selection with each;
         if (!(voice1 instanceof UnitSelectionVoice)) {
-            throw new IllegalArgumentException("Voices of type "+voice.getClass().getName()+" not supported!");
+            throw new IllegalArgumentException(FILENAME + " Voices of type "+voice.getClass().getName()+" not supported!");
         }
         if (!(voice2 instanceof UnitSelectionVoice)) {
-            throw new IllegalArgumentException("Voices of type "+voice.getClass().getName()+" not supported!");
+            throw new IllegalArgumentException(FILENAME + " Voices of type "+voice.getClass().getName()+" not supported!");
         }
         UnitSelectionVoice usv1 = (UnitSelectionVoice) voice1;
         UnitSelectionVoice usv2 = (UnitSelectionVoice) voice2;
@@ -139,7 +141,7 @@ public class InterpolatingSynthesizer implements WaveformSynthesizer
             PrintWriter pw = new PrintWriter(sw);
             for (Iterator selIt=selectedUnits1.iterator(); selIt.hasNext(); )
                 pw.println(selIt.next());
-            throw new SynthesisException("For voice "+voice1.getName()+", problems generating audio for unit chain: "+sw.toString(), ioe);
+            throw new SynthesisException(FILENAME + " For voice "+voice1.getName()+", problems generating audio for unit chain: "+sw.toString() + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
         DoubleDataSource audioSource1 = new AudioDoubleDataSource(audio1);
         UnitConcatenator unitConcatenator2 = usv2.getConcatenator();
@@ -151,7 +153,7 @@ public class InterpolatingSynthesizer implements WaveformSynthesizer
             PrintWriter pw = new PrintWriter(sw);
             for (Iterator selIt=selectedUnits2.iterator(); selIt.hasNext(); )
                 pw.println(selIt.next());
-            throw new SynthesisException("For voice "+voice2.getName()+", problems generating audio for unit chain: "+sw.toString(), ioe);
+            throw new SynthesisException(FILENAME + " For voice "+voice2.getName()+", problems generating audio for unit chain: "+sw.toString() + "\tCause: " + ioe.getCause().getMessage(), ioe);
         }
         DoubleDataSource audioSource2 = new AudioDoubleDataSource(audio2);
         // Retrieve actual durations from list of units:

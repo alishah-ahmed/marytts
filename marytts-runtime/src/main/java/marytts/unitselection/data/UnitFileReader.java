@@ -48,6 +48,7 @@ import marytts.util.data.MaryHeader;
  */
 public class UnitFileReader
 {
+	private static final String FILENAME = "UnitFileReader.java:";
 
     private MaryHeader hdr = null;
     private int numberOfUnits = 0;
@@ -88,17 +89,17 @@ public class UnitFileReader
         /* Load the Mary header */
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.UNITS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary Units file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary Units file." );
         }
         /* Read the number of units */
         numberOfUnits = dis.readInt();
         if ( numberOfUnits < 0 ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] has a negative number of units. Aborting." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] has a negative number of units. Aborting." );
         }
         /* Read the sample rate */
         sampleRate = dis.readInt();
         if ( sampleRate < 0 ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] has a negative number sample rate. Aborting." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] has a negative number sample rate. Aborting." );
         }
         units = new Unit[numberOfUnits];
         /* Read the start times and durations */

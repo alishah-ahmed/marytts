@@ -31,7 +31,8 @@ import marytts.features.FeatureVector;
  *
  */
 public class SyllableIterator implements Iterator<Syllable> {
-
+	private static final String FILENAME = "SyllableIterator.java:";
+	
     private FeatureFileReader features;
     private int fromUnitIndex;
     private int toUnitIndex;
@@ -95,7 +96,7 @@ public class SyllableIterator implements Iterator<Syllable> {
         }
         if (nextSyllable == null) {
             // no more syllables
-            throw new NoSuchElementException("no more syllables!");
+            throw new NoSuchElementException(FILENAME + " no more syllables!");
         }
         Syllable retval = nextSyllable;
         nextSyllable = null;
@@ -103,7 +104,7 @@ public class SyllableIterator implements Iterator<Syllable> {
     }
 
     public void remove() {
-        throw new UnsupportedOperationException("This iterator cannot remove syllables");
+        throw new UnsupportedOperationException(FILENAME + " This iterator cannot remove syllables");
     }
     
     

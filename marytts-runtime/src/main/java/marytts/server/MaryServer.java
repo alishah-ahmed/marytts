@@ -168,7 +168,8 @@ import org.apache.log4j.Logger;
  * @author Marc Schr&ouml;der
  */
 public class MaryServer implements Runnable {
-
+	private static final String FILENAME = "MaryServer.java:";
+	
     private ServerSocket server;
     private Logger logger;
     private int runningNumber = 1;
@@ -192,7 +193,7 @@ public class MaryServer implements Runnable {
                 clients.execute(new ClientHandler(client));
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
         }
     }
 
@@ -216,7 +217,7 @@ public class MaryServer implements Runnable {
                 clientOut = new PrintWriter(clientUTFOutput, true);
                 handle();
             } catch (UnsupportedEncodingException ex) {
-                throw new AssertionError("UTF-8 is always a supported encoding.");
+                throw new AssertionError("UTF-8 is always a supported encoding." + "\tCause: " + ex.getCause().getMessage());
             } catch (Exception e) {
                 logger.info("Error parsing request:", e);
                 if (clientOut == null) {
@@ -266,7 +267,7 @@ public class MaryServer implements Runnable {
                 // complain
                 String nl = System.getProperty("line.separator");
                 throw new Exception(
-                        "Expected either a line" + nl + "MARY IN=<INPUTTYPE> OUT=<OUTPUTTYPE> [AUDIO=<AUDIOTYPE>]" + nl + "or a line containing only a number identifying a request.");
+                		FILENAME + " Expected either a line" + nl + "MARY IN=<INPUTTYPE> OUT=<OUTPUTTYPE> [AUDIO=<AUDIOTYPE>]" + nl + "or a line containing only a number identifying a request.");
             }
 
         }
@@ -395,12 +396,12 @@ public class MaryServer implements Runnable {
             AudioFormat audioFormat = voice.dbAudioFormat();
             if (audioFileFormatType.toString().equals("MP3")) {
                 if (!MaryRuntimeUtils.canCreateMP3()) {
-                    throw new UnsupportedAudioFileException("Conversion to MP3 not supported.");
+                    throw new UnsupportedAudioFileException(FILENAME + " Conversion to MP3 not supported.");
                 }
                 audioFormat = MaryRuntimeUtils.getMP3AudioFormat();
             } else if (audioFileFormatType.toString().equals("Vorbis")) {
                 if (!MaryRuntimeUtils.canCreateOgg()) {
-                    throw new UnsupportedAudioFileException("Conversion to OGG Vorbis format not supported.");
+                    throw new UnsupportedAudioFileException(FILENAME + " Conversion to OGG Vorbis format not supported.");
                 }
                 audioFormat = MaryRuntimeUtils.getOggAudioFormat();
             }
@@ -429,7 +430,7 @@ public class MaryServer implements Runnable {
         private String parseProtocolParameter(String token, String expectedParameterType, String parameterDescription) throws Exception {
             StringTokenizer tt = new StringTokenizer(token, "=");
             if (tt.countTokens() != 2 || !tt.nextToken().equals(expectedParameterType)) {
-                throw new Exception("Expected " + expectedParameterType + "=<" + parameterDescription + ">");
+                throw new Exception(FILENAME + " Expected " + expectedParameterType + "=<" + parameterDescription + ">");
             }
             return tt.nextToken();
         }
@@ -456,31 +457,31 @@ public class MaryServer implements Runnable {
 
         private MaryDataType parseSynthesisRequiredInputType(StringTokenizer t) throws Exception {
             if (!t.hasMoreTokens()) {
-                throw new Exception("Expected IN=<INPUTTYPE>");
+                throw new Exception(FILENAME + " Expected IN=<INPUTTYPE>");
             }
             String input = parseProtocolParameter(t.nextToken(), "IN", "INPUTTYPE");
             MaryDataType inputType = MaryDataType.get(input);
             if (inputType == null) {
-                throw new Exception("Invalid input type: " + input);
+                throw new Exception(FILENAME + " Invalid input type: " + input);
             }
             return inputType;
         }
 
         private MaryDataType parseSynthesisRequiredOutputType(StringTokenizer t) throws Exception {
             if (!t.hasMoreTokens()) {
-                throw new Exception("Expected OUT=<OUTPUTTYPE>");
+                throw new Exception(FILENAME + " Expected OUT=<OUTPUTTYPE>");
             }
             String output = parseProtocolParameter(t.nextToken(), "OUT", "OUTPUTTYPE");
             MaryDataType outputType = MaryDataType.get(output);
             if (outputType == null) {
-                throw new Exception("Invalid output type: " + output);
+                throw new Exception(FILENAME + " Invalid output type: " + output);
             }
             return outputType;
         }
 
         private Locale parseSynthesisRequiredLocale(StringTokenizer t) throws Exception {
             if (!t.hasMoreTokens()) {
-                throw new Exception("Expected LOCALE=<locale>");
+                throw new Exception(FILENAME + " Expected LOCALE=<locale>");
             }
             String localeString = parseProtocolParameter(t.nextToken(), "LOCALE", "locale");
             return MaryUtils.string2locale(localeString);
@@ -514,7 +515,7 @@ public class MaryServer implements Runnable {
             // Verify that the request is non-null and that the
             // corresponding socket comes from the same IP address:
             if (request == null || infoSocket == null || !infoSocket.getInetAddress().equals(client.getInetAddress())) {
-                throw new Exception("Invalid identification number.");
+                throw new Exception(FILENAME + " Invalid identification number.");
                 // Don't be more specific, because in general it is none of
                 // their business whether in principle someone else has
                 // this id.

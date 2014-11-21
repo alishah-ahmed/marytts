@@ -40,6 +40,8 @@ import org.xml.sax.SAXException;
  */
 public class InstallFileParser 
 {
+	private static final String FILENAME = "InstallFileParser.java:";
+	
     private static DocumentBuilder builder;
     
     static {
@@ -66,11 +68,11 @@ public class InstallFileParser
     		doc = builder.parse(in);
     		in.close();
     	} catch (Exception e) {
-    		throw new IOException("Problem parsing install file "+installFile, e);
+    		throw new IOException(FILENAME + " Problem parsing install file "+installFile + "\tCause: " + e.getCause().getMessage(), e);
     	}
         Element docElt = doc.getDocumentElement();
         if (!docElt.getTagName().equals("marytts-install")) {
-            throw new IllegalArgumentException("Expected <marytts-install> document, but found root node <"+docElt.getTagName()+">!");
+            throw new IllegalArgumentException(FILENAME + " Expected <marytts-install> document, but found root node <"+docElt.getTagName()+">!");
         }
         NodeList languageElements = docElt.getElementsByTagName("language");
         for (int i=0, max = languageElements.getLength(); i<max; i++) {

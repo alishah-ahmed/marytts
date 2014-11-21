@@ -35,6 +35,7 @@ import Jama.Matrix;
 * @author marcela
 */
 public class SFFS {
+	private static final String FILENAME = "SFFS.java:";
   
   protected boolean interceptTerm = true;
   protected boolean logSolution = false;
@@ -388,7 +389,7 @@ public class SFFS {
         }
       }
     } catch ( Exception e ) {
-      throw new RuntimeException( "Problem reading file " + dataFile, e );
+      throw new RuntimeException(FILENAME + " Problem reading file " + dataFile + "\tCause: " + e.getCause().getMessage(), e );
     }  
     System.out.println();
     return Y;

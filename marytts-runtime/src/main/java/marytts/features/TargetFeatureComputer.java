@@ -36,6 +36,8 @@ import marytts.unitselection.select.Target;
  */
 public class TargetFeatureComputer
 {
+	private static final String FILENAME = "TargetFeatureComputer.java";
+	
     protected ByteValuedFeatureProcessor[] byteValuedDiscreteFeatureProcessors;
     protected ShortValuedFeatureProcessor[] shortValuedDiscreteFeatureProcessors;
     protected ContinuousFeatureProcessor[] continuousFeatureProcessors;
@@ -65,7 +67,7 @@ public class TargetFeatureComputer
             String name = st.nextToken();
             MaryFeatureProcessor fp = manager.getFeatureProcessor(name);
             if (fp == null) {
-                throw new IllegalArgumentException("Unknown feature processor: "+name);
+                throw new IllegalArgumentException(FILENAME + " Unknown feature processor: "+name);
             } else if (fp instanceof ByteValuedFeatureProcessor) {
                 byteValuedFeatureProcessors.add(fp);
             } else if (fp instanceof ShortValuedFeatureProcessor) {
@@ -73,7 +75,7 @@ public class TargetFeatureComputer
             } else if (fp instanceof ContinuousFeatureProcessor) {
                 continuousValuedFeatureProcessors.add(fp);
             } else {
-                throw new IllegalArgumentException("Unknown feature processor type "+fp.getClass()+" for feature processor: "+name);
+                throw new IllegalArgumentException(FILENAME + " Unknown feature processor type "+fp.getClass()+" for feature processor: "+name);
             }
         }
         this.byteValuedDiscreteFeatureProcessors = (ByteValuedFeatureProcessor[])byteValuedFeatureProcessors.toArray(new ByteValuedFeatureProcessor[0]);
@@ -116,7 +118,7 @@ public class TargetFeatureComputer
             try {
                 featureDefinition = new FeatureDefinition(reader, false);
             } catch (IOException e) {
-                throw new RuntimeException("Problem creating feature definition", e);
+                throw new RuntimeException(FILENAME + " Problem creating feature definition" + "\tCause: " + e.getCause().getMessage(), e);
             }
         }
         return featureDefinition;
@@ -161,7 +163,7 @@ public class TargetFeatureComputer
         if (bytes.length != byteValuedDiscreteFeatureProcessors.length
                 || shorts.length != shortValuedDiscreteFeatureProcessors.length
                 || floats.length != continuousFeatureProcessors.length) {
-            throw new IllegalArgumentException("Number of features in argument does not match number of feature processors");
+            throw new IllegalArgumentException(FILENAME + " Number of features in argument does not match number of feature processors");
         }
         for (int i=0; i<bytes.length; i++) {
             if (buf.length() > 0) buf.append(" ");

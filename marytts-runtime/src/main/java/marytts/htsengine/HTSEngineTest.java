@@ -93,7 +93,7 @@ import marytts.util.io.LEDataInputStream;
  *
  */
 public class HTSEngineTest {
-    
+    private static final String FILENAME = "HTSEngineTest.java:";
     
     public class PhonemeDuration {
         private String phone;
@@ -740,15 +740,15 @@ public class HTSEngineTest {
             /* Wait and check the exit value */
             proc.waitFor();
             if ( proc.exitValue() != 0 ) {
-                throw new RuntimeException( task + " computation failed on file [" + baseName + "]!\n"
+                throw new RuntimeException(FILENAME + " " + task + " computation failed on file [" + baseName + "]!\n"
                         + "Command line was: [" + cmdLine + "]." );
             }
         }
         catch ( IOException e ) {
-            throw new RuntimeException( task + " computation provoked an IOException on file [" + baseName + "].", e );
+            throw new RuntimeException(FILENAME + " " + task + " computation provoked an IOException on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
         }
         catch ( InterruptedException e ) {
-            throw new RuntimeException( task + " computation interrupted on file [" + baseName + "].", e );
+            throw new RuntimeException(FILENAME + " " + task + " computation interrupted on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
         }
         
     }    
@@ -789,16 +789,16 @@ public class HTSEngineTest {
             /* Wait and check the exit value */
             proc.waitFor();
             if ( proc.exitValue() != 0 ) {
-                throw new RuntimeException( task + " computation failed on file [" + baseName + "]!\n"
+                throw new RuntimeException(FILENAME + " " + task + " computation failed on file [" + baseName + "]!\n"
                         + "Command line was: [" + cmdLine + "]." );
             }
                        
         }
         catch ( IOException e ) {
-            throw new RuntimeException( task + " computation provoked an IOException on file [" + baseName + "].", e );
+            throw new RuntimeException(FILENAME + " " + task + " computation provoked an IOException on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
         }
         catch ( InterruptedException e ) {
-            throw new RuntimeException( task + " computation interrupted on file [" + baseName + "].", e );
+            throw new RuntimeException(FILENAME + " " + task + " computation interrupted on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
         }
         
     } 

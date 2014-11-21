@@ -58,6 +58,8 @@ import org.w3c.dom.traversal.TreeWalker;
 
 public class CARTF0Modeller extends InternalModule
 {
+	private static final String FILENAME = "CARTF0Modeller.java:";
+	
     protected CART leftCart;
     protected CART midCart;
     protected CART rightCart;
@@ -181,7 +183,7 @@ public class CARTF0Modeller extends InternalModule
             }
             
             if (currentLeftCart == null) {
-                throw new NullPointerException("Do not have f0 prediction tree");
+                throw new NullPointerException(FILENAME + " Do not have f0 prediction tree");
             }
             
             TreeWalker tw = MaryDomUtils.createTreeWalker(sentence, MaryXML.SYLLABLE);

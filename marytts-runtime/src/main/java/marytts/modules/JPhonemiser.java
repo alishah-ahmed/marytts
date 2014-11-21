@@ -57,7 +57,8 @@ import org.w3c.dom.traversal.NodeIterator;
 
 public class JPhonemiser extends InternalModule
 {
-
+	private static final String FILENAME = "JPhonemiser.java:";
+	
     protected Map<String, List<String>> userdict;
     protected FSTLookup lexicon;
     protected TrainedLTS lts;
@@ -401,7 +402,7 @@ public class JPhonemiser extends InternalModule
     {
         if (!t.getTagName().equals(MaryXML.TOKEN))
             throw new DOMException(DOMException.INVALID_ACCESS_ERR,
-                                   "Only t elements allowed, received " +
+            		FILENAME + " Only t elements allowed, received " +
                                    t.getTagName() + ".");
         if (t.hasAttribute("ph")) {
             String prevPh = t.getAttribute("ph");

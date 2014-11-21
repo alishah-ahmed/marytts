@@ -64,6 +64,8 @@ import com.twmacinta.util.MD5;
  */
 public class ComponentDescription extends Observable implements Comparable<ComponentDescription>
 {
+	private static final String FILENAME = "ComponentDescription.java:";
+	
     public enum Status {AVAILABLE, DOWNLOADING, PAUSED, VERIFYING, DOWNLOADED, INSTALLING, CANCELLED, ERROR, INSTALLED};
 
     public static final String installerNamespaceURI = "http://mary.dfki.de/installer";
@@ -146,7 +148,7 @@ public class ComponentDescription extends Observable implements Comparable<Compo
         try {
             this.license = new URL(licenseElement.getAttribute("href").trim().replaceAll(" ", "%20"));
         } catch (MalformedURLException mue) {
-            new Exception("Invalid license URL -- ignoring", mue).printStackTrace();
+            new Exception(FILENAME + " Invalid license URL -- ignoring" + "\tCause: " + mue.getCause().getMessage(), mue).printStackTrace();
             this.license = null;
         }
         Element packageElement = (Element) xmlDescription.getElementsByTagName("package").item(0);
@@ -171,7 +173,7 @@ public class ComponentDescription extends Observable implements Comparable<Compo
                 }
                 locations.add(new URL(urlString));
             } catch (MalformedURLException mue) {
-                new Exception("Invalid location -- ignoring", mue).printStackTrace();
+                new Exception(FILENAME + " Invalid location -- ignoring" + "\tCause: " + mue.getCause().getMessage(), mue).printStackTrace();
             }
         }
         archiveFile = new File(System.getProperty("mary.downloadDir"), packageFilename);
@@ -421,7 +423,7 @@ public class ComponentDescription extends Observable implements Comparable<Compo
      */
     public boolean uninstall() {
         if (status != Status.INSTALLED) {
-            throw new IllegalStateException("Can only uninstall installed components, but status is "+status.toString());
+            throw new IllegalStateException(FILENAME + " Can only uninstall installed components, but status is "+status.toString());
         }
         assert installedFilesNames != null; // when we have an installed component, we must also have this information
 /*        int answer = JOptionPane.showConfirmDialog(null, "Completely remove "+getComponentTypeString()+" '"+toString()+"' from the file system?", "Confirm component uninstall", JOptionPane.YES_NO_OPTION);
@@ -577,14 +579,14 @@ public class ComponentDescription extends Observable implements Comparable<Compo
             return;
         }
         if (this.status != Status.INSTALLED) {
-            throw new IllegalStateException("Can only set an available update if status is installed, but status is "+status.toString());
+            throw new IllegalStateException(FILENAME + " Can only set an available update if status is installed, but status is "+status.toString());
         }
         if (!aDesc.getName().equals(name)) {
-            throw new IllegalArgumentException("Only a component with the same name can be an update of this component; but this has name "
+            throw new IllegalArgumentException(FILENAME + " Only a component with the same name can be an update of this component; but this has name "
                     +name+", and argument has name "+aDesc.getName());
         }
         if (!(isVersionNewerThan(aDesc.getVersion(), version))) {
-            throw new IllegalArgumentException("Version "+aDesc.getVersion()+" is not higher than installed version "+version);
+            throw new IllegalArgumentException(FILENAME + " Version "+aDesc.getVersion()+" is not higher than installed version "+version);
         }
         if (availableUpdate != null) { // already have an available update: we will replace it with aDesc only if aDesc has a higher version number
             if (!(isVersionNewerThan(aDesc.getVersion(), availableUpdate.getVersion()))) {
@@ -701,19 +703,19 @@ public class ComponentDescription extends Observable implements Comparable<Compo
     				String location = c.getHeaderField("Location");
     				c.disconnect();
     				if (location == null) {
-    					throw new SecurityException("No redirect location given.");
+    					throw new SecurityException(FILENAME + " No redirect location given.");
     				}
     				URL target = new URL(base, location);
     				String protocol = target.getProtocol();
     				if (!(protocol.equals("http") || protocol.equals("https"))) {
-    					throw new SecurityException("Redirect supported to http and https protocols only, but found '"+protocol+"'");
+    					throw new SecurityException(FILENAME + " Redirect supported to http and https protocols only, but found '"+protocol+"'");
     				}
     				url = target;
     			} else {
     				return c;
     			}
     		}
-    		throw new SecurityException("More than five redirects, aborting");
+    		throw new SecurityException(FILENAME + " More than five redirects, aborting");
     	}
     	
         public void run()
@@ -732,14 +734,14 @@ public class ComponentDescription extends Observable implements Comparable<Compo
                     connection = openAndRedirectIfRequired(u);
                     // Make sure response code is in the 200 range.
                     if (connection.getResponseCode() / 100 != 2) {
-                        throw new IOException("Non-OK response code: "+connection.getResponseCode()+" ("+connection.getResponseMessage()+")");
+                        throw new IOException(FILENAME + " Non-OK response code: "+connection.getResponseCode()+" ("+connection.getResponseMessage()+")");
                     }
                     System.out.println("...connected");
                     // Check for valid content length.
                     int contentLength = connection.getContentLength();
                     if (contentLength > -1) {
                     	if (contentLength != packageSize) {
-                    		throw new IOException("Expected package size "+packageSize+", but web server reports "+contentLength);
+                    		throw new IOException(FILENAME + " Expected package size "+packageSize+", but web server reports "+contentLength);
                     	}
                     }
 

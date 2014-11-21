@@ -54,7 +54,8 @@ import org.apache.log4j.Logger;
  */
 public class DirectedGraphWriter
 {
-    
+    private static final String FILENAME = "DirectedGraphWriter.java:";
+	
     protected Logger logger = MaryUtils.getLogger(this.getClass().getName());
 
     /**
@@ -118,7 +119,7 @@ public class DirectedGraphWriter
             pw.close();
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    "Error dumping graph to standard output");
+                    FILENAME + " Error dumping graph to standard output" + "\tCause: " + ioe.getCause().getMessage());
             newIOE.initCause(ioe);
             throw newIOE;
         }
@@ -194,7 +195,7 @@ public class DirectedGraphWriter
 
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    "Error dumping CART to output stream");
+                    FILENAME + " Error dumping CART to output stream" + "\tCause: " + ioe.getCause().getMessage());
             newIOE.initCause(ioe);
             throw newIOE;
         }

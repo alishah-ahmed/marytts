@@ -40,6 +40,8 @@ import org.w3c.dom.UserDataHandler;
  */
 public class Target
 {
+	private static final String FILENAME = "Target.java:";
+	
     protected String name;
     protected Element maryxmlElement;
     
@@ -108,7 +110,7 @@ public class Target
             return f0;
         } else {
             if (maryxmlElement == null)
-                throw new NullPointerException("Target "+name+" does not have a maryxml element.");
+                throw new NullPointerException(FILENAME + " Target "+name+" does not have a maryxml element.");
             float logf0 = new MaryGenericFeatureProcessors.UnitLogF0().process(this);
             if (logf0 == 0) f0 = 0;
             else f0 = (float) Math.exp(logf0);

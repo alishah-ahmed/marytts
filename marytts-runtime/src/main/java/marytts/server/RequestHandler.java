@@ -55,6 +55,8 @@ import org.xml.sax.SAXParseException;
  */
 
 public class RequestHandler extends Thread {
+	private static final String FILENAME = "RequestHandler.java:";
+	
     private Request request;
     private Socket infoSocket;
     private Socket dataSocket;
@@ -75,13 +77,13 @@ public class RequestHandler extends Thread {
         Socket dataSocket,
         Reader inputReader) {
         if (request == null)
-            throw new NullPointerException("Cannot handle null request");
+            throw new NullPointerException(FILENAME + " Cannot handle null request");
         this.request = request;
         if (infoSocket == null)
-            throw new NullPointerException("Received null infoSocket");
+            throw new NullPointerException(FILENAME + " Received null infoSocket");
         this.infoSocket = infoSocket;
         if (dataSocket == null)
-            throw new NullPointerException("Received null dataSocket");
+            throw new NullPointerException(FILENAME + " Received null dataSocket");
         this.dataSocket = dataSocket;
         this.setName("RH " + request.getId());
         logger = MaryUtils.getLogger(this.getName());

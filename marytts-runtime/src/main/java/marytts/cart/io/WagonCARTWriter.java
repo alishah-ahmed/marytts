@@ -42,7 +42,8 @@ import marytts.util.data.MaryHeader;
  * @author Anna Hunecke, Marc Schröder, Marcela Charfuelan
  */
 public class WagonCARTWriter {
-
+	private static final String FILENAME = "WagonCARTWriter.java:";
+	
     /**
      * Dump the CARTs in the cart map
      * to destinationDir/CARTS.bin
@@ -91,7 +92,7 @@ public class WagonCARTWriter {
             pw.close();
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    "Error dumping CART to standard output");
+                    FILENAME + " Error dumping CART to standard output" + "\tCause: " + ioe.getCause().getMessage());
             newIOE.initCause(ioe);
             throw newIOE;
         }
@@ -111,7 +112,7 @@ public class WagonCARTWriter {
             toWagonFormat(cart.getRootNode(), (DataOutputStream) os, null, null);
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    "Error dumping CART to output stream");
+                    FILENAME + " Error dumping CART to output stream" + "\tCause: " + ioe.getCause().getMessage());
             newIOE.initCause(ioe);
             throw newIOE;
         }

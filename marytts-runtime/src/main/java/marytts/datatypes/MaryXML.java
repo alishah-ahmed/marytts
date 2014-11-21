@@ -39,6 +39,8 @@ import org.w3c.dom.Node;
 
 public class MaryXML
 {
+	private static final String FILENAME = "MaryXML.java:";
+	
     public static final String MARYXML = "maryxml";
     public static final String PARAGRAPH = "p"; 
     public static final String SENTENCE = "s";
@@ -102,12 +104,12 @@ public class MaryXML
     public static Element createElement(Document doc, String elementName)
     {
     	if (doc == null)
-    		throw new NullPointerException("Received null document");
+    		throw new NullPointerException(FILENAME + " Received null document");
     	if (!doc.getDocumentElement().getTagName().equals(getRootTagname()))
-    		throw new IllegalArgumentException("Not a maryxml document: "
+    		throw new IllegalArgumentException(FILENAME + " Not a maryxml document: "
     		    + doc.getDocumentElement().getTagName());
     	if (doc.getDocumentElement().getNamespaceURI() == null) {
-    	    throw new IllegalArgumentException("Document has no namespace!");
+    	    throw new IllegalArgumentException(FILENAME + " Document has no namespace!");
     	}
 		if (!doc.getDocumentElement().getNamespaceURI().equals(getNamespace()))
 			throw new IllegalArgumentException("Document has wrong namespace: "
@@ -118,7 +120,7 @@ public class MaryXML
 	public static Element appendChildElement(Node node, String childName)
 	{
 		if (node == null)
-			throw new NullPointerException("Received null node");
+			throw new NullPointerException(FILENAME + " Received null node");
 	    return (Element) node.appendChild(createElement(node.getOwnerDocument(), childName));
 	}
 

@@ -50,6 +50,8 @@ import org.w3c.dom.traversal.TreeWalker;
 
 public class SoPF0Modeller extends InternalModule
 {
+  private static final String FILENAME = "SoPF0Modeller.java:";
+	
   protected SoP leftSop;
   protected SoP midSop;
   protected SoP rightSop;
@@ -194,7 +196,7 @@ public class SoPF0Modeller extends InternalModule
           }
           
           if (currentLeftSop == null) {
-              throw new NullPointerException("Do not have f0 prediction Sop model");
+              throw new NullPointerException(FILENAME + " Do not have f0 prediction Sop model");
           }
           
           TreeWalker tw = MaryDomUtils.createTreeWalker(sentence, MaryXML.SYLLABLE);

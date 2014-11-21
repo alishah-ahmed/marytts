@@ -32,7 +32,8 @@ import marytts.features.FeatureVector;
 import marytts.util.data.MaryHeader;
 
 public class VocalizationFeatureFileReader extends marytts.unitselection.data.FeatureFileReader {
-
+	private static final String FILENAME = "VocalizationFeatureFileReader.java:";
+	
     public VocalizationFeatureFileReader( String fileName ) throws IOException, MaryConfigurationException
     {
         load(fileName);
@@ -48,7 +49,7 @@ public class VocalizationFeatureFileReader extends marytts.unitselection.data.Fe
         /* Load the Mary header */
         hdr = new MaryHeader( dis );
         if ( hdr.getType() != MaryHeader.LISTENERFEATS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary listener feature file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary listener feature file." );
         }
         featureDefinition = new FeatureDefinition(dis);
         int numberOfUnits = dis.readInt();
@@ -70,7 +71,7 @@ public class VocalizationFeatureFileReader extends marytts.unitselection.data.Fe
         /* Load the Mary header */
         hdr = new MaryHeader(bb);
         if ( hdr.getType() != MaryHeader.LISTENERFEATS ) {
-            throw new MaryConfigurationException( "File [" + fileName + "] is not a valid Mary listener feature file." );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] is not a valid Mary listener feature file." );
         }
         featureDefinition = new FeatureDefinition(bb);
         int numberOfUnits = bb.getInt();

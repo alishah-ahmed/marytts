@@ -47,6 +47,8 @@ import org.apache.log4j.Logger;
 public class AudioStreamNHttpEntity
 extends AbstractHttpEntity implements ProducingNHttpEntity, Runnable
 {
+	private static final String FILENAME = "AudioStreamNHttpEntity.java:";
+	
     private Request maryRequest;
     private AudioInputStream audio;
     private AudioFileFormat.Type audioType;
@@ -103,7 +105,7 @@ extends AbstractHttpEntity implements ProducingNHttpEntity, Runnable
     }
 
     public void writeTo(final OutputStream outstream) throws IOException {
-        throw new RuntimeException("Should not be called");
+        throw new RuntimeException(FILENAME + " Should not be called");
     }
 
     

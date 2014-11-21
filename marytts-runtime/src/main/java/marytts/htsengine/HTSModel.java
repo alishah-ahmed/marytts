@@ -78,7 +78,8 @@ import marytts.htsengine.HMMData.FeatureType;
  * @author Marcela Charfuelan
  */
 public class HTSModel {
-  
+  private static final String FILENAME = "HTSModel.java:";
+	
   //private String name;              /* the name of this HMM, it includes ph(-2)^ph(-1)-ph(0)+ph(1)=ph(2) + context features */
   private String phoneName;         /* the name of the phone corresponding to this model, ph(0) in name */
 
@@ -154,7 +155,7 @@ public class HTSModel {
 		case LF0:
 			return Arrays.copyOf(lf0Mean[i], lf0Mean[i].length);
 		default:
-			throw new RuntimeException("You must not ask me about DUR");
+			throw new RuntimeException(FILENAME + " You must not ask me about DUR");
 		}
 	}
 
@@ -169,7 +170,7 @@ public class HTSModel {
 		case LF0:
 			return Arrays.copyOf(lf0Variance[i], lf0Variance[i].length);
 		default:
-			throw new RuntimeException("You must not ask me about DUR");
+			throw new RuntimeException(FILENAME + " You must not ask me about DUR");
 		}
 	}
   /**

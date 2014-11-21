@@ -40,6 +40,8 @@ import org.w3c.dom.Element;
  * 
  */
 public class Phone {
+	private static final String FILENAME = "Phone.java:";
+	
     private HalfPhoneTarget leftTarget;
 
     private HalfPhoneTarget rightTarget;
@@ -80,7 +82,7 @@ public class Phone {
             this.rightTarget = (HalfPhoneTarget) rightUnit.getTarget();
         } catch (NullPointerException e) {
             if (leftTarget == null) {
-                throw new IllegalArgumentException("A phone's left and right halves cannot both be null!");
+                throw new IllegalArgumentException(FILENAME + " A phone's left and right halves cannot both be null!" + "\tCause: " + e.getCause().getMessage());
             } else {
                 // leave at null
             }
@@ -421,7 +423,7 @@ public class Phone {
     public void setLeftTargetF0Values(double[] f0TargetValues) throws IllegalArgumentException {
         int numberOfLeftUnitFrames = getNumberOfLeftUnitFrames();
         if (f0TargetValues.length != numberOfLeftUnitFrames) {
-            throw new IllegalArgumentException("Wrong number of F0 targets (" + f0TargetValues.length
+            throw new IllegalArgumentException(FILENAME + " Wrong number of F0 targets (" + f0TargetValues.length
                     + ") for number of frames (" + numberOfLeftUnitFrames + " in halfphone: '" + leftUnit.toString() + "'");
         }
         this.leftF0Targets = f0TargetValues;
@@ -437,7 +439,7 @@ public class Phone {
      */
     public void setRightTargetF0Values(double[] f0TargetValues) {
         if (f0TargetValues.length != getNumberOfRightUnitFrames()) {
-            throw new IllegalArgumentException("Wrong number of F0 targets (" + f0TargetValues.length
+            throw new IllegalArgumentException(FILENAME + " Wrong number of F0 targets (" + f0TargetValues.length
                     + ") for number of frames (" + getNumberOfRightUnitFrames() + " in halfphone: '" + rightUnit.toString() + "'");
         }
         this.rightF0Targets = f0TargetValues;
@@ -452,7 +454,7 @@ public class Phone {
      */
     public double[] getLeftTargetF0Values() throws NullPointerException {
         if (leftF0Targets == null) {
-            throw new NullPointerException("The left target F0 values have not been assigned!");
+            throw new NullPointerException(FILENAME + " The left target F0 values have not been assigned!");
         }
         return leftF0Targets;
     }
@@ -466,7 +468,7 @@ public class Phone {
      */
     public double[] getRightTargetF0Values() throws NullPointerException {
         if (rightF0Targets == null) {
-            throw new NullPointerException("The right target F0 values have not been assigned!");
+            throw new NullPointerException(FILENAME + " The right target F0 values have not been assigned!");
         }
         return rightF0Targets;
     }
@@ -625,7 +627,7 @@ public class Phone {
     private double[] getUnitF0Factors(SelectedUnit unit, HalfPhoneTarget target) throws ArithmeticException {
         double[] unitF0Values = getUnitF0Values(unit);
         if (ArrayUtils.contains(unitF0Values, 0)) {
-            throw new ArithmeticException("Unit frames must not have F0 of 0!");
+            throw new ArithmeticException(FILENAME + " Unit frames must not have F0 of 0!");
         }
 
         double[] targetF0Values;

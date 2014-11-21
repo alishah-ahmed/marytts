@@ -49,6 +49,7 @@ import org.w3c.dom.Element;
  *
  */
 public class VocalizationSelector {
+	private static final String FILENAME = "VocalizationSelector.java:";
 
     protected VocalizationFeatureFileReader featureFileReader;
     protected FeatureDefinition featureDefinition;
@@ -81,7 +82,7 @@ public class VocalizationSelector {
             unitFileReader = new VocalizationUnitFileReader(unitFileName);
 
             if(this.featureFileReader.getNumberOfUnits() != this.unitFileReader.getNumberOfUnits()) {
-                throw new MaryConfigurationException("Feature file reader and unit file reader is not aligned properly");
+                throw new MaryConfigurationException(FILENAME + " Feature file reader and unit file reader is not aligned properly");
             }
 
             if ( this.f0ContourImposeSupport ) {
@@ -90,7 +91,7 @@ public class VocalizationSelector {
                 usePrecondition = MaryProperties.getBoolean("voice."+voice.getName()+".vocalization.usePrecondition", false);
                 contourCostWeight = (new Double(MaryProperties.getProperty("voice."+voice.getName()+".vocalization.contourCostWeight", "0.5"))).doubleValue();
                 if ( contourCostWeight < 0 || contourCostWeight > 1.0) {
-                    throw new MaryConfigurationException("contourCostWeight should be between 0 and 1");
+                    throw new MaryConfigurationException(FILENAME + " contourCostWeight should be between 0 and 1");
                 }
                 BufferedReader f0FDBufferedReader = new BufferedReader( new FileReader( new File(intonationFDFile)));
                 f0FeatureDefinition = new FeatureDefinition(f0FDBufferedReader, true);
@@ -100,7 +101,7 @@ public class VocalizationSelector {
             }
         }
         catch (IOException e) {
-            throw new MaryConfigurationException("Problem loading vocalization files for voice ", e);
+            throw new MaryConfigurationException(FILENAME + " Problem loading vocalization files for voice " + "\tCause: " + e.getCause().getMessage(), e);
         }
     }
     

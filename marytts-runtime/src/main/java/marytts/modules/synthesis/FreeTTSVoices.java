@@ -45,6 +45,8 @@ import de.dfki.lt.freetts.de.GermanLexicon;
  */
 public class FreeTTSVoices
 {
+	private static final String FILENAME = "FreeTTSVoices.java";
+	
     private FreeTTSVoices() {} // no instances of this class
 
     /**
@@ -123,11 +125,11 @@ public class FreeTTSVoices
             try {
                 freeTTSVoice = (DummyFreeTTSVoice) Class.forName("marytts.language.en.DummyFreeTTSVoice").newInstance();
             } catch (InstantiationException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
             }
             freeTTSVoice.initialise(maryVoice, null);
         } else {
@@ -232,7 +234,7 @@ public class FreeTTSVoices
     throws NoSuchPropertyException
     {
         if (freeTTSVoice == null) {
-            throw new NullPointerException("Received null voice");
+            throw new NullPointerException(FILENAME + " Received null voice");
         }
         if (freetts2maryVoices != null) {
             marytts.modules.synthesis.Voice maryVoice = (marytts.modules.synthesis.Voice) freetts2maryVoices.get(freeTTSVoice);
