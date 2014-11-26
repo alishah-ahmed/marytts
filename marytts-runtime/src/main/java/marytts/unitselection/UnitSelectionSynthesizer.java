@@ -143,7 +143,7 @@ public class UnitSelectionSynthesizer implements WaveformSynthesizer
             }
         } catch (Throwable t) {
             t.printStackTrace();
-            throw new Error(FILENAME + "Module " + toString() + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
+            throw new Error(FILENAME + "Module " + toString() + ": Power-on self test failed." + "\tCause: " + (t.getCause() != null ? t.getCause().getMessage() : "Cause is null!"), t);
         }
         logger.info("Power-on self test complete.");
     }
@@ -187,7 +187,7 @@ public class UnitSelectionSynthesizer implements WaveformSynthesizer
             PrintWriter pw = new PrintWriter(sw);
             for (Iterator selIt=selectedUnits.iterator(); selIt.hasNext(); )
                 pw.println(selIt.next());
-            throw new SynthesisException(FILENAME + " Problems generating audio for unit chain: "+sw.toString() + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new SynthesisException(FILENAME + " Problems generating audio for unit chain: "+sw.toString() + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
         
         // Propagate unit durations to XML tree:

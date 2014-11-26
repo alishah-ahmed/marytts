@@ -148,7 +148,7 @@ public class ComponentDescription extends Observable implements Comparable<Compo
         try {
             this.license = new URL(licenseElement.getAttribute("href").trim().replaceAll(" ", "%20"));
         } catch (MalformedURLException mue) {
-            new Exception(FILENAME + " Invalid license URL -- ignoring" + "\tCause: " + mue.getCause().getMessage(), mue).printStackTrace();
+            new Exception(FILENAME + " Invalid license URL -- ignoring" + "\tCause: " + (mue.getCause() != null ? mue.getCause().getMessage() : "Cause is null!"), mue).printStackTrace();
             this.license = null;
         }
         Element packageElement = (Element) xmlDescription.getElementsByTagName("package").item(0);
@@ -173,7 +173,7 @@ public class ComponentDescription extends Observable implements Comparable<Compo
                 }
                 locations.add(new URL(urlString));
             } catch (MalformedURLException mue) {
-                new Exception(FILENAME + " Invalid location -- ignoring" + "\tCause: " + mue.getCause().getMessage(), mue).printStackTrace();
+                new Exception(FILENAME + " Invalid location -- ignoring" + "\tCause: " + (mue.getCause() != null ? mue.getCause().getMessage() : "Cause is null!"), mue).printStackTrace();
             }
         }
         archiveFile = new File(System.getProperty("mary.downloadDir"), packageFilename);

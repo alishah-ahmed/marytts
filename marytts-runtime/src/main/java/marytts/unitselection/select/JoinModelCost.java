@@ -87,7 +87,7 @@ public class JoinModelCost implements JoinCostFunction
             String trickyPhonesFileName = MaryProperties.needFilename(configPrefix + ".trickyPhonesFile");
             load(joinFileName, joinPdfStream, joinTreeStream, trickyPhonesFileName);
         } catch (IOException ioe) {
-            throw new MaryConfigurationException(FILENAME + " Problem loading join file" + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem loading join file" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
     }
     
@@ -124,7 +124,7 @@ public class JoinModelCost implements JoinCostFunction
             joinTree = htsReader.load(numStates, joinTreeStream, joinPdfStream, PdfFileFormat.join, featureDef, phTranslator);
             
         } catch (Exception e) {
-            IOException ioe = new IOException(FILENAME + " Cannot load join model trees" + "\tCause: " + e.getCause().getMessage());
+            IOException ioe = new IOException(FILENAME + " Cannot load join model trees" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
             ioe.initCause(e);
             throw ioe;
         }

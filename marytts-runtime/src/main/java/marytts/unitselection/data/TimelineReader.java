@@ -127,7 +127,7 @@ public class TimelineReader
         try {
             load(fileName, tryMemoryMapping);
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Cannot load timeline file from "+fileName + "\tCause: " + e.getCause().getMessage(), e);
+            throw new MaryConfigurationException(FILENAME + " Cannot load timeline file from "+fileName + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
     }
     
@@ -306,7 +306,7 @@ public class TimelineReader
                 }
             }
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Could not compute total duration" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new MaryConfigurationException(FILENAME + " Could not compute total duration" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
         if (!haveReadAll) {
             throw new MaryConfigurationException(FILENAME + " Could not read all datagrams to compute total duration");

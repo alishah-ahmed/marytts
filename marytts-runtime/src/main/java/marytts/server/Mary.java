@@ -148,7 +148,7 @@ public class Mary {
                 try {
                     m.startup();
                 } catch (Throwable t) {
-                    throw new Exception(FILENAME + " Problem starting module "+ m.name() + "\tCause: " + t.getCause().getMessage(), t);
+                    throw new Exception(FILENAME + " Problem starting module "+ m.name() + "\tCause: " + (t.getCause() != null ? t.getCause().getMessage() : "Cause is null!"), t);
                 }
                 long after = System.currentTimeMillis();
                 startupTimes.add(new Pair<MaryModule, Long>(m, after-before));
@@ -186,7 +186,7 @@ public class Mary {
                     FeatureRegistry.setFallbackFeatureProcessorManager(mgr);
                 }
             } catch (Throwable t) {
-                throw new Exception(FILENAME + " Cannot instantiate feature processor manager '"+fpmInitInfo+"'" + "\tCause: " + t.getCause().getMessage(), t);
+                throw new Exception(FILENAME + " Cannot instantiate feature processor manager '"+fpmInitInfo+"'" + "\tCause: " + (t.getCause() != null ? t.getCause().getMessage() : "Cause is null!"), t);
             }
         }
     }
@@ -218,7 +218,12 @@ public class Mary {
      */
     public static void startup(boolean addJarsToClasspath) throws Exception
     {
-        if (currentState != STATE_OFF) throw new IllegalStateException(FILENAME + " Cannot start system: it is not offline");
+    	System.out.println("in startup()");
+        if (currentState != STATE_OFF) { 
+        	throw new IllegalStateException(FILENAME + " Cannot start system: it is not offline");
+        }
+        
+//        System.out.println("changing current state to starting");
         currentState = STATE_STARTING;
 
         if (addJarsToClasspath) {
@@ -226,6 +231,7 @@ public class Mary {
         }
 
         configureLogging();
+//        System.out.println("logging configured!");
         
         logger.info("Mary starting up...");
         logger.info("Specification version " + Version.specificationVersion());
@@ -238,8 +244,10 @@ public class Mary {
         logger.debug("MARY_BASE: "+MaryProperties.maryBase());
         String[] installedFilenames = new File(MaryProperties.maryBase()+"/installed").list();
         if (installedFilenames == null) {
+        	System.out.println("installed/ folder does not exist.");
         	logger.debug("The installed/ folder does not exist.");
         } else {
+//        	System.out.println("installed/ folder exists.");
             StringBuilder installedMsg = new StringBuilder();
             for (String filename : installedFilenames) {
                 if (installedMsg.length() > 0) {
@@ -248,11 +256,14 @@ public class Mary {
                 installedMsg.append(filename);
             }
             logger.debug("Content of installed/ folder: "+installedMsg);
+//            System.out.println("installed message: " + installedMsg);
         }
         String[] confFilenames = new File(MaryProperties.maryBase()+"/conf").list();
         if (confFilenames == null) {
+        	System.out.println("conf/ folder does not exist.");
         	logger.debug("The conf/ folder does not exist.");
         } else {
+//        	System.out.println("conf/ folder exists.");
             StringBuilder confMsg = new StringBuilder();
             for (String filename : confFilenames) {
                 if (confMsg.length() > 0) {
@@ -261,6 +272,7 @@ public class Mary {
                 confMsg.append(filename);
             }
             logger.debug("Content of conf/ folder: "+confMsg);
+//            System.out.println("content of conf/ folder: " + confMsg);
         }
         logger.debug("Full dump of system properties:");
         for (Object key : new TreeSet<Object>(System.getProperties().keySet())) {
@@ -285,6 +297,7 @@ public class Mary {
 
         // Essential environment checks:
         EnvironmentChecks.check();
+//        System.out.println("Environment Checked.");
         
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
@@ -292,14 +305,18 @@ public class Mary {
             }
         });
 
-
+//        System.out.println("going to start feature processors");
         setupFeatureProcessors();
         
+//        System.out.println("going to start modules");
+        
         // Instantiate module classes and startup modules:
-        startModules();
-
+		startModules();
+//		System.out.println("after startModules() call");
+        
         logger.info("Startup complete.");
         currentState = STATE_RUNNING;
+//        System.out.println("current state changed to running");
     }
 
     /**
@@ -382,7 +399,10 @@ public class Mary {
      */
     public static void shutdown()
     {
-        if (currentState != STATE_RUNNING) throw new IllegalStateException(FILENAME + " MARY system is not running");
+        if (currentState != STATE_RUNNING) {
+        	System.out.println("current state is not running! Throwing exception!");
+        	throw new IllegalStateException(FILENAME + " MARY system is not running");
+        }
         currentState = STATE_SHUTTING_DOWN;
         logger.info("Shutting down modules...");
         // Shut down modules:
@@ -536,7 +556,7 @@ public class Mary {
                                 MaryProperties.getProperty("output.type.params", null),
                                 System.out);
         			} catch (Exception e) {
-        				throw new RuntimeException(FILENAME  + "\tCause: " + e.getCause().getMessage(), e);
+        				throw new RuntimeException(FILENAME  + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         			}
         		}
         	};

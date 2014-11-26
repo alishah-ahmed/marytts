@@ -118,7 +118,7 @@ public class MaryCARTWriter{
             pw.close();
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    FILENAME + " Error dumping CART to standard output" + "\tCause: " + ioe.getCause().getMessage());
+                    FILENAME + " Error dumping CART to standard output" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"));
             newIOE.initCause(ioe);
             throw newIOE;
         }
@@ -182,7 +182,7 @@ public class MaryCARTWriter{
             
         } catch (IOException ioe) {
             IOException newIOE = new IOException(
-                    FILENAME + "Error dumping CART to output stream" + "\tCause: " + ioe.getCause().getMessage());
+                    FILENAME + "Error dumping CART to output stream" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"));
             newIOE.initCause(ioe);
             throw newIOE;
         }

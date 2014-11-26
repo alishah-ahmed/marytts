@@ -141,7 +141,7 @@ public class InterpolatingSynthesizer implements WaveformSynthesizer
             PrintWriter pw = new PrintWriter(sw);
             for (Iterator selIt=selectedUnits1.iterator(); selIt.hasNext(); )
                 pw.println(selIt.next());
-            throw new SynthesisException(FILENAME + " For voice "+voice1.getName()+", problems generating audio for unit chain: "+sw.toString() + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new SynthesisException(FILENAME + " For voice "+voice1.getName()+", problems generating audio for unit chain: "+sw.toString() + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
         DoubleDataSource audioSource1 = new AudioDoubleDataSource(audio1);
         UnitConcatenator unitConcatenator2 = usv2.getConcatenator();
@@ -153,7 +153,7 @@ public class InterpolatingSynthesizer implements WaveformSynthesizer
             PrintWriter pw = new PrintWriter(sw);
             for (Iterator selIt=selectedUnits2.iterator(); selIt.hasNext(); )
                 pw.println(selIt.next());
-            throw new SynthesisException(FILENAME + " For voice "+voice2.getName()+", problems generating audio for unit chain: "+sw.toString() + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new SynthesisException(FILENAME + " For voice "+voice2.getName()+", problems generating audio for unit chain: "+sw.toString() + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
         DoubleDataSource audioSource2 = new AudioDoubleDataSource(audio2);
         // Retrieve actual durations from list of units:

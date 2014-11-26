@@ -64,7 +64,7 @@ public class VocalizationSynthesizer {
         try {
             this.unitFileReader = new VocalizationUnitFileReader(unitFileName);
         } catch (IOException e) {
-            throw new MaryConfigurationException(FILENAME + " can't read unit file" + "\tCause: " + e.getCause().getMessage());
+            throw new MaryConfigurationException(FILENAME + " can't read unit file" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
         }
         
         String intonationFile = MaryProperties.getFilename("voice."+voice.getName()+".vocalization.intonationfile");

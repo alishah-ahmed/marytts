@@ -210,7 +210,7 @@ public class FeatureDefinition
 //                    System.out.println( "Splitting part 1: '" + weightAndFunction[0] + "'." );
 //                    System.out.println( "Splitting part 2: '" + weightAndFunction[1] + "'." );
                     throw new RuntimeException(FILENAME + " The string [" + weightDef + "] appears to be a badly formed"
-                            + " weight plus weighting function definition." + "\tCause: " + e.getCause().getMessage() );
+                            + " weight plus weighting function definition." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") );
               }
             } else {
                 featureDef = line;
@@ -1064,7 +1064,7 @@ public class FeatureDefinition
             for (String v : getPossibleValues(featureIndex)) {
                 message.append(" "+v);
             }
-            throw new IllegalArgumentException(FILENAME + " " + message.toString() + "\tCause: " + iae.getCause().getMessage());
+            throw new IllegalArgumentException(FILENAME + " " + message.toString() + "\tCause: " + (iae.getCause() != null ? iae.getCause().getMessage() : "Cause is null!"));
         }
         
     }

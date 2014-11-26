@@ -189,7 +189,7 @@ public abstract class MaryConfig {
 		try {
 			props.load(propertyStream);
 		} catch (Exception e) {
-			throw new MaryConfigurationException(FILENAME + " cannot load properties" + "\tCause: " + e.getCause().getMessage(), e);
+			throw new MaryConfigurationException(FILENAME + " cannot load properties" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
 		}
 	}
 	

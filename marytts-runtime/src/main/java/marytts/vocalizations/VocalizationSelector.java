@@ -101,7 +101,7 @@ public class VocalizationSelector {
             }
         }
         catch (IOException e) {
-            throw new MaryConfigurationException(FILENAME + " Problem loading vocalization files for voice " + "\tCause: " + e.getCause().getMessage(), e);
+            throw new MaryConfigurationException(FILENAME + " Problem loading vocalization files for voice " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
     }
     

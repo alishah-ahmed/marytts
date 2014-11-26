@@ -74,7 +74,9 @@ public class MaryRuntimeUtils {
 	
 	public static void ensureMaryStarted() throws Exception {
 		synchronized (MaryConfig.getMainConfig()) {
+//			System.out.println("in ensureMaryStarted()");
 			if (Mary.currentState() == Mary.STATE_OFF) {
+				System.out.println("Mary's current state is off. Starting it!");
 				Mary.startup();
 			}
 		}
@@ -137,7 +139,7 @@ public class MaryRuntimeUtils {
 	        }
 	    } catch (Exception e) {
 	    	// try to make e's message more informative if possible
-	    	throw new MaryConfigurationException(FILENAME + "Cannot instantiate object from '"+objectInitInfo+"': "+MaryUtils.getFirstMeaningfulMessage(e) + "\tCause: " + e.getCause().getMessage(), e);
+	    	throw new MaryConfigurationException(FILENAME + "Cannot instantiate object from '"+objectInitInfo+"': "+MaryUtils.getFirstMeaningfulMessage(e) + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
 	    }
         return obj;
     }
@@ -339,7 +341,7 @@ public class MaryRuntimeUtils {
     	try {
     		alloStream = MaryProperties.needStream(propertyName);
     	} catch (FileNotFoundException e) {
-    		throw new MaryConfigurationException(FILENAME + " Cannot open allophone stream for property "+propertyName + "\tCause: " + e.getCause().getMessage(), e);
+    		throw new MaryConfigurationException(FILENAME + " Cannot open allophone stream for property "+propertyName + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
     	}
     	assert alloStream != null;
     	return AllophoneSet.getAllophoneSet(alloStream, propertyValue);

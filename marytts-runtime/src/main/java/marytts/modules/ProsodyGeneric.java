@@ -132,7 +132,7 @@ public class ProsodyGeneric extends InternalModule {
     	    try {
                 priorities.load(accentStream);
             } catch (IOException e) {
-                throw new MaryConfigurationException(FILENAME + " can't load accent priorities from "+MaryProperties.getProperty(accentPriorities) + "\tCause: " + e.getCause().getMessage(), e);
+                throw new MaryConfigurationException(FILENAME + " can't load accent priorities from "+MaryProperties.getProperty(accentPriorities) + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             } finally {
             	accentStream.close();
             }
@@ -153,7 +153,7 @@ public class ProsodyGeneric extends InternalModule {
             loadTobiPredRules(); // fill the rule map
             buildListMap(); // fill the list map
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Can't fill prosody maps " + "\tCause: " + e.getCause().getMessage(), e);
+            throw new MaryConfigurationException(FILENAME + " Can't fill prosody maps " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
         
         convertToBI2Contour = MaryProperties.getBoolean("prosody.convertToBI2Contour", false);
@@ -164,7 +164,7 @@ public class ProsodyGeneric extends InternalModule {
                 try {
                     toBI2ContourMap = getToBI2ContourMap(externalFileName);
                 } catch (IOException e) {
-                    throw new MaryConfigurationException(FILENAME + " can't read ToBI2Contour lookup file: "+externalFileName + "\tCause: " + e.getCause().getMessage(), e);
+                    throw new MaryConfigurationException(FILENAME + " can't read ToBI2Contour lookup file: "+externalFileName + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
                 }
             } 
             else {

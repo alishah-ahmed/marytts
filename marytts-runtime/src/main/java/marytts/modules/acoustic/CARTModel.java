@@ -57,10 +57,10 @@ public class CARTModel extends Model {
         try {
             predictionFeatureNames = cart.getFeatureDefinition().getFeatureNames();
         } catch (NullPointerException e) {
-            throw new IOException(FILENAME + " Could not get FeatureDefinition from CART" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new IOException(FILENAME + " Could not get FeatureDefinition from CART" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
         if (predictionFeatureNames.length() == 0) { // isEmpty
-            throw new IOException(FILENAME + " Could not get prediction feature names" + "\tCause: ");
+            throw new IOException(FILENAME + " Could not get prediction feature names");
         }
     }
 
@@ -75,14 +75,14 @@ public class CARTModel extends Model {
         try {
             result = (float[]) cart.interpret(target);
         } catch (IllegalArgumentException e) {
-            throw new Exception(FILENAME + " Could not interpret target '" + target + "'" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new Exception(FILENAME + " Could not interpret target '" + target + "'" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
 
         float value = 0;
         try {
             value = result[1]; // assuming result is [stdev, val]
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new Exception(FILENAME + " Could not handle predicted value: '" + value + "'" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new Exception(FILENAME + " Could not handle predicted value: '" + value + "'" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
         return value;
     }

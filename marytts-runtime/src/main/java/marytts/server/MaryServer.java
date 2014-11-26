@@ -193,7 +193,7 @@ public class MaryServer implements Runnable {
                 clients.execute(new ClientHandler(client));
             }
         } catch (Exception e) {
-            throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
+            throw new RuntimeException(FILENAME + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
     }
 
@@ -217,7 +217,7 @@ public class MaryServer implements Runnable {
                 clientOut = new PrintWriter(clientUTFOutput, true);
                 handle();
             } catch (UnsupportedEncodingException ex) {
-                throw new AssertionError("UTF-8 is always a supported encoding." + "\tCause: " + ex.getCause().getMessage());
+                throw new AssertionError("UTF-8 is always a supported encoding." + "\tCause: " + (ex.getCause() != null ? ex.getCause().getMessage() : "Cause is null!"));
             } catch (Exception e) {
                 logger.info("Error parsing request:", e);
                 if (clientOut == null) {

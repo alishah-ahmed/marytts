@@ -310,7 +310,7 @@ public class MaryProperties
         try {
             return Boolean.valueOf(value).booleanValue();
         } catch (NumberFormatException e) {
-            throw new NoSuchPropertyException(FILENAME + " Boolean property `" + property + "' in configuration files has wrong value `" + value + "'" + "\tCause: " + e.getCause().getMessage());
+            throw new NoSuchPropertyException(FILENAME + " Boolean property `" + property + "' in configuration files has wrong value `" + value + "'" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
         }
     }
     
@@ -354,7 +354,7 @@ public class MaryProperties
         try {
             return Integer.decode(value).intValue();
         } catch (NumberFormatException e) {
-            throw new NoSuchPropertyException(FILENAME + " Integer property `" + property + "' in configuration files has wrong value `" + value + "'" + "\tCause: " + e.getCause().getMessage());
+            throw new NoSuchPropertyException(FILENAME + " Integer property `" + property + "' in configuration files has wrong value `" + value + "'" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
         }
     }
 
@@ -440,7 +440,7 @@ public class MaryProperties
 		} catch (ClassNotFoundException e) {
 			throw new NoSuchPropertyException(FILENAME + " Cannot find class `" + value +
 				"'. Check property `" + property +
-				"' in configuration files" + "\tCause: " + e.getCause().getMessage());
+				"' in configuration files" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
 		}
 		return c;
 	}

@@ -257,7 +257,7 @@ public class HMMModel extends Model {
           }
           return um;
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Error searching in tree when predicting duration. " + "\tCause: " + e.getCause().getMessage(),  e);
+            throw new MaryConfigurationException(FILENAME + " Error searching in tree when predicting duration. " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"),  e);
          }
     }
     
@@ -322,7 +322,7 @@ public class HMMModel extends Model {
           //um = null;
               
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Error generating F0 out of HMMs trees and pdfs. " + "\tCause: " + e.getCause().getMessage(),  e);
+            throw new MaryConfigurationException(FILENAME + " Error generating F0 out of HMMs trees and pdfs. " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"),  e);
         }     
         
     }
@@ -392,7 +392,7 @@ public class HMMModel extends Model {
           }
           return um;
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Error searching in tree when creating utterance model. " + "\tCause: " + e.getCause().getMessage(),  e);
+            throw new MaryConfigurationException(FILENAME + " Error searching in tree when creating utterance model. " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"),  e);
          }
     }
         

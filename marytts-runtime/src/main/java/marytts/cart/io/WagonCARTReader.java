@@ -283,7 +283,7 @@ public class WagonCARTReader {
                 }
                 
             } catch (Exception exc) {
-                throw new RuntimeException(FILENAME + " Cannot create decision node for cart line: '"+line+"'" + "\tCause: " + exc.getCause().getMessage(), exc);
+                throw new RuntimeException(FILENAME + " Cannot create decision node for cart line: '"+line+"'" + "\tCause: " + (exc.getCause() != null ? exc.getCause().getMessage() : "Cause is null!"), exc);
             }
 
             if (lastNode != null) {

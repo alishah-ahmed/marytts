@@ -68,7 +68,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
             }
         }
         catch (IOException e) {
-            throw new MaryConfigurationException(FILENAME + " Can not read data from files " + "\tCause: " + e.getCause().getMessage() +e);
+            throw new MaryConfigurationException(FILENAME + " Can not read data from files " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") +e);
         }
     }
 
@@ -104,7 +104,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
         try {
             frames = audioTimeline.getDatagrams(start, duration);
         } catch (IOException e) {
-            throw new SynthesisException(FILENAME + " Can not read data from timeline file " + "\tCause: " + e.getCause().getMessage() +e);
+            throw new SynthesisException(FILENAME + " Can not read data from timeline file " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") +e);
         } 
         // Generate audio from frames
         LinkedList<Datagram> datagrams = new LinkedList<Datagram>();
@@ -205,7 +205,7 @@ public class FDPSOLASynthesisTechnology extends VocalizationSynthesisTechnology 
         try {
             frames = audioTimeline.getDatagrams(start, duration);
         } catch (IOException e) {
-            throw new SynthesisException(FILENAME + " cannot get audio frames from timeline file " + "\tCause: " + e.getCause().getMessage() + e);
+            throw new SynthesisException(FILENAME + " cannot get audio frames from timeline file " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") + e);
         } 
         assert frames != null : "Cannot generate audio from null frames";
         

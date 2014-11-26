@@ -70,7 +70,7 @@ public class StatisticalModelCost implements StatisticalCostFunction
             sCostWeight = Float.parseFloat(MaryProperties.getProperty(configPrefix+".sCostWeight", "1.0"));
             sCostReader = new SCostFileReader(sCostFileName);
         } catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " Cannot initialise scost model" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new MaryConfigurationException(FILENAME + " Cannot initialise scost model" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
     }
      

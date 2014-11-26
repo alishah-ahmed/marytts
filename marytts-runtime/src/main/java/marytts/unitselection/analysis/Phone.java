@@ -82,7 +82,7 @@ public class Phone {
             this.rightTarget = (HalfPhoneTarget) rightUnit.getTarget();
         } catch (NullPointerException e) {
             if (leftTarget == null) {
-                throw new IllegalArgumentException(FILENAME + " A phone's left and right halves cannot both be null!" + "\tCause: " + e.getCause().getMessage());
+                throw new IllegalArgumentException(FILENAME + " A phone's left and right halves cannot both be null!" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
             } else {
                 // leave at null
             }

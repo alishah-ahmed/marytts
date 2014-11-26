@@ -114,7 +114,7 @@ public class JoinCostFeatures implements JoinCostFunction
             InputStream joinWeightStream = MaryProperties.getStream(configPrefix + ".joinCostWeights");
             load(joinFileName, joinWeightStream, precomputedJoinCostFileName, wSignal);
         } catch (IOException ioe) {
-            throw new MaryConfigurationException(FILENAME + " Problem loading join file "+joinFileName + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem loading join file "+joinFileName + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
     }
     
@@ -202,7 +202,7 @@ public class JoinCostFeatures implements JoinCostFunction
             }
         }
         catch ( EOFException e ) {
-            IOException ioe = new IOException(FILENAME + " The currently read Join Cost File has prematurely reached EOF." + "\tCause: " + e.getCause().getMessage());
+            IOException ioe = new IOException(FILENAME + " The currently read Join Cost File has prematurely reached EOF." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
             ioe.initCause(e);
             throw ioe;
             
@@ -290,7 +290,7 @@ public class JoinCostFeatures implements JoinCostFunction
             }
         }
         catch ( EOFException e ) {
-            IOException ioe = new IOException(FILENAME + " The currently read Join Cost File has prematurely reached EOF." + "\tCause: " + e.getCause().getMessage());
+            IOException ioe = new IOException(FILENAME + " The currently read Join Cost File has prematurely reached EOF." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
             ioe.initCause(e);
             throw ioe;
             

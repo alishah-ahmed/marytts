@@ -91,7 +91,7 @@ public class PrecompiledJoinCostReader implements JoinCostFunction
         try {
             load(precomputedJoinCostFileName, null, null, 0);
         } catch (IOException ioe) {
-            throw new MaryConfigurationException(FILENAME + " Problem loading join file "+precomputedJoinCostFileName + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem loading join file "+precomputedJoinCostFileName + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
     }
     

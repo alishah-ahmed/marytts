@@ -118,7 +118,7 @@ public class TargetFeatureComputer
             try {
                 featureDefinition = new FeatureDefinition(reader, false);
             } catch (IOException e) {
-                throw new RuntimeException(FILENAME + " Problem creating feature definition" + "\tCause: " + e.getCause().getMessage(), e);
+                throw new RuntimeException(FILENAME + " Problem creating feature definition" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             }
         }
         return featureDefinition;

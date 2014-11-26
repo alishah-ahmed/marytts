@@ -125,11 +125,11 @@ public class FreeTTSVoices
             try {
                 freeTTSVoice = (DummyFreeTTSVoice) Class.forName("marytts.language.en.DummyFreeTTSVoice").newInstance();
             } catch (InstantiationException e) {
-                throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
+                throw new RuntimeException(FILENAME + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
+                throw new RuntimeException(FILENAME + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(FILENAME + "\tCause: " + e.getCause().getMessage(), e);
+                throw new RuntimeException(FILENAME + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             }
             freeTTSVoice.initialise(maryVoice, null);
         } else {

@@ -182,7 +182,7 @@ public class AcousticModeller extends InternalModule {
         try {
             durationModel.applyTo(durationElements); // Note that this assumes that Elements always predict their own duration!
         } catch (MaryConfigurationException e) {
-            throw new SynthesisException(FILENAME + " Duration model could not be applied" + "\tCause:" + e.getCause().getMessage(), e);
+            throw new SynthesisException(FILENAME + " Duration model could not be applied" + "\tCause:" + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
 
         // hack duration attributes:
@@ -209,7 +209,7 @@ public class AcousticModeller extends InternalModule {
             }
             f0Model.applyFromTo(predictFromElements, applyToElements);
         } catch (MaryConfigurationException e) {
-            throw new SynthesisException(FILENAME + " Could not apply F0 model" + "\tCause:" + e.getCause().getMessage(), e);
+            throw new SynthesisException(FILENAME + " Could not apply F0 model" + "\tCause:" + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
 
         Model boundaryModel = voice.getBoundaryModel();
@@ -223,7 +223,7 @@ public class AcousticModeller extends InternalModule {
             }
             voice.getBoundaryModel().applyTo(boundaryElements);
         } catch (MaryConfigurationException e) {
-            throw new SynthesisException(FILENAME + " Could not apply boundary model" + "\tCause:" + e.getCause().getMessage(), e);
+            throw new SynthesisException(FILENAME + " Could not apply boundary model" + "\tCause:" + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
 
         // apply other Models, if applicable:
@@ -243,7 +243,7 @@ public class AcousticModeller extends InternalModule {
                     // remember, the Model constructor will predict from, and apply the model to, "segments" by default
                     model.applyFromTo(predictFromElements, applyToElements);
                 } catch (MaryConfigurationException e) {
-                    throw new SynthesisException("Could not apply model '" + modelName + "'" + "\tCause:" + e.getCause().getMessage(), e);
+                    throw new SynthesisException("Could not apply model '" + modelName + "'" + "\tCause:" + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
                 }
             }
         }
@@ -308,7 +308,7 @@ public class AcousticModeller extends InternalModule {
         try {
             treeWalker = MaryDomUtils.createTreeWalker(doc, MaryXML.SYLLABLE, MaryXML.BOUNDARY);
         } catch (DOMException e) {
-            throw new SynthesisException(FILENAME + " Could not parse XML Document" + "\tCause:" + e.getCause().getMessage(), e);
+            throw new SynthesisException(FILENAME + " Could not parse XML Document" + "\tCause:" + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
         Node node;
         while ((node = treeWalker.nextNode()) != null) {
@@ -329,7 +329,7 @@ public class AcousticModeller extends InternalModule {
             try {
                 allophoneSet = MaryRuntimeUtils.determineAllophoneSet(element);
             } catch (MaryConfigurationException e) {
-                throw new SynthesisException("Could not determine AllophoneSet" + "\tCause:" + e.getCause().getMessage(), e);
+                throw new SynthesisException("Could not determine AllophoneSet" + "\tCause:" + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             }
             assert allophoneSet != null;
 

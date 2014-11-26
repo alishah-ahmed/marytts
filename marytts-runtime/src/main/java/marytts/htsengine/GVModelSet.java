@@ -282,7 +282,7 @@ public class GVModelSet {
      
    } catch (FileNotFoundException e) {
        logger.debug("FileNotFoundException: " + e.getMessage());
-       throw new FileNotFoundException(FILENAME + " LoadTreeSet: " + e.getMessage() + "\tCause: " + e.getCause().getMessage());
+       throw new FileNotFoundException(FILENAME + " LoadTreeSet: " + e.getMessage() + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"));
    }
   
 }

@@ -87,7 +87,7 @@ public class MLSAFeatureFileReader
         try {
             dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         } catch ( FileNotFoundException e ) {
-            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + e.getCause().getMessage() );
+            throw new MaryConfigurationException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") );
         }
 
         // Load the Mary header 

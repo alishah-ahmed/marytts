@@ -215,7 +215,7 @@ public class UnitSelectionVoice extends Voice {
         } catch (MaryConfigurationException mce) {
             throw mce;
         } catch (Exception ex) {
-            throw new MaryConfigurationException(FILENAME + " Cannot build unit selection voice '"+name+"'" + "\tCause: " + ex.getCause().getMessage(), ex);
+            throw new MaryConfigurationException(FILENAME + " Cannot build unit selection voice '"+name+"'" + "\tCause: " + (ex.getCause() != null ? ex.getCause().getMessage() : "Cause is null!"), ex);
         }
         
     }

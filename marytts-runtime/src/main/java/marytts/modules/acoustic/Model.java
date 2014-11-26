@@ -151,7 +151,7 @@ public abstract class Model {
 			loadData();
 		} catch (IOException ioe) {
 			throw new MaryConfigurationException(
-					"Cannot load model data from stream" + "\tCause: " + ioe.getCause().getMessage(), ioe);
+					"Cannot load model data from stream" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
 		}
 		setupFeatureComputer();
 	}
@@ -181,7 +181,7 @@ public abstract class Model {
 							+ featureManager.getLocale() + " ("
 							+ featureManager.getClass().toString()
 							+ ") can produce the following features:\n"
-							+ featureManager.listFeatureProcessorNames() + "\tCause: " + iae.getCause().getMessage(), iae);
+							+ featureManager.listFeatureProcessorNames() + "\tCause: " + (iae.getCause() != null ? iae.getCause().getMessage() : "Cause is null!"), iae);
 		}
 	}
 
@@ -228,7 +228,7 @@ public abstract class Model {
 				targetValue = (float) evaluate(target);
 			} catch (Exception e) {
 				throw new MaryConfigurationException(
-						"Could not predict value for target: '" + target + "'" + "\tCause: " + e.getCause().getMessage(),
+						"Could not predict value for target: '" + target + "'" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"),
 						e);
 			}
 
@@ -251,7 +251,7 @@ public abstract class Model {
 				throw new MaryConfigurationException(
 						"Could not format target value '" + targetValue
 								+ "' using format '" + targetAttributeFormat
-								+ "'" + "\tCause: " + e.getCause().getMessage(), e);
+								+ "'" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
 			}
 
 			// System.out.println("formattedTargetValue = " +

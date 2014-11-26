@@ -190,14 +190,14 @@ public class MaryDomUtils extends DomUtils
         try {
         	mnw.output(doc, baos);
         } catch (TransformerException te) {
-        	throw new MaryConfigurationException(FILENAME + " Cannot serialize document for Schema-valid parsing" + "\tCause: " + te.getCause().getMessage(), te);
+        	throw new MaryConfigurationException(FILENAME + " Cannot serialize document for Schema-valid parsing" + "\tCause: " + (te.getCause() != null ? te.getCause().getMessage() : "Cause is null!"), te);
         }
         try {
         	parseDocument(new ByteArrayInputStream(baos.toByteArray()), true /*validating*/);
         } catch (ParserConfigurationException pce) {
-        	throw new MaryConfigurationException(FILENAME + " Problem setting up parser" + "\tCause: " + pce.getCause().getMessage(), pce);
+        	throw new MaryConfigurationException(FILENAME + " Problem setting up parser" + "\tCause: " + (pce.getCause() != null ? pce.getCause().getMessage() : "Cause is null!"), pce);
         } catch (IOException ioe) {
-        	throw new MaryConfigurationException(FILENAME + " IOException should not occur but it does" + "\tCause: " + ioe.getCause().getMessage(), ioe);
+        	throw new MaryConfigurationException(FILENAME + " IOException should not occur but it does" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         } catch (SAXException se) {
         	// document is not schema valid
         	return false;

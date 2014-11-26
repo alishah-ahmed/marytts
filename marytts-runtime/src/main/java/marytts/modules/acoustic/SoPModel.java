@@ -108,7 +108,7 @@ public class SoPModel extends Model {
         s.close();
         
         } catch (Exception e) {
-            throw new IOException(FILENAME + " Error reading SoP data" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new IOException(FILENAME + " Error reading SoP data" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
     }
 

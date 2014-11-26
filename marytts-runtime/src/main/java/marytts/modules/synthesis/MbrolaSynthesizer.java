@@ -180,7 +180,7 @@ public class MbrolaSynthesizer implements WaveformSynthesizer {
                  logger.debug("No example text -- no power-on self test!");
              }
          } catch (Throwable t) {
-             throw new Error("Module " + toString() + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
+             throw new Error("Module " + toString() + ": Power-on self test failed." + "\tCause: " + (t.getCause() != null ? t.getCause().getMessage() : "Cause is null!"), t);
          }
          logger.info("Power-on self test complete.");
      }
@@ -243,7 +243,7 @@ public class MbrolaSynthesizer implements WaveformSynthesizer {
         try {
             ais = mbrolaCaller.synthesiseOneSection(pho, voice);
         } catch (IOException ioe) {
-            throw new SynthesisException(FILENAME + " Cannot synthesise" + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new SynthesisException(FILENAME + " Cannot synthesise" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
         assert ais != null;
         return ais;

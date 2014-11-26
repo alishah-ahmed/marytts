@@ -92,7 +92,7 @@ public class VocalizationUnitFileReader
             dis = new DataInputStream( new BufferedInputStream( new FileInputStream( fileName ) ) );
         }
         catch ( FileNotFoundException e ) {
-            throw new RuntimeException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + e.getCause().getMessage() );
+            throw new RuntimeException(FILENAME + " File [" + fileName + "] was not found." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") );
         }
         try {
             /* Load the Mary header */
@@ -144,7 +144,7 @@ public class VocalizationUnitFileReader
             }
         }
         catch ( IOException e ) {
-            throw new RuntimeException(FILENAME + " Reading the Mary header from file [" + fileName + "] failed." + "\tCause: " + e.getCause().getMessage(), e );
+            throw new RuntimeException(FILENAME + " Reading the Mary header from file [" + fileName + "] failed." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e );
         }
         
     }

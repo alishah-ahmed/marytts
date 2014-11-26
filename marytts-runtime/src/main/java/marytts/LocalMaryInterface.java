@@ -60,10 +60,11 @@ public class LocalMaryInterface implements MaryInterface {
 	
 	public LocalMaryInterface() throws MaryConfigurationException {
 		try {
+//			System.out.println("LocalMaryInterface Constructor");
 			MaryRuntimeUtils.ensureMaryStarted();
 		} catch (Exception e) {
 //			System.out.println("ERROR: " + FILENAME + " Cannot start MARY server" + "\tCause: " + e.getCause().getMessage());
-			throw new MaryConfigurationException(FILENAME + " Cannot start MARY server" + "\tCause: " + e.getCause().getMessage(), e);
+			throw new MaryConfigurationException(FILENAME + " Cannot start MARY server" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
 		}
 		
 		init();
@@ -374,7 +375,7 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			in.setData(text);
 		} catch (Exception ioe) {
-			throw new SynthesisException(FILENAME + "\tCause: " + ioe.getCause().getMessage(), ioe);
+			throw new SynthesisException(FILENAME + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
 		}
 		return in;
 	}
@@ -384,7 +385,7 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			in.setDocument(doc);
 		} catch (Exception ioe) {
-			throw new SynthesisException(FILENAME + "\tCause: " + ioe.getCause().getMessage(), ioe);
+			throw new SynthesisException(FILENAME + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
 		}
 		return in;
 	}
@@ -395,7 +396,7 @@ public class LocalMaryInterface implements MaryInterface {
 		try {
 			r.process();
 		} catch (Exception e) {
-			throw new SynthesisException(FILENAME + " cannot process" + "\tCause: " + e.getCause().getMessage(), e);
+			throw new SynthesisException(FILENAME + " cannot process" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
 		}
 		return r.getOutputData();
 	}

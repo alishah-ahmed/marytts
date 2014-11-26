@@ -555,7 +555,7 @@ public class Request {
             try {
                 outData = m.process(currentData);
             } catch (Exception e) {
-                throw new Exception(FILENAME + " Module " + m.name() + ": Problem processing the data." + "\tCause: " + e.getCause().getMessage(), e);
+                throw new Exception(FILENAME + " Module " + m.name() + ": Problem processing the data." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
             }
 
             if (outData == null) {

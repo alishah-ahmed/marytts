@@ -68,7 +68,7 @@ public class InstallFileParser
     		doc = builder.parse(in);
     		in.close();
     	} catch (Exception e) {
-    		throw new IOException(FILENAME + " Problem parsing install file "+installFile + "\tCause: " + e.getCause().getMessage(), e);
+    		throw new IOException(FILENAME + " Problem parsing install file "+installFile + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
     	}
         Element docElt = doc.getDocumentElement();
         if (!docElt.getTagName().equals("marytts-install")) {

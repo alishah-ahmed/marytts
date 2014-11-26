@@ -100,11 +100,11 @@ public class DummyFreeTTSVoice extends com.sun.speech.freetts.Voice {
                 Lexicon lex = (Lexicon)Class.forName(lexiconClassName).newInstance();
                 setLexicon(lex);
             } catch (IllegalAccessException iae) {
-                throw new RuntimeException(FILENAME + " Illegal access trying to instantiate "+lexiconClassName + "\tCause: " + iae.getCause().getMessage());
+                throw new RuntimeException(FILENAME + " Illegal access trying to instantiate "+lexiconClassName + "\tCause: " + (iae.getCause() != null ? iae.getCause().getMessage() : "Cause is null!"));
             } catch (ClassNotFoundException iae) {
-                throw new RuntimeException(FILENAME + " Class not found trying to instantiate "+lexiconClassName + "\tCause: " + iae.getCause().getMessage());
+                throw new RuntimeException(FILENAME + " Class not found trying to instantiate "+lexiconClassName + "\tCause: " + (iae.getCause() != null ? iae.getCause().getMessage() : "Cause is null!"));
             } catch (InstantiationException iae) {
-                throw new RuntimeException(FILENAME + " Instantiation exception trying to instantiate "+lexiconClassName + "\tCause: " + iae.getCause().getMessage());
+                throw new RuntimeException(FILENAME + " Instantiation exception trying to instantiate "+lexiconClassName + "\tCause: " + (iae.getCause() != null ? iae.getCause().getMessage() : "Cause is null!"));
             }
         }
         setRate(135f);
@@ -161,7 +161,7 @@ public class DummyFreeTTSVoice extends com.sun.speech.freetts.Voice {
         try {
         lexicon.load();
         } catch (IOException ioe) {
-        throw new Error("Can't load voice" + "\tCause: " + ioe.getCause().getMessage(), ioe);
+        throw new Error("Can't load voice" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
     }
 

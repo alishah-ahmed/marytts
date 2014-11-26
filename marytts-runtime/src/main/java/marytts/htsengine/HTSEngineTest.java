@@ -745,10 +745,10 @@ public class HTSEngineTest {
             }
         }
         catch ( IOException e ) {
-            throw new RuntimeException(FILENAME + " " + task + " computation provoked an IOException on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
+            throw new RuntimeException(FILENAME + " " + task + " computation provoked an IOException on file [" + baseName + "]." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e );
         }
         catch ( InterruptedException e ) {
-            throw new RuntimeException(FILENAME + " " + task + " computation interrupted on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
+            throw new RuntimeException(FILENAME + " " + task + " computation interrupted on file [" + baseName + "]." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e );
         }
         
     }    
@@ -795,10 +795,10 @@ public class HTSEngineTest {
                        
         }
         catch ( IOException e ) {
-            throw new RuntimeException(FILENAME + " " + task + " computation provoked an IOException on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
+            throw new RuntimeException(FILENAME + " " + task + " computation provoked an IOException on file [" + baseName + "]." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e );
         }
         catch ( InterruptedException e ) {
-            throw new RuntimeException(FILENAME + " " + task + " computation interrupted on file [" + baseName + "]." + "\tCause: " + e.getCause().getMessage(), e );
+            throw new RuntimeException(FILENAME + " " + task + " computation interrupted on file [" + baseName + "]." + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e );
         }
         
     } 

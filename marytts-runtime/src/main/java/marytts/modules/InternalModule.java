@@ -131,7 +131,7 @@ public class InternalModule implements MaryModule
                 logger.debug("No example text -- no power-on self test!");
             }
         } catch (Throwable t) {
-            throw new Error("Module " + name + ": Power-on self test failed." + "\tCause: " + t.getCause().getMessage(), t);
+            throw new Error("Module " + name + ": Power-on self test failed." + "\tCause: " + (t.getCause() != null ? t.getCause().getMessage() : "Cause is null!"), t);
         }
         logger.info("Power-on self test complete.");
     }

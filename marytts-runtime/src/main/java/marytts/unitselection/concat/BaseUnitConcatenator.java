@@ -127,7 +127,7 @@ public class BaseUnitConcatenator implements UnitConcatenator
         try {
             prosodyAnalyzer = new ProsodyAnalyzer(units, timeline.getSampleRate());
         } catch (Exception e) {
-            throw new IOException(FILENAME + " Could not analyze prosody!" + "\tCause: " + e.getCause().getMessage(), e);
+            throw new IOException(FILENAME + " Could not analyze prosody!" + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
         
         // 3. Generate audio to match the target pitchmarks as closely as possible

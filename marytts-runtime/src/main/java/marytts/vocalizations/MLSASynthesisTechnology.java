@@ -62,7 +62,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
                 this.vIntonationReader = null;
             }
         } catch (IOException ioe) {
-            throw new MaryConfigurationException(FILENAME + " Problem with loading mlsa feature file" + "\tCause: " + ioe.getCause().getMessage(), ioe);
+            throw new MaryConfigurationException(FILENAME + " Problem with loading mlsa feature file" + "\tCause: " + (ioe.getCause() != null ? ioe.getCause().getMessage() : "Cause is null!"), ioe);
         }
 
         if ( vMLSAFeaturesReader.getNumberOfUnits() <= 0 ) {
@@ -85,7 +85,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
             htsData.setF0Mean(0.0); // variable for f0 control, add f0           [0.0][0.0--100.0]
         }
         catch (Exception e) {
-            throw new MaryConfigurationException(FILENAME + " htsData initialization failed.. " + "\tCause: " + e.getCause().getMessage(), e);
+            throw new MaryConfigurationException(FILENAME + " htsData initialization failed.. " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e);
         }
 
         par2speech = new HTSVocoder();
@@ -213,7 +213,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
             mcepPst = new HTSPStream(mcepVsize*3, mgc.length, HMMData.FeatureType.MGC, 0);
             strPst = new HTSPStream(strVsize*3, strengths.length, HMMData.FeatureType.STR, 0);
         } catch (Exception e) {
-            throw new SynthesisException(FILENAME + " HTSPStream initialiaztion failed.. " + "\tCause: " + e.getCause().getMessage() +e);
+            throw new SynthesisException(FILENAME + " HTSPStream initialiaztion failed.. " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!") +e);
         }  
 
 
@@ -249,7 +249,7 @@ public class MLSASynthesisTechnology extends VocalizationSynthesisTechnology {
         try {
             audio_double = par2speech.htsMLSAVocoder(lf0Pst, mcepPst, strPst, null, voiced, htsData, null);
         } catch (Exception e) {
-            throw new SynthesisException(FILENAME + " MLSA vocoding failed .. " + "\tCause: " + e.getCause().getMessage()+e);
+            throw new SynthesisException(FILENAME + " MLSA vocoding failed .. " + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!")+e);
         }
 
         /* Normalise the signal before return, this will normalise between 1 and -1 */

@@ -389,7 +389,7 @@ public class SFFS {
         }
       }
     } catch ( Exception e ) {
-      throw new RuntimeException(FILENAME + " Problem reading file " + dataFile + "\tCause: " + e.getCause().getMessage(), e );
+      throw new RuntimeException(FILENAME + " Problem reading file " + dataFile + "\tCause: " + (e.getCause() != null ? e.getCause().getMessage() : "Cause is null!"), e );
     }  
     System.out.println();
     return Y;
