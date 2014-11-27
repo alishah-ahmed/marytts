@@ -964,4 +964,14 @@ public class Voice
         public String toString() { return name; }
         public boolean equals(Gender other) { return other.toString().equals(name); }
     }
+    
+    public void setVoiceName(String voiceName)
+    {
+    	this.voiceName = voiceName;
+    }
+    
+    public void setLocale(Locale locale)
+    {
+    	this.locale = locale;
+    }
 }

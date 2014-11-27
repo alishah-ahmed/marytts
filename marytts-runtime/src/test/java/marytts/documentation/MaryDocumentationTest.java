@@ -2,12 +2,13 @@ package marytts.documentation;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Locale;
 
 import marytts.LocalMaryInterface;
-import marytts.htsengine.HMMVoice;
-import marytts.modules.synthesis.HMMSynthesizer;
+import marytts.exceptions.MaryConfigurationException;
 import marytts.modules.synthesis.Voice;
 import marytts.server.http.InfoRequestHandler;
 
@@ -425,4 +426,40 @@ public class MaryDocumentationTest {
 //		actualOutput = requestHandler.methodsMapping.get("voices").callCorrectMethod(queryVariables, null);
 //		assertEquals(expectedOutput, actualOutput);
 //	}
+	
+	@Test
+	public void testSortedVoiceJSON() {
+		InfoRequestHandler requestHandler = new InfoRequestHandler();
+		
+		List<Voice> voices;
+		voices = new ArrayList<Voice>(Voice.getAvailableVoices());
+		
+		if (voices.size() > 0)
+		{
+			Voice dummyVoice = voices.get(0);
+
+			Voice v1, v2, v3;
+			try {
+				v1 = new Voice(dummyVoice.getName(), dummyVoice.synthesizer());
+				v1.setVoiceName("dummy3");
+				v1.setLocale(new Locale("en-GB"));
+				voices.add(v1);
+
+				v2 = new Voice(dummyVoice.getName(), dummyVoice.synthesizer());
+				v2.setVoiceName("dummy1");
+				voices.add(v2);
+
+				v3 = new Voice(dummyVoice.getName(), dummyVoice.synthesizer());
+				v3.setVoiceName("dummy2");
+				voices.add(v3);
+			} catch (MaryConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			String expectedOutput = "[{\"name\":\"dummy3\",\"locale\":\"en-gb\",\"gender\":\"female\",\"type\":\"other\"},{\"name\":\"cmu-slt-hsmm\",\"locale\":\"en_US\",\"gender\":\"female\",\"type\":\"hmm\"},{\"name\":\"dummy1\",\"locale\":\"en_US\",\"gender\":\"female\",\"type\":\"other\"},{\"name\":\"dummy2\",\"locale\":\"en_US\",\"gender\":\"female\",\"type\":\"other\"}]";
+			String actualOutput = requestHandler.methodsMapping.get("voices").callCorrectMethod(new HashMap<String, String> (), null);
+			assertEquals(expectedOutput, actualOutput);
+		}
+	}
 }

@@ -400,28 +400,6 @@ public class MaryRuntimeUtils {
     		voices = new ArrayList<Voice>(Voice.getAvailableVoices(queryParameters));
     	}
     	
-//    	JUST FOR TESTING PURPOSE -- voiceName and locale were changed to public in Voice.java for the same purpose.
-//    	Voice dummyVoice = voices.get(0);
-//    	
-//    	Voice v1, v2, v3;
-//		try {
-//			v1 = new Voice(dummyVoice.voiceName, dummyVoice.synthesizer());
-//			v1.voiceName = "dummy3";
-//			v1.locale = new Locale("en-GB");
-//			voices.add(v1);
-//			
-//			v2 = new Voice(dummyVoice.voiceName, dummyVoice.synthesizer());
-//			v2.voiceName = "dummy1";
-//			voices.add(v2);
-//			
-//			v3 = new Voice(dummyVoice.voiceName, dummyVoice.synthesizer());
-//			v3.voiceName = "dummy2";
-//			voices.add(v3);
-//		} catch (MaryConfigurationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-    	
 		sortVoicesList(voices);	//sort voices by: locale + gender + name + type
     	outputString = formJSONFromVoices(voices);
         return outputString;
