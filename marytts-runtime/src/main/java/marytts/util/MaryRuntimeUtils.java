@@ -27,6 +27,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -387,19 +389,53 @@ public class MaryRuntimeUtils {
     public static String getVoices(Map<String, String> queryParameters)
     {
     	String outputString = "";
-    	Collection<Voice> voices = new ArrayList<Voice>();
+    	List<Voice> voices;
     	
     	if (queryParameters == null || queryParameters.size() == 0)
     	{
-    		voices = Voice.getAvailableVoices();
+    		voices = new ArrayList<Voice>(Voice.getAvailableVoices());
     	}
     	else
     	{
-    		voices = (List<Voice>) Voice.getAvailableVoices(queryParameters);
+    		voices = new ArrayList<Voice>(Voice.getAvailableVoices(queryParameters));
     	}
     	
+//    	JUST FOR TESTING PURPOSE -- voiceName and locale were changed to public in Voice.java for the same purpose.
+//    	Voice dummyVoice = voices.get(0);
+//    	
+//    	Voice v1, v2, v3;
+//		try {
+//			v1 = new Voice(dummyVoice.voiceName, dummyVoice.synthesizer());
+//			v1.voiceName = "dummy3";
+//			v1.locale = new Locale("en-GB");
+//			voices.add(v1);
+//			
+//			v2 = new Voice(dummyVoice.voiceName, dummyVoice.synthesizer());
+//			v2.voiceName = "dummy1";
+//			voices.add(v2);
+//			
+//			v3 = new Voice(dummyVoice.voiceName, dummyVoice.synthesizer());
+//			v3.voiceName = "dummy2";
+//			voices.add(v3);
+//		} catch (MaryConfigurationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+    	
+		sortVoicesList(voices);	//sort voices by: locale + gender + name + type
     	outputString = formJSONFromVoices(voices);
         return outputString;
+    }
+    
+    ///sort by: locale + gender + name + type
+    public static void sortVoicesList(List<Voice> voices)
+    {
+    	Collections.sort(voices, new Comparator<Voice>() {
+            @Override
+            public int compare(Voice v1, Voice v2) {
+                return (v1.getLocale().toString() + " " + v1.gender().toString() + " " + v1.getName() + " " + (v1 instanceof UnitSelectionVoice ? "u" : "h")).compareToIgnoreCase(v2.getLocale().toString() + " " + v2.gender().toString() + " " + v2.getName() + " " + (v2 instanceof UnitSelectionVoice ? "u" : "h"));
+            }
+        });
     }
     
     public static String formJSONFromVoices(Collection<Voice> voices)

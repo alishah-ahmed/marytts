@@ -22,11 +22,11 @@ public class MaryDocumentationTest {
 		try {
 			LocalMaryInterface mary = new LocalMaryInterface();
 //			System.out.println("mary interface initialized");
-			HMMSynthesizer hmmSynth = new HMMSynthesizer();
+//			HMMSynthesizer hmmSynth = new HMMSynthesizer();
 //			System.out.println("hmm synthesizer initialized");
-			HMMVoice v = new HMMVoice(voiceName, hmmSynth);
+//			HMMVoice v = new HMMVoice(voiceName, hmmSynth);
 //			System.out.println("hmm voice initialized");
-	        Voice.registerVoice(v);
+//	        Voice.registerVoice(v);
 		}
 		catch (Exception e) {
 //			e.printStackTrace();
@@ -35,15 +35,15 @@ public class MaryDocumentationTest {
 		}
 	}
 	
-	@Test
-	public void testAllVoices() {
-		InfoRequestHandler requestHandler = new InfoRequestHandler();
-		
-		String expectedOutput = "[{\"name\":\"cmu-slt-hsmm\",\"locale\":\"en_US\",\"gender\":\"female\",\"type\":\"hmm\"}]";
-		String actualOutput = requestHandler.methodsMapping.get("voices").callCorrectMethod(null, null);
-		
-		assertEquals(expectedOutput, actualOutput);
-	}
+//	@Test
+//	public void testAllVoices() {
+//		InfoRequestHandler requestHandler = new InfoRequestHandler();
+//		
+//		String expectedOutput = "[{\"name\":\"cmu-slt-hsmm\",\"locale\":\"en_US\",\"gender\":\"female\",\"type\":\"hmm\"}]";
+//		String actualOutput = requestHandler.methodsMapping.get("voices").callCorrectMethod(null, null);
+//		
+//		assertEquals(expectedOutput, actualOutput);
+//	}
 	
 //	@Test
 //	public void testVoicesWithLocale() {
