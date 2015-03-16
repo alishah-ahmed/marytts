@@ -14,16 +14,20 @@ public class firefoxAutomatedTesting {
 		firefoxDriver = new FirefoxDriver();
 		firefoxDriver.get("http://localhost:59125/");
 		
-		Thread.sleep(7000);
-		testAllOutputTypes();	//initially text is set as input type; input type: text
-		
-		Thread.sleep(5000);
-		Select inputType = new Select(firefoxDriver.findElement(By.id("INPUT_TYPE")));
-		inputType.selectByVisibleText("SSML");
-		testAllOutputTypes();	//input type: SSML
+		executeTestsForType("TEXT");		//input type: TEXT
+		executeTestsForType("SSML");		//input type: SSML
+		executeTestsForType("EMOTIONML");	//input type: EMOTIONML
+		executeTestsForType("RAWMARYXML");	//input type: RAWMARYXML	
 		
 		Thread.sleep(7000);
 		firefoxDriver.quit();
+	}
+	
+	public static void executeTestsForType(String type) throws InterruptedException {
+		Thread.sleep(5000);
+		Select inputType = new Select(firefoxDriver.findElement(By.id("INPUT_TYPE")));
+		inputType.selectByVisibleText(type);
+		testAllOutputTypes();
 	}
 	
 	public static void testAllOutputTypes() throws InterruptedException {
@@ -48,7 +52,7 @@ public class firefoxAutomatedTesting {
 		outputType.selectByVisibleText("AUDIO");
 		WebElement speakButton = firefoxDriver.findElement(By.id("SPEAK"));
 		speakButton.click();
-		Thread.sleep(20000);
+		Thread.sleep(25000);
 	}
 	
 	//output: RawMaryXML
