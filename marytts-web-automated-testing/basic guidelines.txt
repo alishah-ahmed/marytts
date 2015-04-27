@@ -1,0 +1,48 @@
+WEB AUTOMATED TESTING (JAVA) USING SELENIUM HQ:
+
+DOWNLOADING AND LINKING:
+	Download selenium stand alone jar file from its website: http://www.seleniumhq.org/download/
+		- Download the file that is present under the heading: Selenium Server (formerly the Selenium RC Server)
+	
+	Link the downloaded jar file to the web automation project in eclipse:
+		- Open the properties of the project
+		- Go to the java build path
+		- Click on the Libraries tab
+		- Click Add External Jars and give references to the downloaded jars
+		
+	Enjoy using Selenium Webdriver in your project =)
+
+USING IN JAVA PROJECT:
+	Once referenced properly, we can start using Selenium Automation Testing in our project.
+	
+	Creating WebDriver object is the first step. For each browser, there is a different webDriver to be created. We will focus on firefox for the rest of the guidelines:
+		WebDriver firefoxDriver = new FirefoxDriver();
+	
+	Base URL is set using the following code:
+		firefoxDriver.get("http://localhost:59125/");
+		
+	To select an element using their id, following code is used:
+		WebElement processButton = firefoxDriver.findElement(By.id("PROCESS"));
+	WebElement object can be used as a general object, i.e. to select any of the objects available, whether that be a button or a select dropdown or an input field.
+		
+	If that web element is a button, click behavior can be simulated using:
+		processButton.click();
+		
+	If the element to be selected is a select dropdown, Select object should be used:
+		Select outputType = new Select(firefoxDriver.findElement(By.id("OUTPUT_TYPE")));
+	
+	In order to select a value in the select dropdown, the visible text of that particular option can be used:
+		outputType.selectByVisibleText("AUDIO");
+
+		
+FOR USING SELENI|UM WEBDRIVER IN SAFARI BROWSER: (reference: http://elementalselenium.com/tips/69-safari)
+	If SafariDriver Extension is not installed, Safari might just throw up the following error:
+		- Unable to establish a connection with the SafariDriver Extension
+	For its solution, SafariDriver extension needs to be downloaded. It can be downloaded from this link: https://github.com/SeleniumHQ/selenium/raw/master/javascript/safari-driver/prebuilt/SafariDriver.safariextz
+	Once this is downlaoded, follow the following steps:
+		- Open Safari
+		- Go to preferences
+		- Click on the Extensions tab
+		- Check the "Enable WebDriver" option for WebDriver 2.38.0
+		- Restart Safari
+		and you are done!

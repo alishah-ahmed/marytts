@@ -15,7 +15,7 @@ public class firefoxAutomatedTesting {
 		executeTestsForType("TEXT");		//input type: TEXT
 		executeTestsForType("SSML");		//input type: SSML
 		executeTestsForType("EMOTIONML");	//input type: EMOTIONML
-		executeTestsForType("RAWMARYXML");	//input type: RAWMARYXML	
+		executeTestsForType("RAWMARYXML");	//input type: RAWMARYXML
 		
 		Thread.sleep(7000);
 		firefoxDriver.quit();
