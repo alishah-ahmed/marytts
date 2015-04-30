@@ -33,6 +33,11 @@ USING IN JAVA PROJECT:
 	
 	In order to select a value in the select dropdown, the visible text of that particular option can be used:
 		outputType.selectByVisibleText("AUDIO");
+		
+	To set some value in the input box, sendkeys function is used:
+		inputText.sendKeys("test input");
+		
+	Detailed documentation can be found at: http://www.seleniumhq.org/docs/03_webdriver.jsp#introducing-the-selenium-webdriver-api-by-example
 
 		
 FOR USING SELENI|UM WEBDRIVER IN SAFARI BROWSER: (reference: http://elementalselenium.com/tips/69-safari)
