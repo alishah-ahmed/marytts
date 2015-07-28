@@ -260,7 +260,7 @@ public class HTSPStream {
 	   forwardSubstitution(mywum,mywuw);     /* forward substitution in Cholesky decomposition  */
 	   backwardSubstitution(m,mywuw);   /* backward substitution in Cholesky decomposition */
 	          
-
+	   logger.info("in mlpg - HTSPStream.java");
        /* Global variance optimisation for MCP and LF0 */
        if( useGV && gvLength>0) {           
         if(htsData.getGvMethodGradient())
@@ -527,6 +527,7 @@ public class HTSPStream {
       totalNumIter = iter; 
       
       logger.info("Gradient GV optimization for feature: ("+ m + ")  number of iterations=" + totalNumIter);
+//      logger.info("")
     }
  
   
